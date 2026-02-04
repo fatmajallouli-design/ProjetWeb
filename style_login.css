@@ -1,0 +1,135 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  
+  .login-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #B197FC, #74C0FC);
+  }
+
+  
+  
+  
+  
+  
+ 
+  .login-container {
+    width: 420px;
+    background: #ffffff;
+    padding: 35px 30px;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    text-align: center;
+  }
+  
+  
+  .login-container h2 {
+    margin-bottom: 25px;
+    color: #6a5af9;
+    font-size: 26px;
+    font-weight: 700;
+  }
+  
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  
+  
+  .login-form input[type="text"],
+  .login-form input[type="password"],
+  .login-form input[type="tel"],
+  .login-form input[type="email"] {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1.5px solid #ddd;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+  
+  .login-form input:focus {
+    outline: none;
+    border-color: #74C0FC;
+    box-shadow: 0 0 0 2px rgba(116, 192, 252, 0.3);
+  }
+  
+  
+  .role {
+    display: flex;
+    justify-content: space-around;
+    margin: 18px 0;
+  }
+  
+  .role label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+  }
+  
+ 
+  .role input[type="radio"] {
+    transform: scale(1.6);
+    accent-color: #B197FC;
+    cursor: pointer;
+  }
+  
+  
+  .upload {
+    margin: 10px auto;
+    padding: 10px 18px;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #B197FC, #74C0FC);
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .upload:hover {
+    opacity: 0.9;
+  }
+  
+  
+  .preview-img {
+    display: none;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 10px auto;
+    border: 3px solid #B197FC;
+  }
+  
+  
+  button {
+    margin-top: 15px;
+    padding: 12px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #74C0FC, #B197FC);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+  

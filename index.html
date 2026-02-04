@@ -12,35 +12,67 @@
 
   <body>
     <header class="top-header">
-        <div class="barriere">
+        <button id="menuBtn" class="menu-btn" >
             <i class=" fa-solid fa-align-justify "></i>
-            <span></span>
-        </div>
+        </button>
+        
         <br>
         <div class="logo">IMPORTY</div>
         <div class="search">
         <i class="fa fa-search"></i>
         <input type="text" placeholder="Rechercher un produit,une marque,..">
+        
     </div>
-    <div class="icons">
-        <div class="panier">
-            <i class="fa-solid fa-bag-shopping" style="color: #B197FC;"></i>
-            <span>votre panier</span>
+    
+        <div class="icons">
+
+            <a href="panier.html" class="icon-item">
+                <i class="fa-solid fa-bag-shopping" style="color:#B197FC;"></i>
+                <span>Votre Panier</span>
+            </a>
+        
+            <a href="demande.html" class="icon-item">
+                <i class="fa-solid fa-plus" style="color:#74C0FC;"></i>
+                <span>Demande</span>
+            </a>
+        
+            <a href="notification.html" class="icon-item">
+                <i class="fa-solid fa-bell" style="color:#74C0FC;"></i>
+                <span>Notification</span>
+            </a>
+        
+            <a href="login.html" class="icon-item">
+                <i class="fa-solid fa-user" style="color:#B197FC;"></i>
+                <span>Se connecter</span>
+            </a>
+        
         </div>
-        <div class="plus">
-            <i class="fa-notdog fa-solid fa-plus" style="color: #74C0FC;"></i>
-            <span>  demande</span>
-        </div>
-        <div class="notification">
-            <i class="fa-solid fa-bell " style="color: #74C0FC;"></i>
-            <span>notification</span>
-        </div>
-        <div class="conncter">
-            <i class="fa-solid fa-user" style="color: #B197FC;"></i>
-            <span>se connecter</span>
-        </div>
-    </div>
+        
+        
+    
+    
 
     </header>
+    
+<div class="overlay" id="overlay"></div>
+
+
+<div class="side-menu" id="sideMenu">
+  <div class="side-header">
+    <span class="brand">IMPORTY</span>
+    <i class="fa-solid fa-xmark" id="closeMenu"></i>
+  </div>
+
+  <div class="section">
+    <h4>Compte</h4>
+    <a href="login.html"><i class="fa-regular fa-user"></i> Se connecter</a>
+    <a href="inscrire.html"><i class="fa-solid fa-user"></i>S'inscrire</a>
+    
+  </div>
+
+ 
+</div>
+<script src="menu.js"></script>
+
   </body>
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription – IMPORTY</title>
+  <link rel="stylesheet" href="style_inscription.css">
+</head>
+
+<body class="inscription-body">
+
+  <div class="inscription-container">
+    <h2>S'inscrire</h2>
+
+    <form id="inscriptionForm">
+      <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+
+      <input type="password" id="password" placeholder="Mot de passe" required>
+
+      <div class="role">
+        <label>
+          <input type="radio" name="role" value="client" checked>
+          <span>Client</span>
+        </label>
+
+        <label>
+          <input type="radio" name="role" value="vendeur">
+          <span>Vendeur</span>
+        </label>
+      </div>
+
+      <button type="submit">S'inscrire</button>
+    </form>
+  </div>
+
+  <script src="inscription.js"></script>
+</body>
+</html>

@@ -23,11 +23,14 @@
     letter-spacing: 2px;
   }
 
-  .barriere{
+  .menu-btn{
     font-size: 28px;
     font-weight: bold;
     letter-spacing: 2px;
     cursor: pointer;
+    border:none;
+    padding:0;
+    background: transparent;
  }
   
  
@@ -59,13 +62,16 @@
   }
   
   
-  .icons > div {
+  .icons a {
     display: flex;
-    flex-direction: column;
+    flex-direction: column;   
     align-items: center;
     font-size: 12px;
     cursor: pointer;
-  }
+    text-decoration: none;
+    color: black;
+}
+
   
   
   .icons i {
@@ -74,11 +80,100 @@
   }
   
   
-  .icons span {
-    text-transform: capitalize;
-  }
+  .icons a span {
+    margin-top: 6px;
+    white-space: nowrap;
+    text-align: center;
+}
+
   
   
-  .icons > div:hover {
-    color: #e60023;
-  }
+  
+
+  
+.icons a {
+  text-decoration: none;
+
+}
+
+
+.icons a:hover {
+  text-decoration: none;
+  color:rebeccapurple
+  
+}
+
+
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  z-index: 999;
+}
+
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 320px;
+  height: 100%;
+  background: #fff;
+  box-shadow: 5px 0 30px rgba(0,0,0,0.2);
+  transition: 0.3s ease;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.side-menu.active {
+  left: 0;
+}
+
+
+.side-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.side-header .brand {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.side-header i {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+
+.section {
+  margin-bottom: 25px;
+}
+
+.section h4 {
+  background: #f5f5f5;
+  padding: 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.section a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  text-decoration: none;
+  color: #000;
+  border-bottom: 1px solid #eee;
+}
+
+.section a:hover {
+  background: #f0f0ff;
+  color: #6a5cff;
+}
