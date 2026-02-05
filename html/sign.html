@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<HTML lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../css/style_sign.css">
+
+        <title> Connexion Importy</title>
+    </head>
+    
+    <body>
+        <div class="container" id="container">
+            <div class="form-container sign-in">
+    <h2>Connexion</h2>
+
+    <form id="inscriptionForm">
+      <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+
+      <input type="password" id="loginpassword" placeholder="Mot de passe" required>
+
+      <div class="role">
+        <label>
+          <input type="radio" name="role-login" value="client" checked>
+          <span>Client</span>
+        </label>
+
+        <label>
+          
+<input type="radio" name="role-login" value="vendeur" checked>
+          <span>Vendeur</span>
+        </label>
+      </div>
+
+      <button type="submit">S'inscrire</button>
+    </form>
+  </div>
+            
+            <div class="form-container sign-up">
+                <form id="signup">
+                    <h2> Créer un compte</h2>
+                    <input type="text" id="nom" placeholder="Nom d'utilisateur " required>
+                    <input type="email" id="email" placeholder="Email" required >
+                    <input type="password" id="password" placeholder="Mot de passe" required>
+                    <input type="password" id="confirmPassword" placeholder="Confirmer le mot de passe" required>
+                    <div class="role">
+            <label>
+              <input type="radio" name="role-signup" checked>
+              <span>Client</span>
+            </label>
+          
+            <label>
+              <input type="radio" name="role-signup">
+              <span>Vendeur</span>
+            </label>
+          </div>
+          
+        
+        <label class="upload">
+             Ajouter une photo
+            <input type="file" accept="image/*" capture="environment" id="photoInput" hidden >
+        </label>
+
+        
+        <img id="preview" class="preview-img">
+
+        <button type="submit">Enregistrer</button>
+
+                </form>
+                
+
+        </div>
+
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h2>Heureux de vous revoir!</h2>
+                    <button class="hidden" id="connecter">Connectez-vous à votre compte</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h2>Bienvenue sur notre plateforme!</h2>
+                    <p id="comment">Créez votre compte pour commencer,</p>
+                    <button class="hidden" id="creer">Creer un compte</button>
+                </div>
+            </div>
+        </div>
+        <script src="../javascript/sign.js"></script>
+    </body>
+</HTML>
