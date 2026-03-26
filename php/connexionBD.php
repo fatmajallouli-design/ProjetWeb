@@ -1,7 +1,7 @@
 <?php
 class ConnexionBD
 {
-private static $_dbname = "bdphp5";
+private static $_dbname = "my_site";
 private static $_user = "root";
 private static $_pwd = "";
 private static $_host = "localhost";

@@ -11,10 +11,19 @@
 
 <div class="login-container">
     <h2>Créer un compte</h2>
-    <div id="errorBox" class="error-box" style="display:none;"></div>
+    <div id="errorBox" class="error-box" style="display: none"></div>
+      <div id="errorAlert" class="alert-box" style="display: none">
+        <div class="alert-header">
+          <span class="alert-title">Erreur</span>
+          <span class="close-btn" onclick="closeError()">x</span>
+        </div>
+        <div class="alert-body" id="errorMessage">
+          Veuillez vérifier vos informations.
+        </div>
+    </div>
     <form class="login-form" action="../php/register_login.php" method="post"id="registerForm" enctype="multipart/form-data">
 
-        <input type="text"name="name" placeholder="Nom d'utilisateur" required>
+        <input type="text"name="username" placeholder="Nom d'utilisateur" required>
         <input type="password" name="password" id="password" placeholder="Mot de passe" required>
         <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirmer le mot de passe" required>
         <input type="tel" name="tel" placeholder="Numéro de téléphone">
@@ -46,17 +55,8 @@
     </form>
 </div>
 
-<script>
-const params = new URLSearchParams(window.location.search);
-const error = params.get("error");
-
-if (error) {
-    const box = document.getElementById("errorBox");
-    box.style.display = "block";
-    box.innerText = error;
-}
-</script>
 
 
+<script src="../javascript/login.js"></script>
 </body>
 </html>

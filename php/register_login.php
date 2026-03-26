@@ -1,50 +1,37 @@
  <?php 
-    $name=$_POST["name"];
+    $username=$_POST["username"];
+    
     $password =  $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
     $tel= $_POST['tel'];
     $email= $_POST['email'];
     $adresse= $_POST['adresse'];
     $role=$_POST["role"];
-    
+     $newFilePath="";
 
-try{
-    if (empty($name) || empty($password) || empty($confirmPassword)) {
-        throw new Exception("Veuillez remplir tous les champs obligatoires");
-    }
-
-    if ($password !== $confirmPassword) {
-        throw new Exception("Les mots de passe ne correspondent pas");
-    }
-
-    if (strlen($password) < 6) {
-        throw new Exception("Mot de passe trop court (min 6 caractères)");
-    }
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        throw new Exception("Email invalide");
-    }
-
-    if ($role !== "client" && $role !== "vendeur") {
-        throw new Exception("Rôle invalide");
-    }
-    if(isset($_FILES['image'])) {
-        $newFilePath = "files/".uniqid().$_FILES['image']['name'];
+    if(isset($_FILES['image'])&& $_FILES['image']['error'] == 0) {
+        $newFilePath = "../files/".uniqid().$_FILES['image']['name'];
         move_uploaded_file($_FILES['image']['tmp_name'], $newFilePath);
     }
+    require_once("connexionBD.php");
+    $bdd=ConnexionBD::getInstance();
 
 
 
 if ($role== "client")
-    {header("location:page_client.php");
-exit();}
+    {   
+         $req=$bdd->prepare("insert into client(username,email,adresse,num_tel,idphoto,password) values (:username,:email,:adresse,:num_tel,:idphoto,:password);");
+        $req->execute(array("username"=>$username,"email"=>$email,"password"=>$password,"adresse"=>$adresse,"num_tel"=>$tel,"idphoto"=>$newFilePath));
+        header("location:page_client.php");
+        exit();}
 else{
+    $req=$bdd->prepare("insert into vendeur(username,email,adresse,num_tel,idphoto,password) values (:username,:email,:adresse,:num_tel,:idphoto,:password);");
+    $req->execute(array("username"=>$username,"email"=>$email,"password"=>$password,"adresse"=>$adresse,"num_tel"=>$tel,"idphoto"=>$newFilePath));
     header("location:page_vendeur.php");
     exit();
 }
-}catch(Exception $e){
-    echo $e->getMessage();
-    header("location:../html/login.html");
-    exit();
-}
+
+
+
+
 ?>  
