@@ -17,7 +17,7 @@ const errorMsg = document.getElementById("errorMsg");
 
 form.addEventListener("submit", function (e) {
   
-  e.preventDefault();
+  
 
   
   if (password.value.trim() !== confirmPassword.value.trim()) {
@@ -32,5 +32,5 @@ form.addEventListener("submit", function (e) {
  
 
  
-  window.location.href = "index.html";
+
 });

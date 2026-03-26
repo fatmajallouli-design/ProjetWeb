@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMPORTY : c'est à vous de choisir</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+  <body>
+    <header class="top-header">
+   
+        <div class="icons">
+
+            <a href="poster.php" class="icon-item">
+                <i class="fa-solid fa-plus" style="color:#74C0FC;"></i>
+                <span>poster_produit</span>
+            </a>
+        
+        </div>
+
+    </header>
+    
+<div class="overlay" id="overlay"></div>
+
+
+<div class="side-menu" id="sideMenu">
+  <div class="side-header">
+    <a class="brand"  aria-label="Importy - Accueil">
+      <img class="brand-img" src="../IMG/logo.png" alt="Importy">
+    </a>
+    <i class="fa-solid fa-xmark" id="closeMenu"></i>
+  </div>
+
+  
+
+ 
+</div>
+<script src="../javascript/menu.js"></script>
+
+  </body>
+</html> 

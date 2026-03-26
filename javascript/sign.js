@@ -29,7 +29,7 @@ const errorMsg = document.getElementById("errorMsg");
 
 signupForm.addEventListener("submit", function (e) {
   
-  e.preventDefault();
+  
 
   
   if (password.value.trim() !== confirmPassword.value.trim()) {
@@ -44,10 +44,10 @@ signupForm.addEventListener("submit", function (e) {
  
 
  
-  window.location.href = "index.html";
+  
 });
 loginForm.addEventListener("submit", function(e) {
-    e.preventDefault();
+    
   
     const username = document.getElementById("username").value;
     const loginpassword = document.getElementById("loginpassword").value;

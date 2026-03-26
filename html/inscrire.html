@@ -11,10 +11,10 @@
   <div class="inscription-container">
     <h2>S'inscrire</h2>
 
-    <form id="inscriptionForm">
-      <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+    <form id="inscriptionForm" action="../php/register.php" method="post">
+      <input type="text"name="name" id="username" placeholder="Nom d'utilisateur" required>
 
-      <input type="password" id="password" placeholder="Mot de passe" required>
+      <input type="password" name="password" id="password" placeholder="Mot de passe" required>
 
       <div class="role">
         <label>
@@ -32,6 +32,6 @@
     </form>
   </div>
 
-  <script src="../javascript/inscription.js"></script>
+  
 </body>
 </html>
