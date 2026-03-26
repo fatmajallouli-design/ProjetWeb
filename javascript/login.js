@@ -22,7 +22,7 @@ const photoInput = document.getElementById("photoInput");
       document
         .getElementById("registerForm")
         .addEventListener("submit", function (e) {
-          let name = document.querySelector('input[name="name"]').value.trim();
+          let username = document.querySelector('input[name="username"]').value.trim();
           let password = document
             .querySelector('input[name="password"]')
             .value.trim();
@@ -30,7 +30,7 @@ const photoInput = document.getElementById("photoInput");
             .querySelector('input[name="confirmPassword"]')
             .value.trim();
 
-          if (name === "" || password === "" || confirmPassword === "") {
+          if (username === "" || password === "" || confirmPassword === "") {
             e.preventDefault();
             showError("Veuillez remplir tous les champs obligatoires.");
             return;

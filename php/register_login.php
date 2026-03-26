@@ -17,6 +17,14 @@
     $bdd=ConnexionBD::getInstance();
 
 
+if ($password !== $confirmPassword) {
+    die("Les mots de passe ne correspondent pas.");
+}
+
+if (strlen($password) < 6) {
+    die("Mot de passe trop court.");
+}
+
 
 if ($role== "client")
     {   
@@ -29,6 +37,7 @@ else{
     $req->execute(array("username"=>$username,"email"=>$email,"password"=>$password,"adresse"=>$adresse,"num_tel"=>$tel,"idphoto"=>$newFilePath));
     header("location:page_vendeur.php");
     exit();
+    
 }
 
 
