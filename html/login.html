@@ -1,52 +1,39 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Connexion – IMPORTY</title>
-    <link rel="stylesheet" href="../css/style_login.css">
-
-
+  <meta charset="UTF-8">
+  <title>Connexion – IMPORTY</title>
+  <link rel="stylesheet" href="../css/style_login.css">
 </head>
+
 <body class="login-body">
 
-<div class="login-container">
-    <h2>Créer un compte</h2>
+  <div class="login-container">
+    <h2>Connexion</h2>
 
-    <form class="login-form" id="registerForm">
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Nom d'utilisateur" required>
 
-        <input type="text" placeholder="Nom d'utilisateur" required>
-        <input type="password" id="password" placeholder="Mot de passe" required>
-        <input type="password" id="confirmPassword" placeholder="Confirmer le mot de passe" required>
-        <p id="errorMsg"></p>
-        <input type="tel" placeholder="Numéro de téléphone">
-        <input type="email" placeholder="Email">
-        <input type="text" placeholder="Adresse">
+      <input type="password" id="password" placeholder="Mot de passe" required>
 
-        <div class="role">
-            <label>
-              <input type="radio" name="role" checked>
-              <span>Client</span>
-            </label>
-          
-            <label>
-              <input type="radio" name="role">
-              <span>Vendeur</span>
-            </label>
-          </div>
-          
-        
-        <label class="upload">
-             Ajouter une photo
-            <input type="file" accept="image/*" capture="environment" id="photoInput" hidden >
+      <div class="role">
+        <label>
+          <input type="radio" name="role" value="client" checked>
+          <span>Client</span>
         </label>
 
-        
-        <img id="preview" class="preview-img">
+        <label>
+          <input type="radio" name="role" value="vendeur">
+          <span>Vendeur</span>
+        </label>
+      </div>
 
-        <button type="submit">Enregistrer</button>
+      <button type="submit">Se connecter</button>
+      <a href="../html/s'inscrire.html">Tu n'as pas un compte ?Créer un compte</a>
+</p>
     </form>
-</div>
+  </div>
 
-<script src="../javascript/login.js"></script>
+  <script src="../javascript/login.js"></script>
 </body>
 </html>

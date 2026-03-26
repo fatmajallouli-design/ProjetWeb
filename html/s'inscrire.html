@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription – IMPORTY</title>
+    <link rel="stylesheet" href="../css/style_inscription.css">
+
+
+</head>
+<body class="inscription-body">
+
+<div class="inscription-container">
+    <h2>Créer un compte</h2>
+
+    <form class="inscription-form" id="registerForm">
+
+        <input type="text" placeholder="Nom d'utilisateur" required>
+        <input type="tel" placeholder="Numéro de téléphone"> <!-- mahabetch todhhor -->
+        <input type="text" placeholder="Adresse"><!-- mahabetch todhhor -->
+        <input type="email" placeholder="Email">
+        
+        <input type="password" id="password" placeholder="Mot de passe" required>
+        <input type="password" id="confirmPassword" placeholder="Confirmer le mot de passe" required>
+        <p id="errorMsg"></p> <!-- Confirmpassword =! password -->
+
+        <div class="role">
+            <label>
+              <input type="radio" name="role" checked>
+              <span>Client</span>
+            </label>
+          
+            <label>
+              <input type="radio" name="role">
+              <span>Vendeur</span>
+            </label>
+          </div>
+          
+        <!-- Choisir image-->
+        <label class="upload">
+             Ajouter une photo
+            <input type="file" accept="image/*" capture="environment" id="photoInput" hidden  >
+        </label>
+
+        <!-- afficher image -->
+        <img id="preview" class="preview-img">
+
+        <button type="submit">Enregistrer</button>
+        <a href="../html/login.html">Tu as deja un compte?Se connecter</a>
+</p>
+    </form>
+</div>
+
+<script src="../javascript/inscription.js"></script>
+</body>
+</html>

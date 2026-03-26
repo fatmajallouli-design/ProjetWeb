@@ -1,50 +1,73 @@
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
   }
   
   .inscription-body {
     min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #a18cff, #6fb1fc);
+    justify-content: center;
+    background: linear-gradient(135deg, #B197FC, #74C0FC);
+  }
+
+  
+  
+  
+  
+  
+ 
+  .inscription-container {
+    width: 420px;
+    background: #ffffff;
+    padding: 35px 30px;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    text-align: center;
   }
   
-  .inscription-container {
-    background: white;
-    width: 360px;
-    padding: 35px;
-    border-radius: 18px;
-    text-align: center;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-  }
   
   .inscription-container h2 {
     margin-bottom: 25px;
-    color: #6a5cff;
+    color: #6a5af9;
+    font-size: 26px;
+    font-weight: 700;
   }
   
-  .inscription-container input {
+  
+  .inscription-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  
+  .inscription-form input[type="text"],
+  .inscription-form input[type="password"],
+  .inscription-form input[type="tel"],
+  .inscription-form input[type="email"] {
     width: 100%;
-    padding: 14px;
-    margin-bottom: 15px;
+    padding: 12px;
     border-radius: 12px;
-    border: 1px solid #ccc;
+    border: 1.5px solid #ddd;
+    font-size: 14px;
+    transition: 0.3s;
   }
   
-  .inscription-container input:focus {
+  .inscription-form input:focus {
     outline: none;
-    border-color: #6a5cff;
+    border-color: #74C0FC;
+    box-shadow: 0 0 0 2px rgba(116, 192, 252, 0.3);
   }
   
   
   .role {
     display: flex;
     justify-content: space-around;
-    margin: 20px 0;
+    margin: 20px 0; /*espace mn fouk w melllouta*/
   }
   
   .role label {
@@ -52,27 +75,59 @@
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    cursor: pointer;
   }
   
   .role input {
-    transform: scale(1.4);
+    transform: scale(1.4);/*140% plus grand que taille l3adi mte3ou*/
     accent-color: #6a5cff;
   }
   
-  
-  .inscription-container button {
-    width: 100%;
-    padding: 14px;
-    border: none;
+  .upload {
+    margin: 10px auto;
+    padding: 10px 18px;
     border-radius: 25px;
-    background: linear-gradient(90deg, #6a5cff, #4facfe);
+    background: linear-gradient(135deg, #B197FC, #74C0FC);
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
+    transition: 0.3s;
   }
   
-  .inscription-container button:hover {
-    opacity: 0.9;
+  .upload:hover {
+    font-size: 16px;
+  }
+  
+  
+  .preview-img {
+    display: none;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 10px auto;
+    border: 3px solid #B197FC;
+  }
+  
+  
+  button {
+    margin-top: 15px;
+    padding: 12px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #74C0FC, #B197FC);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    font-size: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+  a{
+    font-size: 12px;
+    color: #6a5cff;
   }
   
