@@ -15,7 +15,7 @@
         </button>
 
         <a class="logo" aria-label="Importy - Accueil">
-            <img class="logo-img" src="../IMG/logo.png" alt="Importy">
+            <img class="logo-img" src="../files/logo.png" alt="Importy">
         </a>
 
         <div class="search">
