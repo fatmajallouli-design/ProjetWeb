@@ -92,7 +92,7 @@ try {
             "adresse" => $adresse,
             "num_tel" => $tel,
             "idphoto" => $newFilePath,
-            "password" => $passwordHash
+            "password" => $password
         ]);
 
         unset($_SESSION['old']);
