@@ -12,7 +12,7 @@ $description=$_POST["description"]?? '';
 $lien_produit=$_POST["lien_produit"]?? '';
 $newFilePath=null;
  if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $newFilePath = "../files_demande/" . uniqid() . "_" . basename($_FILES['image']['name']);
+        $newFilePath = "../files_produit/" . uniqid() . "_" . basename($_FILES['image']['name']);
         move_uploaded_file($_FILES['image']['tmp_name'], $newFilePath);
     }
 

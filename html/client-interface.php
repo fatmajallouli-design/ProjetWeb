@@ -201,7 +201,7 @@ function resolveProductImagePath(?string $path): string {
                                 <p>Date : <?php echo htmlspecialchars($prod['created_at'] ?? ''); ?></p>
                                 <p><?php echo htmlspecialchars($prod['description'] ?? 'Aucune description.'); ?></p>
                                 <div class="product-actions">
-                                    <a class="small-btn" href="details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('../html/client-interface.php'); ?>">Voir produit</a>
+                                    <a class="small-btn" href="../php/produit_details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('../html/client-interface.php'); ?>">Voir produit</a>
                                     <form action="../php/request_from_product.php" method="post" class="inline-form">
                                         <input type="hidden" name="id_produit" value="<?php echo (int) ($prod['id_produit'] ?? 0); ?>">
                                         <button class="small-btn" type="submit">Demander ce produit</button>

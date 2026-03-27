@@ -43,7 +43,7 @@ $class = ($etat == "valide") ? "valide" : "en_attente";
 
 <div class="card" onclick="goToDetail(<?= $demande['id_demande'] ?>)">
 
-    <img src="<?= $demande['id_photo'] ?: '../images/default.png' ?>">
+    <img src="../files_produit/<?= htmlspecialchars($demande['id_photo']) ?>">
 
     <h3><?= $demande['nom_produit'] ?></h3>
     <p><?= htmlspecialchars($demande['created_at'] ?? '') ?></p>

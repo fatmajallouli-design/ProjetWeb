@@ -3,8 +3,8 @@ class ConnexionBD
 {
 private static $_dbname = "my_site";
 private static $_user = "root";
-private static $_pwd = "Skon1234"; // votre mot de passe MySQL
-private static $_host = "localhost"; // PAS 3306 : c'est le port, pas l'hôte
+private static $_pwd = ""; // votre mot de passe MySQL
+private static $_host = "localhost"; 
 private static $_bdd = null;
 
 private function __construct()
