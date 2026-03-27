@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eef7ff"/>
+      <stop offset="100%" stop-color="#efe9ff"/>
+    </linearGradient>
+    <linearGradient id="main1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b197fc"/>
+      <stop offset="100%" stop-color="#74c0fc"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" rx="48" fill="url(#bg1)"/>
+  <circle cx="180" cy="170" r="70" fill="#ffffff" opacity="0.9"/>
+  <circle cx="420" cy="170" r="70" fill="#ffffff" opacity="0.9"/>
+  <rect x="145" y="160" width="70" height="180" rx="35" fill="url(#main1)"/>
+  <rect x="385" y="160" width="70" height="180" rx="35" fill="url(#main1)"/>
+  <rect x="160" y="320" width="40" height="90" rx="20" fill="#ffffff" opacity="0.75"/>
+  <rect x="400" y="320" width="40" height="90" rx="20" fill="#ffffff" opacity="0.75"/>
+  <text x="300" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#334155">Ecouteurs Pro</text>
+</svg>

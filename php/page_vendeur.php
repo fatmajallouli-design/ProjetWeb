@@ -30,7 +30,7 @@
 <div class="side-menu" id="sideMenu">
   <div class="side-header">
     <a class="brand"  aria-label="Importy - Accueil">
-      <img class="brand-img" src="../IMG/logo.png" alt="Importy">
+      <img class="brand-img" src="../files_profil/logo.png" alt="Importy">
     </a>
     <i class="fa-solid fa-xmark" id="closeMenu"></i>
   </div>

@@ -1,82 +1,53 @@
 <?php
 session_start();
 
-$error = $_SESSION['error'] ?? "";
-$old = $_SESSION['old'] ?? [];
+$error = $_SESSION['login_error'] ?? '';
+$old = $_SESSION['login_old'] ?? [];
 
-unset($_SESSION['error']);
-unset($_SESSION['old']);
+unset($_SESSION['login_error'], $_SESSION['login_old']);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Connexion – IMPORTY</title>
-    <link rel="stylesheet" href="../css/style_login.css">
+    <title>Login - IMPORTY</title>
+    <link rel="stylesheet" href="../css/style_inscription.css">
 </head>
-<body class="login-body">
+<body class="inscription-body">
+    <div class="inscription-container">
+        <h2>Login</h2>
 
-<div class="login-container">
-    <h2>Créer un compte</h2>
+        <?php if (!empty($error)): ?>
+            <div style="margin-bottom:16px;padding:12px 14px;border-radius:12px;background:#fff1f1;color:#b42318;border:1px solid #f1b5b5;">
+                <?php echo htmlspecialchars($error); ?>
+            </div>
+        <?php endif; ?>
 
-    <div id="errorAlert" class="alert-box" style="<?php echo !empty($error) ? 'display:block' : 'display:none'; ?>">
-        <div class="alert-header">
-            <span class="alert-title">Erreur</span>
-            <span class="close-btn" onclick="closeError()">x</span>
-        </div>
-        <div class="alert-body" id="errorMessage">
-            <?php echo htmlspecialchars($error); ?>
-        </div>
+        <form id="loginForm" action="../php/login_user.php" method="post">
+            <input
+                type="text"
+                name="username"
+                placeholder="Nom d'utilisateur"
+                value="<?php echo htmlspecialchars($old['username'] ?? ''); ?>"
+                required
+            >
+
+            <input type="password" name="password" placeholder="Mot de passe" required>
+
+            <div class="role">
+                <label>
+                    <input type="radio" name="role" value="client" <?php echo (!isset($old['role']) || $old['role'] === 'client') ? 'checked' : ''; ?>>
+                    <span>Client</span>
+                </label>
+
+                <label>
+                    <input type="radio" name="role" value="vendeur" <?php echo (($old['role'] ?? '') === 'vendeur') ? 'checked' : ''; ?>>
+                    <span>Vendeur</span>
+                </label>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
     </div>
-
-    <form class="login-form" action="../php/register_login.php" method="post" id="registerForm" enctype="multipart/form-data">
-
-        <input type="text" name="username" placeholder="Nom d'utilisateur"
-               value="<?php echo htmlspecialchars($old['username'] ?? ''); ?>" required>
-
-        <input type="password" name="password" id="password" placeholder="Mot de passe" required>
-
-        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirmer le mot de passe" required>
-
-        <input type="tel" name="tel" placeholder="Numéro de téléphone"
-               value="<?php echo htmlspecialchars($old['tel'] ?? ''); ?>">
-
-        <input type="email" name="email" placeholder="Email"
-               value="<?php echo htmlspecialchars($old['email'] ?? ''); ?>">
-
-        <input type="text" name="adresse" placeholder="Adresse"
-               value="<?php echo htmlspecialchars($old['adresse'] ?? ''); ?>">
-
-        <div class="role">
-            <label>
-                <input type="radio" name="role" value="client"
-                    <?php echo (!isset($old['role']) || $old['role'] === 'client') ? 'checked' : ''; ?>>
-                <span>Client</span>
-            </label>
-
-            <label>
-                <input type="radio" name="role" value="vendeur"
-                    <?php echo (isset($old['role']) && $old['role'] === 'vendeur') ? 'checked' : ''; ?>>
-                <span>Vendeur</span>
-            </label>
-        </div>
-
-        <label class="upload">
-            Ajouter une photo
-            <input type="file" name="image" accept="image/*" capture="environment" id="photoInput" hidden>
-        </label>
-
-        <img id="preview" class="preview-img">
-
-        <button type="submit">Enregistrer</button>
-    </form>
-</div>
-
-<script src="../javascript/login.js"></script>
-<script>
-function closeError() {
-    document.getElementById("errorAlert").style.display = "none";
-}
-</script>
 </body>
 </html>

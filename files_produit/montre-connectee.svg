@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5fbff"/>
+      <stop offset="100%" stop-color="#ede7ff"/>
+    </linearGradient>
+    <linearGradient id="main2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#74c0fc"/>
+      <stop offset="100%" stop-color="#6a5cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" rx="48" fill="url(#bg2)"/>
+  <rect x="240" y="70" width="120" height="120" rx="36" fill="#1e293b"/>
+  <rect x="240" y="410" width="120" height="120" rx="36" fill="#1e293b"/>
+  <rect x="165" y="160" width="270" height="280" rx="60" fill="url(#main2)"/>
+  <rect x="205" y="205" width="190" height="190" rx="36" fill="#ffffff"/>
+  <circle cx="300" cy="300" r="56" fill="#eef2ff"/>
+  <path d="M300 260 L300 302 L332 320" fill="none" stroke="#6a5cff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="300" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#334155">Smart Watch X</text>
+</svg>

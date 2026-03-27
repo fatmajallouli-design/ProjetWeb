@@ -87,7 +87,7 @@ try {
         ]);
 
         unset($_SESSION['old']);
-        header("Location: client-interface.php");
+        header("Location: ../html/client-interface.php");
         exit();
     } else {
         $req = $bdd->prepare("INSERT INTO vendeur(username,email,adresse,num_tel,idphoto,password)
@@ -108,7 +108,7 @@ try {
 
 } catch (Exception $e) {
     $_SESSION['error'] = $e->getMessage();
-    header("Location: ../html/login.php");
+    header("Location: ../html/signup.php");
     exit();
 }
 ?>
