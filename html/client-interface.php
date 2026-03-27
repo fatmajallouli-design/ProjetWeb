@@ -40,8 +40,32 @@ if ($photoPath !== '') {
     }
 }
 
-$produitStmt = $bdd->query('SELECT * FROM produit ORDER BY id_produit DESC LIMIT 12');
-$produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
+// This project dump may not contain the `produit` table.
+// If it's missing, we still want the client interface to load.
+$produits = [];
+try {
+    $produitStmt = $bdd->query('SELECT * FROM produit ORDER BY id_produit DESC LIMIT 12');
+    $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $produits = [];
+}
+
+function resolveProductImagePath(?string $path): string {
+    $raw = trim((string)$path);
+    if ($raw === '') return '';
+    $candidates = [
+        $raw,
+        str_replace('../files_produits/', '../files_produit/', $raw),
+        str_replace('../files_demande/', '../files_produit/', $raw),
+    ];
+    foreach ($candidates as $candidate) {
+        $resolved = realpath(__DIR__ . '/' . $candidate);
+        if ($resolved !== false && is_file($resolved)) {
+            return $candidate;
+        }
+    }
+    return '';
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -85,13 +109,17 @@ $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
                 <i class="fa-solid fa-plus" style="color:#74C0FC;"></i>
                 <span>Demande</span>
             </a>
+            <a href="../html/mes_demandes.php" class="icon-item">
+                <i class="fa-solid fa-list-check" style="color:#74C0FC;"></i>
+                <span>Mes demandes</span>
+            </a>
 
-            <a href="../html/notifcation.html" class="icon-item">
+            <a href="../html/notifications.php" class="icon-item">
                 <i class="fa-solid fa-bell" style="color:#74C0FC;"></i>
                 <span>Notification</span>
             </a>
 
-            <a href="../html/sign.html" class="icon-item">
+            <a href="../html/messages.php" class="icon-item">
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
             </a>
@@ -115,8 +143,9 @@ $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
             <a href="../html/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
             <a href="../html/panier.php"><i class="fa-solid fa-bag-shopping"></i> Panier</a>
             <a href="demande.html"><i class="fa-solid fa-plus"></i> Demande</a>
-            <a href="../html/notifcation.html"><i class="fa-solid fa-bell"></i> Notification</a>
-            <a href="../html/sign.html"><i class="fa-solid fa-envelope"></i> Message</a>
+            <a href="../html/mes_demandes.php"><i class="fa-solid fa-list-check"></i> Mes demandes</a>
+            <a href="../html/notifications.php"><i class="fa-solid fa-bell"></i> Notification</a>
+            <a href="../html/messages.php"><i class="fa-solid fa-envelope"></i> Message</a>
             <a href="../php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
         </div>
     </aside>
@@ -154,17 +183,29 @@ $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
                             <article class="product-card searchable-product">
                                 <span class="product-badge"><?php echo htmlspecialchars($prod['categorie'] ?? 'Sans categorie'); ?></span>
                                 <div class="product-image">
-                                    <?php if (!empty($prod['image_path'])): ?>
-                                        <img src="<?php echo htmlspecialchars($prod['image_path']); ?>" alt="<?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?>">
+                                    <?php $productImage = resolveProductImagePath($prod['image_path'] ?? ''); ?>
+                                    <?php if ($productImage !== ''): ?>
+                                        <img src="<?php echo htmlspecialchars($productImage); ?>" alt="<?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?>">
                                     <?php else: ?>
                                         <i class="fa-solid fa-box"></i>
                                     <?php endif; ?>
                                 </div>
                                 <h3><?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?></h3>
+                                <p>
+                                    Vendeur :
+                                    <a href="./vendor_profile.php?vendeur=<?php echo urlencode($prod['vendeur_username'] ?? ''); ?>">
+                                        <?php echo htmlspecialchars($prod['vendeur_username'] ?? 'Inconnu'); ?>
+                                    </a>
+                                </p>
                                 <p>Budget : <?php echo htmlspecialchars($prod['prix'] ?? '0'); ?> DT</p>
+                                <p>Date : <?php echo htmlspecialchars($prod['created_at'] ?? ''); ?></p>
                                 <p><?php echo htmlspecialchars($prod['description'] ?? 'Aucune description.'); ?></p>
                                 <div class="product-actions">
                                     <a class="small-btn" href="details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('../html/client-interface.php'); ?>">Voir produit</a>
+                                    <form action="../php/request_from_product.php" method="post" class="inline-form">
+                                        <input type="hidden" name="id_produit" value="<?php echo (int) ($prod['id_produit'] ?? 0); ?>">
+                                        <button class="small-btn" type="submit">Demander ce produit</button>
+                                    </form>
                                     <form action="../php/add_to_panier.php" method="post" class="inline-form">
                                         <input type="hidden" name="id_produit" value="<?php echo (int) ($prod['id_produit'] ?? 0); ?>">
                                         <input type="hidden" name="redirect_to" value="../html/client-interface.php">
