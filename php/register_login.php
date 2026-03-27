@@ -17,6 +17,12 @@ $_SESSION['old'] = [
     'adresse' => $adresse,
     'role' => $role
 ];
+session_start();
+
+$_SESSION['user'] = [
+    'username' => $username,
+    'role' => $role
+];
 
 try {
     if (empty($username) || empty($password) || empty($confirmPassword)) {
@@ -81,7 +87,7 @@ try {
         ]);
 
         unset($_SESSION['old']);
-        header("Location: page_client.php");
+        header("Location: client-interface.php");
         exit();
     } else {
         $req = $bdd->prepare("INSERT INTO vendeur(username,email,adresse,num_tel,idphoto,password)

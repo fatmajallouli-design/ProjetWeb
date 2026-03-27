@@ -4,6 +4,12 @@ $password =  $_POST['password'];
 $role=$_POST['role'];
 require_once("connexionBD.php");
 $bdd=ConnexionBD::getInstance();
+session_start();
+
+$_SESSION['user'] = [
+    'username' => $username,
+    'role' => $role
+];
 
 if ($role== 'client') 
 {   
@@ -12,7 +18,7 @@ if ($role== 'client')
     $res=$req->fetch(PDO::FETCH_OBJ);
     if ($res)
         {
-            header("location:page_client.php");
+            header("location:./html/client-interface.php");
             exit();
         }
     else
