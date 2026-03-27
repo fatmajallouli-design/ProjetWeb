@@ -61,7 +61,7 @@ try {
 
  
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $newFilePath = "../files/" . uniqid() . "_" . basename($_FILES['image']['name']);
+        $newFilePath = "../files_profil/" . uniqid() . "_" . basename($_FILES['image']['name']);
         move_uploaded_file($_FILES['image']['tmp_name'], $newFilePath);
     }
 
@@ -92,7 +92,7 @@ try {
             "adresse" => $adresse,
             "num_tel" => $tel,
             "idphoto" => $newFilePath,
-            "password" => $passwordHash
+            "password" => $password
         ]);
 
         unset($_SESSION['old']);

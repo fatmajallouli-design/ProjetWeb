@@ -1,0 +1,94 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f4f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* CARD */
+.card {
+  width: 700px; 
+  height: 500px;
+  padding: 30px; 
+  border-radius: 25px;
+  background: linear-gradient(135deg, #cfd9ff, #e2d1ff);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.title {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+/* LAYOUT */
+.container {
+  display: flex;
+  gap: 50px;
+}
+
+
+.form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+input, textarea, select {
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background: #f8f8f8;
+  transition: 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  background: white;
+  box-shadow: 0 0 0 2px #a78bfa;
+}
+
+button {
+  padding: 14px;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #7f9cf5, #a78bfa);
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.image-box {
+  width: 260px;
+  height: 260px;
+  background: #f9f9f9;
+  border: 2px dashed #bbb;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.image-box:hover {
+  border-color: #7f9cf5;
+  background: #f0f4ff;
+}
+
+.image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

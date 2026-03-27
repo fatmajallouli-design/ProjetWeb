@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>demander produit</title>
+
+<link rel="stylesheet" href="../css/demande.css">
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="title">demander produit</div>
+
+  <div class="container">
+
+  <div class="image-box">
+    Photo
+  </div>
+
+  <form class="form" action="../php/demande.php" method="POST" enctype="multipart/form-data">
+
+    <input type="file" name="image" id="imageInput" hidden>
+
+    <input type="text" name="nom_produit" placeholder="Nom du produit">
+    <input type="number" name="prix" placeholder="Prix">
+
+    <select name="categorie">
+      <option>tous</option>
+      <option>femme</option>
+      <option>homme</option>
+      <option>maison</option>
+      <option>beaute</option>
+    </select>
+
+    <input type="text" name="lien_produit" placeholder="Lien produit">
+
+    <textarea name="description" placeholder="Description"></textarea>
+
+    <button type="submit">Publier</button>
+
+  </form>
+
+    </div>
+
+
+
+</div>
+<script src="../javascript/demande.js"></script>
+</body>
+</html>
