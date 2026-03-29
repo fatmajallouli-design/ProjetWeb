@@ -46,7 +46,9 @@ unset($_SESSION['login_error'], $_SESSION['login_old']);
                 </label>
             </div>
 
+
             <button type="submit">Login</button>
+            <a href="../html/signup.php">Tu n'as pas un compte ?Créer un compte</a>
         </form>
     </div>
 </body>

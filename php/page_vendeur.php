@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: ../html/index.php");
+    exit();
+}
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'vendeur')) {
     header('Location: ../html/login.php');
     exit();
@@ -9,6 +13,29 @@ require_once('connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 $vendeur = $_SESSION['user']['username'];
+
+$userStmt = $bdd->prepare('SELECT idphoto FROM vendeur WHERE username = :username');
+$userStmt->execute(['username' => $vendeur]);
+$userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+$photoPath = trim($userRow['idphoto'] ?? '');
+$photoUrl = '';
+$hasPhoto = false;
+
+if ($photoPath !== '') {
+    $normalizedPhotoPath = str_replace('\\', '/', $photoPath);
+    if (strpos($normalizedPhotoPath, '../') === 0) {
+        $resolvedPhotoPath = realpath(__DIR__ . '/' . $normalizedPhotoPath);
+    } else {
+        $resolvedPhotoPath = realpath(__DIR__ . '/../' . ltrim($normalizedPhotoPath, '/'));
+        if ($resolvedPhotoPath === false) {
+            $resolvedPhotoPath = realpath(__DIR__ . '/' . ltrim($normalizedPhotoPath, '/'));
+        }
+    }
+    if ($resolvedPhotoPath !== false && is_file($resolvedPhotoPath)) {
+        $hasPhoto = true;
+        $photoUrl = $normalizedPhotoPath;
+    }
+}
 
 $demandesStmt = $bdd->query("SELECT * FROM demande ORDER BY COALESCE(created_at, NOW()) DESC, id_demande DESC");
 $demandes = $demandesStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -42,79 +69,183 @@ function resolveImagePath(?string $path): string {
     <title>Importy - Espace vendeur</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/vendeur_style.css">
+
     <style>
-      body { background:#f7f7fb; }
-      .wrap { max-width:1100px; margin:24px auto; padding:0 16px; }
-      .grid { display:grid; gap:16px; grid-template-columns:1fr; }
-      .card { background:#fff; border:1px solid #ececec; border-radius:14px; padding:14px; }
-      .cards { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
-      .meta { color:#666; font-size:13px; margin:6px 0; }
-      input, textarea, select { width:100%; padding:10px; border:1px solid #ddd; border-radius:10px; margin-bottom:8px; }
-      button { border:none; border-radius:10px; padding:10px 12px; background:#6a5cff; color:#fff; cursor:pointer; }
-      .top-links a { margin-right:10px; }
-      .prod-img, .dem-img { width:100%; max-height:180px; object-fit:cover; border-radius:10px; margin-bottom:8px; }
+      .vendeur-main .grid { display:grid; gap:16px; grid-template-columns:1fr; }
+      .vendeur-main .cards { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
+      .vendeur-main .meta { color:#666; font-size:13px; margin:6px 0; }
+      .vendeur-main input, .vendeur-main textarea, .vendeur-main select { width:100%; padding:10px; border:1px solid #ddd; border-radius:10px; margin-bottom:8px; }
+      .vendeur-main button[type="submit"] { border:none; border-radius:10px; padding:10px 12px; background:#6a5cff; color:#fff; cursor:pointer; }
+      .vendeur-main .prod-img, .vendeur-main .dem-img { width:100%; max-height:180px; object-fit:cover; border-radius:10px; margin-bottom:8px; }
+      .vendeur-main .inner-card { background:#fafbff; border:1px solid #ececec; border-radius:14px; padding:14px; }
     </style>
 </head>
 <body>
-  <header class="top-header">
-    <a class="logo"><img class="logo-img" src="../files_profil/logo.png" alt="Importy"></a>
-    <div class="icons">
-      <a href="../html/vendor_offers.php" class="icon-item"><i class="fa-solid fa-paper-plane"></i><span>Mes offres</span></a>
-      <a href="../html/messages.php" class="icon-item"><i class="fa-solid fa-envelope"></i><span>Messages</span></a>
-      <a href="../php/logout.php" class="icon-item"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
-    </div>
-  </header>
+    <header class="top-header simple-client-header">
+        <button id="menuBtn" class="menu-btn" type="button" aria-label="Ouvrir le menu">
+            <i class="fa-solid fa-align-justify"></i>
+        </button>
 
-  <main class="wrap grid">
-    <section class="card">
-      <h2>Publier un produit</h2>
-      <form action="../php/add_product.php" method="post" enctype="multipart/form-data">
-        <input type="text" name="nom_produit" placeholder="Nom du produit" required>
-        <input type="number" step="0.01" min="1" name="prix" placeholder="Prix" required>
-        <select name="categorie" required>
-          <option value="tous">Tous</option><option value="femme">Femme</option><option value="homme">Homme</option><option value="maison">Maison</option><option value="beaute">Beaute</option>
-        </select>
-        <textarea name="description" rows="3" placeholder="Description"></textarea>
-        <input type="file" name="image" accept="image/*">
-        <button type="submit">Poster produit</button>
-      </form>
-    </section>
+        <a class="logo" href="../php/page_vendeur.php" aria-label="Importy - Espace vendeur">
+            <img class="logo-img" src="../files_profil/logo.png" alt="Importy">
+        </a>
 
-    <section class="card">
-      <h2>Mes produits postes</h2>
-      <div class="cards">
-        <?php foreach ($myProduits as $p): ?>
-          <article class="card">
-            <?php $prodImage = resolveImagePath($p['image_path'] ?? ''); ?>
-            <?php if ($prodImage !== ''): ?><img class="prod-img" src="<?= htmlspecialchars($prodImage) ?>" alt="Produit"><?php endif; ?>
-            <h3><?= htmlspecialchars($p['nom_produit']) ?></h3>
-            <p class="meta"><?= htmlspecialchars($p['categorie']) ?> | <?= htmlspecialchars($p['prix']) ?> TND | <?= htmlspecialchars($p['created_at']) ?></p>
-            <p><?= htmlspecialchars($p['description'] ?? '') ?></p>
-          </article>
-        <?php endforeach; ?>
-        <?php if (empty($myProduits)): ?><p>Aucun produit poste pour le moment.</p><?php endif; ?>
-      </div>
-    </section>
+        <div class="icons quick-actions">
+            <a href="../html/vendor_offers.php" class="icon-item">
+                <i class="fa-solid fa-paper-plane" style="color:#B197FC;"></i>
+                <span>Mes offres</span>
+            </a>
+            <a href="../html/messages.php" class="icon-item">
+                <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
+                <span>Messages</span>
+            </a>
+            <a href="../html/mon%20compte.php" class="icon-item">
+                <i class="fa-regular fa-user" style="color:#74C0FC;"></i>
+                <span>Mon compte</span>
+            </a>
+            <a href="../php/logout.php" class="icon-item">
+                <i class="fa-solid fa-right-from-bracket" style="color:#74C0FC;"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </header>
 
-    <section class="card">
-      <h2>Demandes clients (vous pouvez proposer un deal)</h2>
-      <div class="cards">
-        <?php foreach ($demandes as $d): ?>
-          <article class="card">
-            <?php if (!empty($d['id_photo'])): ?><img class="dem-img" src="<?= htmlspecialchars($d['id_photo']) ?>" alt="Demande"><?php endif; ?>
-            <h3><?= htmlspecialchars($d['nom_produit']) ?></h3>
-            <p class="meta">Client: <?= htmlspecialchars($d['username']) ?> | Budget: <?= htmlspecialchars($d['prix']) ?> TND | Date: <?= htmlspecialchars($d['created_at'] ?? '') ?></p>
-            <p><?= htmlspecialchars($d['description']) ?></p>
-            <form action="../php/send_offer.php" method="post">
-              <input type="hidden" name="id_demande" value="<?= (int)$d['id_demande'] ?>">
-              <input type="number" name="prix_propose" min="1" step="0.01" placeholder="Votre prix propose" required>
-              <textarea name="message" rows="2" placeholder="Votre message..." required></textarea>
-              <button type="submit">Envoyer une offre</button>
-            </form>
-          </article>
-        <?php endforeach; ?>
-      </div>
-    </section>
-  </main>
+    <div class="overlay" id="overlay"></div>
+
+    <aside class="side-menu client-side-menu" id="sideMenu" aria-hidden="true">
+        <div class="side-header">
+            <a class="brand" href="../php/page_vendeur.php" aria-label="Importy - Espace vendeur">
+                <img class="brand-img" src="../files_profil/logo.png" alt="Importy">
+            </a>
+            <button class="menu-close-btn" id="closeMenu" type="button" aria-label="Fermer le menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="section">
+            <h4>Navigation</h4>
+            <a href="../php/page_vendeur.php"><i class="fa-solid fa-store"></i> Espace vendeur</a>
+            <a href="../html/vendor_offers.php"><i class="fa-solid fa-paper-plane"></i> Mes offres</a>
+            <a href="../html/messages.php"><i class="fa-solid fa-envelope"></i> Messages</a>
+            <a href="../html/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
+            <a href="../php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
+        </div>
+    </aside>
+
+    <main class="client-page simple-client-page vendeur-main">
+        <section class="client-content full-width-content">
+            <div class="welcome-banner simple-banner">
+                <div class="welcome-user">
+                    <?php if ($hasPhoto): ?>
+                        <img
+                            class="account-avatar-image welcome-avatar-image"
+                            src="<?= htmlspecialchars($photoUrl) ?>"
+                            alt="Photo de profil de <?= htmlspecialchars($vendeur) ?>"
+                        >
+                    <?php else: ?>
+                        <div class="avatar-circle welcome-avatar"><?= strtoupper(substr($vendeur, 0, 1)) ?></div>
+                    <?php endif; ?>
+                    <div class="welcome-copy">
+                        <p class="welcome-label">Bienvenue</p>
+                        <h1><?= htmlspecialchars($vendeur) ?></h1>
+                        <p>Publiez vos produits, consultez vos annonces et repondez aux demandes clients.</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="content-card">
+                <div class="section-head">
+                    <h2>Publier un produit</h2>
+                </div>
+                <form action="../php/add_product.php" method="post" enctype="multipart/form-data">
+                    <input type="text" name="nom_produit" placeholder="Nom du produit" required>
+                    <input type="number" step="0.01" min="1" name="prix" placeholder="Prix" required>
+                    <select name="categorie" required>
+                        <option value="tous">Tous</option><option value="femme">Femme</option><option value="homme">Homme</option><option value="maison">Maison</option><option value="beaute">Beaute</option>
+                    </select>
+                    <textarea name="description" rows="3" placeholder="Description"></textarea>
+                    <input type="file" name="image" accept="image/*">
+                    <button type="submit">Poster produit</button>
+                </form>
+            </section>
+
+            <section class="content-card">
+                <div class="section-head">
+                    <h2>Mes produits postes</h2>
+                    <p><?= count($myProduits) ?> produit(s)</p>
+                </div>
+                <div class="cards">
+                    <?php foreach ($myProduits as $p): ?>
+                        <article class="inner-card">
+                            <?php $prodImage = resolveImagePath($p['image_path'] ?? ''); ?>
+                            <?php if ($prodImage !== ''): ?><img class="prod-img" src="<?= htmlspecialchars($prodImage) ?>" alt="Produit"><?php endif; ?>
+                            <h3><?= htmlspecialchars($p['nom_produit']) ?></h3>
+                            <p class="meta"><?= htmlspecialchars($p['categorie']) ?> | <?= htmlspecialchars($p['prix']) ?> TND | <?= htmlspecialchars($p['created_at']) ?></p>
+                            <p><?= htmlspecialchars($p['description'] ?? '') ?></p>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+                <?php if (empty($myProduits)): ?><p>Aucun produit poste pour le moment.</p><?php endif; ?>
+            </section>
+
+            <section class="content-card">
+                <div class="section-head">
+                    <h2>Demandes clients</h2>
+                    <p>Vous pouvez proposer un deal</p>
+                </div>
+                <div class="cards">
+                    <?php foreach ($demandes as $d): ?>
+                        <article class="inner-card">
+                            <?php if (!empty($d['id_photo'])): ?><img class="dem-img" src="<?= htmlspecialchars($d['id_photo']) ?>" alt="Demande"><?php endif; ?>
+                            <h3><?= htmlspecialchars($d['nom_produit']) ?></h3>
+                            <p class="meta">Client: <?= htmlspecialchars($d['username']) ?> | Budget: <?= htmlspecialchars($d['prix']) ?> TND | Date: <?= htmlspecialchars($d['created_at'] ?? '') ?></p>
+                            <p><?= htmlspecialchars($d['description']) ?></p>
+                            <form action="../php/send_offer.php" method="post">
+                                <input type="hidden" name="id_demande" value="<?= (int)$d['id_demande'] ?>">
+                                <input type="number" name="prix_propose" min="1" step="0.01" placeholder="Votre prix propose" required>
+                                <textarea name="message" rows="2" placeholder="Votre message..." required></textarea>
+                                <button type="submit">Envoyer une offre</button>
+                            </form>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const closeMenu = document.getElementById('closeMenu');
+        const overlay = document.getElementById('overlay');
+        const logoutLink = document.getElementById('logoutLink');
+
+        function openMenu() {
+            sideMenu.classList.add('active');
+            sideMenu.setAttribute('aria-hidden', 'false');
+            overlay.style.display = 'block';
+        }
+
+        function closeAll() {
+            sideMenu.classList.remove('active');
+            sideMenu.setAttribute('aria-hidden', 'true');
+            overlay.style.display = 'none';
+        }
+
+        if (menuBtn && closeMenu && overlay) {
+            menuBtn.addEventListener('click', openMenu);
+            closeMenu.addEventListener('click', closeAll);
+            overlay.addEventListener('click', closeAll);
+        }
+
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function (event) {
+                if (!window.confirm('Est tu sure que tu veux te deconnecter ?')) {
+                    event.preventDefault();
+                }
+            });
+        }
+    </script>
 </body>
 </html>

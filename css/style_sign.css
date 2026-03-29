@@ -285,3 +285,8 @@
 .container.active .toggle-right{
     transform: translateX(200%);
 }
+a{
+  
+    font-size: 10px;
+    color: #7468f0;
+  }

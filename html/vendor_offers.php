@@ -21,8 +21,35 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <header class="top-header"><a class="logo"><img class="logo-img" src="../files_profil/logo.png" alt="Importy"></a></header>
-  <main style="max-width:900px;margin:24px auto;padding:0 16px;">
+<header class="top-header simple-client-header">
+        <button id="menuBtn" class="menu-btn" type="button" aria-label="Ouvrir le menu">
+            <i class="fa-solid fa-align-justify"></i>
+        </button>
+
+        <a class="logo" href="../php/page_vendeur.php" aria-label="Importy - Espace vendeur">
+            <img class="logo-img" src="../files_profil/logo.png" alt="Importy">
+        </a>
+
+        <div class="icons quick-actions">
+            <a href="../html/vendor_offers.php" class="icon-item">
+                <i class="fa-solid fa-paper-plane" style="color:#B197FC;"></i>
+                <span>Mes offres</span>
+            </a>
+            <a href="../html/messages.php" class="icon-item">
+                <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
+                <span>Messages</span>
+            </a>
+            <a href="../html/mon%20compte.php" class="icon-item">
+                <i class="fa-regular fa-user" style="color:#74C0FC;"></i>
+                <span>Mon compte</span>
+            </a>
+            <a href="../php/logout.php" class="icon-item">
+                <i class="fa-solid fa-right-from-bracket" style="color:#74C0FC;"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </header>
+      <main style="max-width:900px;margin:24px auto;padding:0 16px;">
     <h2>Mes offres envoyees</h2>
     <?php foreach ($rows as $r): ?>
       <article style="background:#fff;border:1px solid #ececec;border-radius:12px;padding:12px;margin-bottom:10px;">

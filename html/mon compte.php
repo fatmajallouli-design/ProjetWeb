@@ -88,8 +88,9 @@ if ($photoPath !== '') {
                 <p><strong>Telephone :</strong> <?php echo htmlspecialchars($userInfo['num_tel'] ?? 'Non renseigne'); ?></p>
             </div>
 
-            <form class="account-form" action="../php/update_client_account.php" method="post" enctype="multipart/form-data">
-                <h3>Modifier mes donnees</h3>
+<form class="account-form" 
+      action="<?php echo ($role === 'vendeur') ? '../php/update_vendeur.php' : '../php/update_client_account.php'; ?>" 
+      method="post" enctype="multipart/form-data">                <h3>Modifier mes donnees</h3>
                 <input
                     type="email"
                     name="email"
@@ -119,7 +120,10 @@ if ($photoPath !== '') {
             </form>
 
             <div class="account-actions">
-                <a href="../html/client-interface.php" class="secondary-btn">Retour</a>
+                <a href="<?php echo ($role === 'vendeur') ? '../php/page_vendeur.php' : '../html/client-interface.php'; ?>" 
+   class="secondary-btn">
+   Retour
+</a>
                 <a href="../php/logout.php" class="small-btn" id="logoutAccountLink">Se deconnecter</a>
             </div>
         </section>
