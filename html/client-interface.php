@@ -55,8 +55,7 @@ function resolveProductImagePath(?string $path): string {
     if ($raw === '') return '';
     $candidates = [
         $raw,
-        str_replace('../files_produits/', '../files_produit/', $raw),
-        str_replace('../files_demande/', '../files_produit/', $raw),
+        str_replace('../files_demande/', '../files_produits/', $raw),
     ];
     foreach ($candidates as $candidate) {
         $resolved = realpath(__DIR__ . '/' . $candidate);
@@ -160,8 +159,6 @@ function resolveProductImagePath(?string $path): string {
                             src="<?php echo htmlspecialchars($photoUrl); ?>"
                             alt="Photo de profil de <?php echo htmlspecialchars($username); ?>"
                         >
-                    <?php else: ?>
-                        <div class="avatar-circle welcome-avatar"><?php echo strtoupper(substr($username, 0, 1)); ?></div>
                     <?php endif; ?>
                     <div class="welcome-copy">
                         <p class="welcome-label">Bienvenue</p>
