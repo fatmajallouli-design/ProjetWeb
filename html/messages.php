@@ -54,7 +54,7 @@ if ($deal > 0) {
   </style>
 </head>
 <body>
-  <header class="top-header"><a class="logo"><img class="logo-img" src="../files_profil/logo.png" alt="Importy"></a></header>
+  <header class="top-header"><a class="logo" href="<?php echo ($role === 'vendeur') ? '../php/page_vendeur.php' : '../html/client-interface.php'; ?>"><img class="logo-img" src="../files_profil/logo.png" alt="Importy"></a></header>
   <main class="msg-wrap">
     <?php if ($deal <= 0): ?>
       <h2>Conversations</h2>

@@ -6,7 +6,7 @@
 -- Généré le : ven. 27 mars 2026 à 15:28
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
-
+CREATE DATABASE IF NOT EXISTS my_site;
 USE my_site;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
