@@ -126,9 +126,9 @@ CREATE TABLE `demande` (
 --
 
 INSERT INTO `demande` (`id_demande`, `nom_produit`, `prix`, `lien_produit`, `description`, `categorie`, `id_photo`, `username`, `etat`, `created_at`) VALUES
-(1, 'Cadre photo', 25.00, 'http://exemple.com/cadre-photo', 'Je veux ce produit avant le 06/04', 'tous', '../files_demande/cadre.jpg', 'eyaabbes', 'en attente', '2026-03-30 20:36:10'),
-(2, 'iPhone 13', 1800.00, 'http://exemple.com/iphone13', 'Je cherche un iPhone 13 en bon état', 'smartphone', '../files_demande/iphone13.jpg', 'skander', 'en attente', '2026-03-30 20:36:10'),
-(3, 'AirPods Pro', 450.00, 'http://exemple.com/airpods-pro', 'Je veux des écouteurs originaux', 'accessoire', '../files_demande/airpods.jpg', 'amira', 'en attente', '2026-03-30 20:36:10'),
+(1, 'Cadre photo', 25.00, 'http://exemple.com/cadre-photo', 'Je veux ce produit avant le 06/04', 'tous', '../files_produits/cadre.jpg', 'eyaabbes', 'en attente', '2026-03-30 20:36:10'),
+(2, 'iPhone 13', 1800.00, 'http://exemple.com/iphone13', 'Je cherche un iPhone 13 en bon état', 'smartphone', '../files_produits/iphone13.jpg', 'skander', 'en attente', '2026-03-30 20:36:10'),
+(3, 'AirPods Pro', 450.00, 'http://exemple.com/airpods-pro', 'Je veux des écouteurs originaux', 'accessoire', '../files_produits/airpods.jpg', 'amira', 'en attente', '2026-03-30 20:36:10'),
 (4, 'ceinture DG', 1430.00, 'https://www.farfetch.com/tn/shopping/women/dolce-gabbana-ceinture-en-cuir-item-32473932.aspx', 'je veux cette ceinture mais je ne peux pas payer tout le montant directement,je vais payer avance 500 puis 1000 et merci', 'femme', '../files_produits/69cae23d09787_Capture d\'écran 2026-03-30 215047.png', 'eyaabbes', 'recu', '2026-03-30 21:51:09'),
 (5, 'gloss fenty beauty', 110.00, 'https://www.sephora.fr/p/gloss-bomb-heat---enlumineur-a-levres-universel-et-repulplant-P10017314.html', 'je veux ce produit le plus tot possible,avec la ref fussy svp', 'beaute', '../files_produits/69cae2a468613_Capture d\'écran 2026-03-30 215238.png', 'eyaabbes', 'en attente', '2026-03-30 21:52:52'),
 (6, 'highlighter fenty beauty', 105.00, 'https://www.sephora.fr/p/mini-killawatt-freestyle-highlighter---maquillage--teint--highlighter-792355.html', 'je veux cette ref et si tu peux me livrer das autres articles on parle en messages prives', 'tous', '../files_produits/69cae31b775da_Capture d\'écran 2026-03-30 215353.png', 'eyaabbes', 'en attente', '2026-03-30 21:54:51'),
