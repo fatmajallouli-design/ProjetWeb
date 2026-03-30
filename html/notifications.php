@@ -22,10 +22,21 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
   <link rel="stylesheet" href="../css/notifications.css">
 </head>
 <body>
-  <header class="top-header">
-    <a href="../html/client-interface.php" class="logo">
-        <img class="logo-img" src="../files_profil/logo.png" alt="Importy">
-    </a>
+<body>
+<header class="top-header">
+    <div class="header-left">
+        <a href="client-interface.php" class="logo">
+            <img src="../files_profil/logo.png" alt="Importy" class="logo-img">
+        </a>
+    </div>
+
+    <div class="header-center">
+        <h1 class="title">Mes notifications</h1>
+    </div>
+
+    <div class="header-right">
+        <a href="client-interface.php" class="header-btn retour-btn">← Retour à l’interface client</a>
+    </div>
 </header>
   <main class="notif-wrap">
     <h2>Demandes des vendeurs</h2>

@@ -91,6 +91,14 @@ CREATE TABLE produit (
 -- =========================
 -- 3) Offres vendeurs sur demandes clients
 -- =========================
+CREATE TABLE `panier` (
+  `id_panier` int(11) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `id_produit` int(11) NOT NULL,
+  `quantite` int(11) NOT NULL DEFAULT 1,
+  `date_ajout` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 CREATE TABLE deal_request (
   id_deal INT NOT NULL AUTO_INCREMENT,

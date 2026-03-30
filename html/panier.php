@@ -37,8 +37,25 @@ foreach ($items as $item) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon panier</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/mes_demandes.css">
+
 </head>
 <body>
+<header class="top-header">
+
+<div class="header-left">
+    <a href="client-interface.php" class="logo">
+        <img src="../files_profil/logo.png" alt="Importy" class="logo-img">
+    </a>
+</div>
+
+<div class="header-center">
+    <h1 class="title">Mon panier</h1>
+</div>
+
+<div class="header-right">
+    <a href="client-interface.php" class="header-btn retour-btn">← Retour à l’interface client</a>
+</header>
     <main class="panier-page">
         <section class="content-card panier-card">
             <div class="section-head">
@@ -46,7 +63,7 @@ foreach ($items as $item) {
                     <h2>Mon panier</h2>
                     <p><?= count($items) ?> produit(s)</p>
                 </div>
-                <a href="../html/client-interface.php" class="secondary-btn">Accueil</a>
+                
             </div>
 
             <?php if (!empty($success)): ?>

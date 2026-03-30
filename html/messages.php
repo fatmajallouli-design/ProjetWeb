@@ -53,7 +53,7 @@ if ($deal > 0) {
     </div>
 
     <div class="header-right" >
-      <a href="../php/page_vendeur.php" class="btn-retour-pro">
+      <a href="client-interface.php" class="btn-retour-pro">
       <span class="arrow">←</span>Retour à l’interface
       </a>       
     </div>
