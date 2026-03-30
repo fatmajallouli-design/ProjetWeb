@@ -42,8 +42,11 @@ foreach ($items as $item) {
     <main class="panier-page">
         <section class="content-card panier-card">
             <div class="section-head">
-                <h2>Mon panier</h2>
-                <p><?= count($items) ?> produit(s)</p>
+                <div>
+                    <h2>Mon panier</h2>
+                    <p><?= count($items) ?> produit(s)</p>
+                </div>
+                <a href="../html/client-interface.php" class="secondary-btn">Accueil</a>
             </div>
 
             <?php if (!empty($success)): ?>
@@ -94,7 +97,12 @@ foreach ($items as $item) {
 
                 <div class="panier-summary">
                     <strong>Total : <?= number_format($total, 2, '.', '') ?> DT</strong>
-                    <a href="../html/client-interface.php" class="secondary-btn">Retour</a>
+                    <div class="panier-actions">
+                        <form action="../php/valider_panier.php" method="post" style="display:inline-block; margin-right:12px;">
+                            <button type="submit" class="primary-btn">Valider le panier</button>
+                        </form>
+                        <a href="../html/client-interface.php" class="secondary-btn">Retour</a>
+                    </div>
                 </div>
             <?php else: ?>
                 <p class="empty-products">Votre panier est vide.</p>

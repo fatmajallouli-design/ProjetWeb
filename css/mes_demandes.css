@@ -237,10 +237,15 @@ body {
 }
 
 .en_attente {
+  background: orange;
+}
+
+.annule {
   background: #ff6b6b;
 }
 
-.valide {
+.valide,
+.recu {
   background: #2fbf71;
 }
 

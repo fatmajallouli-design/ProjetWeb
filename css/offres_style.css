@@ -1,0 +1,182 @@
+    .container {
+  max-width: 800px;
+  margin: 30px auto;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.prix {
+  color: green;
+  font-weight: bold;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #f6f7fb;
+}
+
+.top-header {
+  width: 100%;
+  height: 80px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 45px;
+  object-fit: contain;
+}
+
+.header-center {
+  flex: 1;
+  text-align: center;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.btn-retour-pro {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #5b46e5, #7f6fff);
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.arrow {
+  font-size: 16px;
+}
+
+.btn-retour-pro:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 18px;
+  }
+
+  .btn-retour-pro {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+.offer-card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+/* HEADER OFFRE */
+.offer-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* PHOTO VENDEUR */
+.avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #eee;
+}
+
+/* NOM VENDEUR */
+.vendeur-name {
+  font-weight: bold;
+  color: #5b46e5;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+/* PRIX */
+.price {
+  color: #28a745;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+/* MESSAGE */
+.message {
+  color: #555;
+  margin: 8px 0;
+}
+
+/* ACTIONS */
+.actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+/* BOUTON ACCEPTER */
+.btn-accept {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-accept:hover {
+  background: #218838;
+}
+
+/* BOUTON CHAT */
+.btn-chat {
+  background: #5b46e5;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-chat:hover {
+  background: #4836c9;
+}

@@ -1,0 +1,21 @@
+body { background:#f6f7fb; }
+.msg-wrap { max-width:980px; margin:24px auto; padding:0 16px; }
+.conv-item { background:#fff; border:1px solid #e8e8ef; border-radius:12px; padding:12px; margin-bottom:10px; }
+.chat-box { background:#fff; border:1px solid #e8e8ef; border-radius:14px; padding:12px; max-height:420px; overflow:auto; }
+.msg-line { margin-bottom:8px; padding:10px; border-radius:10px; }
+.msg-me { background:#e9fff1; }
+.msg-other { background:#f1f3ff; }
+.msg-form { margin-top:12px; display:flex; gap:8px; }
+.msg-form input[type=text] { flex:1; border:1px solid #ddd; border-radius:10px; padding:10px; }
+.msg-form button { border:none; border-radius:10px; padding:10px 14px; background:#6a5cff; color:#fff; cursor:pointer; }
+.review-box { margin-top:12px; background:#fff; border:1px solid #e8e8ef; border-radius:14px; padding:12px; }
+.review-box input { width:100%; border:1px solid #ddd; border-radius:10px; padding:10px; margin-bottom:8px; }
+.vendor-link { font-weight:700; color:#5b46e5; text-decoration:none; }
+.header-left, .header-center, .header-right { flex: 1; display: flex; align-items: center; }
+.header-left { justify-content: flex-start; }
+.header-center { justify-content: center; }
+.header-right { justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.btn-retour-pro { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: #f1f3ff; color: #5b46e5; text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.25s ease; }
+.btn-retour-pro:hover { background: #6a5cff; color: white; box-shadow: 0 4px 12px rgba(106, 92, 255, 0.25); }
+.btn-retour-pro .arrow { transition: transform 0.25s ease; }
+.btn-retour-pro:hover .arrow { transform: translateX(-3px); }

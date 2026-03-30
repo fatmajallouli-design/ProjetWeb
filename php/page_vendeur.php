@@ -37,11 +37,11 @@ if ($photoPath !== '') {
     }
 }
 
-$demandesStmt = $bdd->query("SELECT * FROM demande ORDER BY COALESCE(created_at, NOW()) DESC, id_demande DESC");
+$demandesStmt = $bdd->query("SELECT * FROM demande WHERE etat <> 'recu' ORDER BY COALESCE(created_at, NOW()) DESC, id_demande DESC");
 $demandes = $demandesStmt->fetchAll(PDO::FETCH_ASSOC);
 
-$myProdStmt = $bdd->prepare("SELECT * FROM produit WHERE vendeur_username = :v ORDER BY created_at DESC, id_produit DESC");
-$myProdStmt->execute(['v' => $vendeur]);
+$myProdStmt = $bdd->prepare("SELECT * FROM produit WHERE vendeur_username = :username ORDER BY created_at DESC, id_produit DESC");
+$myProdStmt->execute(['username' => $vendeur]);
 $myProduits = $myProdStmt->fetchAll(PDO::FETCH_ASSOC);
 
 function resolveImagePath(?string $path): string {
@@ -70,16 +70,7 @@ function resolveImagePath(?string $path): string {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/vendeur_style.css">
-
-    <style>
-      .vendeur-main .grid { display:grid; gap:16px; grid-template-columns:1fr; }
-      .vendeur-main .cards { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
-      .vendeur-main .meta { color:#666; font-size:13px; margin:6px 0; }
-      .vendeur-main input, .vendeur-main textarea, .vendeur-main select { width:100%; padding:10px; border:1px solid #ddd; border-radius:10px; margin-bottom:8px; }
-      .vendeur-main button[type="submit"] { border:none; border-radius:10px; padding:10px 12px; background:#6a5cff; color:#fff; cursor:pointer; }
-      .vendeur-main .prod-img, .vendeur-main .dem-img { width:100%; max-height:180px; object-fit:cover; border-radius:10px; margin-bottom:8px; }
-      .vendeur-main .inner-card { background:#fafbff; border:1px solid #ececec; border-radius:14px; padding:14px; }
-    </style>
+    <link rel="stylesheet" href="../css/page_vendeur.css">
 </head>
 <body>
     <header class="top-header simple-client-header">
@@ -92,10 +83,14 @@ function resolveImagePath(?string $path): string {
         </a>
 
         <div class="icons quick-actions">
+            <a href="../html/commande_vendeur.php" class="icon-item">
+                <i class="fa-solid fa-handshake" style="color:#B197FC;"></i>
+                <span>Mes commandes</span>
+            </a>
             <a href="../html/vendor_offers.php" class="icon-item">
                 <i class="fa-solid fa-paper-plane" style="color:#B197FC;"></i>
                 <span>Mes offres</span>
-            </a>
+            </a>    
             <a href="../html/messages.php" class="icon-item">
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>

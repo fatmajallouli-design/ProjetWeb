@@ -37,24 +37,28 @@ if ($deal > 0) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Messages</title>
   <link rel="stylesheet" href="../css/style.css">
-  <style>
-    body { background:#f6f7fb; }
-    .msg-wrap { max-width:980px; margin:24px auto; padding:0 16px; }
-    .conv-item { background:#fff; border:1px solid #e8e8ef; border-radius:12px; padding:12px; margin-bottom:10px; }
-    .chat-box { background:#fff; border:1px solid #e8e8ef; border-radius:14px; padding:12px; max-height:420px; overflow:auto; }
-    .msg-line { margin-bottom:8px; padding:10px; border-radius:10px; }
-    .msg-me { background:#e9fff1; }
-    .msg-other { background:#f1f3ff; }
-    .msg-form { margin-top:12px; display:flex; gap:8px; }
-    .msg-form input[type=text] { flex:1; border:1px solid #ddd; border-radius:10px; padding:10px; }
-    .msg-form button { border:none; border-radius:10px; padding:10px 14px; background:#6a5cff; color:#fff; cursor:pointer; }
-    .review-box { margin-top:12px; background:#fff; border:1px solid #e8e8ef; border-radius:14px; padding:12px; }
-    .review-box input { width:100%; border:1px solid #ddd; border-radius:10px; padding:10px; margin-bottom:8px; }
-    .vendor-link { font-weight:700; color:#5b46e5; text-decoration:none; }
-  </style>
+  <link rel="stylesheet" href="../css/messages.css">
 </head>
 <body>
-  <header class="top-header"><a class="logo" href="<?php echo ($role === 'vendeur') ? '../php/page_vendeur.php' : '../html/client-interface.php'; ?>"><img class="logo-img" src="../files_profil/logo.png" alt="Importy"></a></header>
+  <header class="top-header">
+
+    <div class="header-left">
+        <a href="client-interface.php" class="logo">
+            <img src="../files_profil/logo.png" alt="Importy" class="logo-img">
+        </a>
+    </div>
+
+    <div class="header-center">
+        <h1 class="title">Mes Messages</h1>
+    </div>
+
+    <div class="header-right" >
+      <a href="../php/page_vendeur.php" class="btn-retour-pro">
+      <span class="arrow">←</span>Retour à l’interface
+      </a>       
+    </div>
+
+</header>
   <main class="msg-wrap">
     <?php if ($deal <= 0): ?>
       <h2>Conversations</h2>

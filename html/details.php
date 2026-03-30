@@ -20,7 +20,16 @@ if (!$demande) {
 }
 
 $etat = strtolower(trim($demande['etat'] ?? 'en attente'));
-$etatClass = ($etat === 'valide') ? 'valide' : 'en_attente';
+
+$etatClass = match($etat) {
+    'recu' => 'valide',
+    'annule' => 'annule',
+    default => 'en_attente'
+};
+$cmdReq = $bdd->prepare("SELECT * FROM commandes WHERE id_demande = :id LIMIT 1");
+$cmdReq->execute(["id" => $id]);
+$commande = $cmdReq->fetch();
+
 ?>
 
 <!DOCTYPE html>
@@ -39,9 +48,15 @@ $etatClass = ($etat === 'valide') ? 'valide' : 'en_attente';
   <div class="box">
       <img src="../files_produit/<?= htmlspecialchars($demande['id_photo']) ?>" alt="Produit">
 
-      <span class="detail-badge <?= $etatClass ?>">
-        <?= htmlspecialchars($demande['etat']) ?>
-      </span>
+      <form method="POST" action="../php/update_etat.php">
+    <input type="hidden" name="id" value="<?= $demande['id_demande'] ?>">
+
+    <select name="etat" onchange="this.form.submit()" class="detail-badge <?= $etatClass ?>">
+    <option value="en attente" <?= $etat == 'en attente' ? 'selected' : '' ?>>En attente</option>
+    <option value="recu" <?= $etat == 'recu' ? 'selected' : '' ?>>Reçu</option>
+    <option value="annule" <?= $etat == 'annule' ? 'selected' : '' ?>>Annulé</option>
+    </select>
+    </form>
 
       <h2><?= htmlspecialchars($demande['nom_produit']) ?></h2>
 
@@ -50,6 +65,17 @@ $etatClass = ($etat === 'valide') ? 'valide' : 'en_attente';
         <p><strong>Catégorie :</strong> <?= htmlspecialchars($demande['categorie']) ?></p>
         <p><strong>Date :</strong> <?= htmlspecialchars($demande['created_at'] ?? 'Non disponible') ?></p>
         <p><strong>Utilisateur :</strong> <?= htmlspecialchars($demande['username']) ?></p>
+        <?php if ($commande): ?>
+        <p>
+        <strong>Vendeur :</strong>
+          <?= htmlspecialchars($commande['vendeur']) ?>
+
+          <a href="vendor_profile.php?vendeur=<?= urlencode($commande['vendeur']) ?>"
+          class="btn-vendeur">
+          Voir profil
+          </a>
+        </p>
+<?php endif; ?>
       </div>
 
       <div class="description-box">
@@ -65,7 +91,9 @@ $etatClass = ($etat === 'valide') ? 'valide' : 'en_attente';
   <?php else: ?>
     <span></span>
   <?php endif; ?>
-
+    <a href="../php/offres.php?id=<?= $demande['id_demande'] ?>" class="btn-offres">
+        Voir les offres
+      </a>
   <a href="../php/supprimer_demande.php?id=<?= $demande['id_demande'] ?>"
      class="delete-btn"
      onclick="return confirm('Voulez-vous vraiment supprimer cette demande ?')">

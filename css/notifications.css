@@ -1,0 +1,8 @@
+body { background:#f6f7fb; }
+.notif-wrap { max-width:980px; margin:24px auto; padding:0 16px; }
+.notif-card { background:#fff; border:1px solid #e8e8ef; border-radius:14px; padding:14px; margin-bottom:12px; box-shadow:0 8px 22px rgba(0,0,0,0.04); }
+.notif-meta { color:#666; margin:6px 0; }
+.vendor-link { font-weight:700; color:#5b46e5; text-decoration:none; }
+.notif-actions a { display:inline-block; margin-right:10px; margin-top:8px; text-decoration:none; padding:8px 12px; border-radius:10px; background:#f2f0ff; color:#4b39d9; }
+.btn-accept { background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; margin-right: 10px; }
+.status-label { display: inline-block; margin-right: 10px; margin-top: 8px; padding: 8px 12px; border-radius: 10px; background: #d1f2d1; color: #256029; font-weight: 700; }

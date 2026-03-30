@@ -50,13 +50,18 @@ body {
 }
 
 .en_attente {
-  background: #ff6b6b;
+  background-color: #ff4d4d;
 }
 
-.valide {
-  background: #2fbf71;
+
+.recu {
+  background-color: #28a745;
 }
 
+
+.annule {
+  background-color: gray;
+}
 .box h2 {
   margin: 0 0 18px;
   font-size: 42px;
@@ -158,4 +163,41 @@ body {
 
 .delete-btn:hover {
   background: #eb5757;
+}
+.en_attente {
+  background-color: orange;
+}
+
+.valide {
+  background-color: green;
+}
+
+.annule {
+  background-color: red;
+}
+.btn-vendeur {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background: #5b46e5;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 12px;
+}
+.btn-offres {
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #5b46e5, #7f6fff);
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-offres:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }

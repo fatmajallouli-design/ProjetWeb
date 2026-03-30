@@ -119,7 +119,21 @@ CREATE TABLE deal_request (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- =========================
--- 4) Messages chat
+-- 4) Commandes
+-- =========================
+
+CREATE TABLE commandes (
+  id INT NOT NULL AUTO_INCREMENT,
+  id_demande INT DEFAULT NULL,
+  vendeur VARCHAR(255) DEFAULT NULL,
+  client VARCHAR(255) DEFAULT NULL,
+  statut VARCHAR(50) DEFAULT NULL,
+  created_at DATETIME NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- =========================
+-- 5) Messages chat
 -- =========================
 
 CREATE TABLE message (

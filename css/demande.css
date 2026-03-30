@@ -18,6 +18,31 @@ body {
   box-shadow: 0 15px 40px rgba(0,0,0,0.15);
 }
 
+.top-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 18px;
+}
+
+.home-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #5b46e5, #7f6fff);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.home-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(91, 70, 229, 0.25);
+  opacity: 0.95;
+}
+
 .title {
   text-align: center;
   font-size: 28px;

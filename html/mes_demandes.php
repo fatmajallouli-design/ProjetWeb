@@ -1,5 +1,6 @@
 <?php
 session_start();
+header("Cache-Control: public, max-age=3600*24*14");
 
 if (!isset($_SESSION['user'])) {
     die("Utilisateur non connecté");
@@ -56,8 +57,13 @@ $demandes = $req->fetchAll();
 
     <?php foreach ($demandes as $demande): ?>
         <?php
-        $etat = $demande['etat'];
-        $class = ($etat == "valide") ? "valide" : "en_attente";
+        $etat = strtolower(trim($demande['etat']));
+
+        $class = match($etat) {
+            'recu' => 'valide',
+            'annule' => 'annule',
+            default => 'en_attente'
+        };
         ?>
 
         <div class="card" onclick="goToDetail(<?= (int)$demande['id_demande'] ?>)">

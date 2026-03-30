@@ -1,0 +1,12 @@
+body { background:#f6f7fb; }
+.wrap { max-width:980px; margin:24px auto; padding:0 16px; }
+.card { background:#fff; border:1px solid #e8e8ef; border-radius:14px; padding:14px; margin-bottom:12px; box-shadow:0 8px 24px rgba(0,0,0,0.04); }
+.meta { color:#666; }
+.review { border-top:1px solid #f0f0f0; padding-top:10px; margin-top:10px; }
+.review-stars { color:#f4b400; font-weight:700; }
+.review-form input, .review-form textarea, .review-form select { width:100%; border:1px solid #ddd; border-radius:10px; padding:10px; margin-bottom:8px; }
+.review-form button { border:none; border-radius:10px; padding:10px 14px; background:#6a5cff; color:#fff; cursor:pointer; }
+.review-form button[disabled] { opacity:.5; cursor:not-allowed; }
+.avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; }
+.profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.profile-header h2 { margin: 0; }

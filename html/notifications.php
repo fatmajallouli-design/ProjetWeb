@@ -19,23 +19,14 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notifications client</title>
   <link rel="stylesheet" href="../css/style.css">
-  <style>
-    body { background:#f6f7fb; }
-    .notif-wrap { max-width:980px; margin:24px auto; padding:0 16px; }
-    .notif-card {
-      background:#fff; border:1px solid #e8e8ef; border-radius:14px; padding:14px; margin-bottom:12px;
-      box-shadow:0 8px 22px rgba(0,0,0,0.04);
-    }
-    .notif-meta { color:#666; margin:6px 0; }
-    .vendor-link { font-weight:700; color:#5b46e5; text-decoration:none; }
-    .notif-actions a {
-      display:inline-block; margin-right:10px; margin-top:8px; text-decoration:none;
-      padding:8px 12px; border-radius:10px; background:#f2f0ff; color:#4b39d9;
-    }
-  </style>
+  <link rel="stylesheet" href="../css/notifications.css">
 </head>
 <body>
-  <header class="top-header"><a class="logo"><img class="logo-img" src="../files_profil/logo.png" alt="Importy"></a></header>
+  <header class="top-header">
+    <a href="../html/client-interface.php" class="logo">
+        <img class="logo-img" src="../files_profil/logo.png" alt="Importy">
+    </a>
+</header>
   <main class="notif-wrap">
     <h2>Demandes des vendeurs</h2>
     <?php foreach ($rows as $r): ?>
@@ -51,6 +42,14 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
         </p>
         <p><?= nl2br(htmlspecialchars($r['message'])) ?></p>
         <div class="notif-actions">
+          <?php if (trim(strtolower($r['status'])) !== 'accepte'): ?>
+            <form method="POST" action="../php/accepter_offre.php" style="display:inline;">
+              <input type="hidden" name="id_deal" value="<?= (int)$r['id_deal'] ?>">
+              <button type="submit" class="btn-accept">Accepter offre</button>
+            </form>
+          <?php else: ?>
+            <span class="status-label">Offre acceptée</span>
+          <?php endif; ?>
           <a href="./messages.php?deal=<?= (int)$r['id_deal'] ?>">Ouvrir chat</a>
           <a href="./vendor_profile.php?vendeur=<?= urlencode($r['vendeur_username']) ?>">Voir profil vendeur</a>
         </div>

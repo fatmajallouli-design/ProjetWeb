@@ -48,6 +48,11 @@ if ($viewerRole === 'client') {
     ]);
     $eligibleDeals = $dealStmt->fetchAll(PDO::FETCH_ASSOC);
 }
+$req = $bdd->prepare("SELECT idphoto FROM vendeur WHERE username = :u");
+$req->execute(["u" => $vendeur]);
+$data = $req->fetch();
+
+$vendeur_photo = $data['idphoto'] ?? 'default.png';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -56,23 +61,19 @@ if ($viewerRole === 'client') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profil vendeur - <?= htmlspecialchars($vendeur) ?></title>
   <link rel="stylesheet" href="../css/style.css">
-  <style>
-    body { background:#f6f7fb; }
-    .wrap { max-width:980px; margin:24px auto; padding:0 16px; }
-    .card { background:#fff; border:1px solid #e8e8ef; border-radius:14px; padding:14px; margin-bottom:12px; box-shadow:0 8px 24px rgba(0,0,0,0.04); }
-    .meta { color:#666; }
-    .review { border-top:1px solid #f0f0f0; padding-top:10px; margin-top:10px; }
-    .review-stars { color:#f4b400; font-weight:700; }
-    .review-form input, .review-form textarea, .review-form select { width:100%; border:1px solid #ddd; border-radius:10px; padding:10px; margin-bottom:8px; }
-    .review-form button { border:none; border-radius:10px; padding:10px 14px; background:#6a5cff; color:#fff; cursor:pointer; }
-    .review-form button[disabled] { opacity:.5; cursor:not-allowed; }
-  </style>
+  <link rel="stylesheet" href="../css/vendor_profile.css">
 </head>
 <body>
-  <header class="top-header"><a class="logo"><img class="logo-img" src="../files_profil/logo.png" alt="Importy"></a></header>
+  <header class="top-header"><a href="../html/client-interface.php" class="logo"><img class="logo-img" src="../files_profil/logo.png" alt="Importy"></a></header>
   <main class="wrap">
     <section class="card">
-      <h2>Profil vendeur: <?= htmlspecialchars($vendor['username']) ?></h2>
+      <div class="profile-header">
+  <img src="../files_profil/<?= htmlspecialchars($vendeur_photo) ?>" class="avatar">
+
+        <h2>
+          Profil vendeur: <?= htmlspecialchars($vendeur) ?>
+        </h2>
+      </div>
       <p class="meta">Email: <?= htmlspecialchars($vendor['email'] ?? '') ?></p>
       <p class="meta">Adresse: <?= htmlspecialchars($vendor['adresse'] ?? '') ?></p>
       <p class="meta">Telephone: <?= htmlspecialchars($vendor['num_tel'] ?? '') ?></p>

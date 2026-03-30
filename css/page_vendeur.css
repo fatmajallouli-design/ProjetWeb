@@ -1,0 +1,7 @@
+.vendeur-main .grid { display:grid; gap:16px; grid-template-columns:1fr; }
+.vendeur-main .cards { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
+.vendeur-main .meta { color:#666; font-size:13px; margin:6px 0; }
+.vendeur-main input, .vendeur-main textarea, .vendeur-main select { width:100%; padding:10px; border:1px solid #ddd; border-radius:10px; margin-bottom:8px; }
+.vendeur-main button[type="submit"] { border:none; border-radius:10px; padding:10px 12px; background:#6a5cff; color:#fff; cursor:pointer; }
+.vendeur-main .prod-img, .vendeur-main .dem-img { width:100%; max-height:180px; object-fit:cover; border-radius:10px; margin-bottom:8px; }
+.vendeur-main .inner-card { background:#fafbff; border:1px solid #ececec; border-radius:14px; padding:14px; }

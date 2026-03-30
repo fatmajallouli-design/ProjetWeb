@@ -118,6 +118,28 @@ INSERT INTO `produit` (`id_produit`, `nom_produit`, `prix`, `description`, `cate
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `commandes`
+--
+
+CREATE TABLE `commandes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_demande` int(11) DEFAULT NULL,
+  `vendeur` varchar(255) DEFAULT NULL,
+  `client` varchar(255) DEFAULT NULL,
+  `statut` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `commandes`
+--
+
+-- Aucun enregistrement.
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `vendeur`
 --
 

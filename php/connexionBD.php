@@ -74,6 +74,17 @@ public static function ensureWorkflowTables()
     ");
 
     $bdd->exec("
+        CREATE TABLE IF NOT EXISTS commandes (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            id_demande INT,
+            vendeur VARCHAR(255),
+            client VARCHAR(255),
+            statut VARCHAR(50),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    ");
+
+    $bdd->exec("
         CREATE TABLE IF NOT EXISTS message (
             id_message INT AUTO_INCREMENT PRIMARY KEY,
             id_deal INT NOT NULL,

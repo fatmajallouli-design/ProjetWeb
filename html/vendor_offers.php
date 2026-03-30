@@ -32,6 +32,10 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
         </a>
 
         <div class="icons quick-actions">
+             <a href="../html/commande_vendeur.php" class="icon-item">
+                <i class="fa-solid fa-handshake" style="color:#B197FC;"></i>
+                <span>Mes commandes</span>
+            </a>
             <a href="../html/vendor_offers.php" class="icon-item">
                 <i class="fa-solid fa-paper-plane" style="color:#B197FC;"></i>
                 <span>Mes offres</span>
@@ -50,6 +54,28 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
             </a>
         </div>
     </header>
+    <div class="overlay" id="overlay"></div>
+
+    <aside class="side-menu client-side-menu" id="sideMenu" aria-hidden="true">
+        <div class="side-header">
+            <a class="brand" href="../php/page_vendeur.php" aria-label="Importy - Espace vendeur">
+                <img class="brand-img" src="../files_profil/logo.png" alt="Importy">
+            </a>
+            <button class="menu-close-btn" id="closeMenu" type="button" aria-label="Fermer le menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="section">
+            <h4>Navigation</h4>
+            <a href="../php/page_vendeur.php"><i class="fa-solid fa-store"></i> Espace vendeur</a>
+            <a href="../html/vendor_offers.php"><i class="fa-solid fa-paper-plane"></i> Mes offres</a>
+            <a href="../html/messages.php"><i class="fa-solid fa-envelope"></i> Messages</a>
+            <a href="../html/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
+            <a href="../php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
+        </div>
+    </aside>
+
       <main style="max-width:900px;margin:24px auto;padding:0 16px;">
     <h2>Mes offres envoyees</h2>
     <?php foreach ($rows as $r): ?>
@@ -62,5 +88,38 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
     <?php endforeach; ?>
     <?php if (empty($rows)): ?><p>Aucune offre envoyee.</p><?php endif; ?>
   </main>
+   <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const closeMenu = document.getElementById('closeMenu');
+        const overlay = document.getElementById('overlay');
+        const logoutLink = document.getElementById('logoutLink');
+
+        function openMenu() {
+            sideMenu.classList.add('active');
+            sideMenu.setAttribute('aria-hidden', 'false');
+            overlay.style.display = 'block';
+        }
+
+        function closeAll() {
+            sideMenu.classList.remove('active');
+            sideMenu.setAttribute('aria-hidden', 'true');
+            overlay.style.display = 'none';
+        }
+
+        if (menuBtn && closeMenu && overlay) {
+            menuBtn.addEventListener('click', openMenu);
+            closeMenu.addEventListener('click', closeAll);
+            overlay.addEventListener('click', closeAll);
+        }
+
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function (event) {
+                if (!window.confirm('Est tu sure que tu veux te deconnecter ?')) {
+                    event.preventDefault();
+                }
+            });
+        }
+    </script>
 </body>
 </html>
