@@ -96,9 +96,6 @@ CREATE TABLE `deal_request` (
 --
 
 INSERT INTO `deal_request` (`id_deal`, `id_demande`, `client_username`, `vendeur_username`, `prix_propose`, `message`, `status`, `created_at`) VALUES
-(1, 1, 'eyaabbes', 'phone_store', 22.00, 'Bonjour, je peux vous livrer avant le 06/04.', 'en attente', '2026-03-30 20:36:10'),
-(2, 2, 'skander', 'phone_store', 1750.00, 'iPhone 13 disponible, très bon état.', 'accepté', '2026-03-30 20:36:10'),
-(3, 3, 'amira', 'tech_shop', 430.00, 'Je peux vous proposer un modèle original.', 'en attente', '2026-03-30 20:36:10'),
 (4, 4, 'eyaabbes', 'farah zayeni', 1700.00, 'avec les frais de livraison,il sera a 1700dt et il sera dispo bientot', 'accepte', '2026-03-30 22:42:52'),
 (5, 4, 'eyaabbes', 'mohamedabbes', 1650.00, 'il sera dispo debut mai si ca te va', 'accepte', '2026-03-30 22:44:12');
 
@@ -152,9 +149,6 @@ CREATE TABLE `message` (
 --
 
 INSERT INTO `message` (`id_message`, `id_deal`, `sender_username`, `receiver_username`, `contenu`, `created_at`) VALUES
-(1, 1, 'phone_store', 'eyaabbes', 'Bonjour, votre demande est disponible.', '2026-03-30 20:36:10'),
-(2, 1, 'eyaabbes', 'phone_store', 'Merci, combien de jours pour la livraison ?', '2026-03-30 20:36:10'),
-(3, 2, 'skander', 'phone_store', 'Parfait, je confirme la commande.', '2026-03-30 20:36:10'),
 (4, 4, 'farah zayeni', 'eyaabbes', 'bonjour eya je peux l apporter pour toi meme si tu veux autre chose je peux mais ne depasse pas 2000 dt svp', '2026-03-30 22:43:22'),
 (5, 5, 'mohamedabbes', 'eyaabbes', 'bonsoir eya,si je vais venir avant je vais t informer', '2026-03-30 22:44:35');
 
@@ -224,11 +218,9 @@ CREATE TABLE `review` (
 ) ;
 
 --
--- Déchargement des données de la table `review`
---
 
-INSERT INTO `review` (`id_review`, `id_deal`, `client_username`, `vendeur_username`, `rating`, `commentaire`, `created_at`) VALUES
-(1, 2, 'skander', 'phone_store', 5, 'Très bon vendeur, livraison rapide.', '2026-03-30 20:36:10');
+
+
 
 -- --------------------------------------------------------
 
