@@ -195,18 +195,16 @@ function resolveProductImagePath(?string $path): string {
                                     </a>
                                 </p>
                                 <p>Budget : <?php echo htmlspecialchars($prod['prix'] ?? '0'); ?> DT</p>
+                                <p>Stock : <?php echo ((int)$prod['quantite'] > 0) ? ((int)$prod['quantite'] . ' disponible(s)') : 'Rupture de stock'; ?></p>
                                 <p>Date : <?php echo htmlspecialchars($prod['created_at'] ?? ''); ?></p>
                                 <p><?php echo htmlspecialchars($prod['description'] ?? 'Aucune description.'); ?></p>
                                 <div class="product-actions">
                                     <a class="small-btn" href="../php/produit_details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('../html/client-interface.php'); ?>">Voir produit</a>
-                                    <form action="../php/request_from_product.php" method="post" class="inline-form">
-                                        <input type="hidden" name="id_produit" value="<?php echo (int) ($prod['id_produit'] ?? 0); ?>">
-                                        <button class="small-btn" type="submit">Demander ce produit</button>
-                                    </form>
-                                    <form action="../php/add_to_panier.php" method="post" class="inline-form">
+                                    
+                                    <form action="../php/add_to_panier.php" method="post" class="add-to-cart-form">
                                         <input type="hidden" name="id_produit" value="<?php echo (int) ($prod['id_produit'] ?? 0); ?>">
                                         <input type="hidden" name="redirect_to" value="../html/client-interface.php">
-                                        <button class="primary-btn product-cart-btn" type="submit">Ajouter au panier</button>
+                                        <button class="primary-btn product-cart-btn" type="submit" <?= ((int)($prod['quantite'] ?? 0) <= 0) ? 'disabled' : '' ?>><?= ((int)($prod['quantite'] ?? 0) <= 0) ? 'Indisponible' : 'Ajouter au panier' ?></button>
                                     </form>
                                 </div>
                             </article>
@@ -232,7 +230,7 @@ function resolveProductImagePath(?string $path): string {
         const searchInput = document.getElementById('productSearch');
         const productCards = document.querySelectorAll('.searchable-product');
         const cartToast = document.getElementById('cartToast');
-        const addToCartForms = document.querySelectorAll('.inline-form');
+        const addToCartForms = document.querySelectorAll('.add-to-cart-form');
 
         function openMenu() {
             sideMenu.classList.add('active');

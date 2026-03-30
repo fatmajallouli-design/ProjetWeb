@@ -29,7 +29,7 @@ $offres = $req->fetchAll();
 <title>Offres</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="../css/offres.css">
+<link rel="stylesheet" href="../css/offres_style.css">
 </head>
 
 <body>

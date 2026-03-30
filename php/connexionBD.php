@@ -45,12 +45,19 @@ public static function ensureWorkflowTables()
             vendeur_username VARCHAR(30) NOT NULL,
             nom_produit VARCHAR(80) NOT NULL,
             prix DECIMAL(10,2) NOT NULL,
+            quantite INT NOT NULL DEFAULT 0,
             categorie VARCHAR(30) NOT NULL,
             description TEXT NULL,
             image_path VARCHAR(255) NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
+
+    try {
+        $bdd->exec("ALTER TABLE produit ADD COLUMN quantite INT NOT NULL DEFAULT 0");
+    } catch (PDOException $e) {
+        // colonne déjà existante
+    }
 
     // dates sur demande si colonne absente dans dump initial
     try {

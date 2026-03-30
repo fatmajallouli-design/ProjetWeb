@@ -100,8 +100,10 @@ INSERT INTO `panier` (`id_panier`, `username`, `id_produit`, `quantite`, `date_a
 
 CREATE TABLE `produit` (
   `id_produit` int(11) NOT NULL,
+  `vendeur_username` varchar(30) NOT NULL DEFAULT 'unknown',
   `nom_produit` varchar(100) NOT NULL,
   `prix` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `quantite` int(11) NOT NULL DEFAULT 0,
   `description` text NOT NULL,
   `categorie` varchar(50) NOT NULL,
   `image_path` varchar(255) DEFAULT NULL

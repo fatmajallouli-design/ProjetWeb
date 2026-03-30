@@ -94,6 +94,7 @@ $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                                 <h3><?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?></h3>
                                 <p>Budget : <?php echo htmlspecialchars($prod['prix'] ?? '0'); ?> DT</p>
+                                <p>Stock : <?php echo ((int)($prod['quantite'] ?? 0) > 0) ? ((int)$prod['quantite'] . ' disponible(s)') : 'Rupture de stock'; ?></p>
                                 <p><?php echo htmlspecialchars($prod['description'] ?? 'Aucune description.'); ?></p>
                                 <div class="product-actions">
                                     <a class="small-btn" href="details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('../html/index.php'); ?>">Voir produit</a>

@@ -39,6 +39,22 @@ if ($action === 'update') {
         exit();
     }
 
+    $stockStmt = $bdd->prepare('SELECT pr.quantite AS stock FROM panier p INNER JOIN produit pr ON pr.id_produit = p.id_produit WHERE p.id_panier = :id_panier AND p.username = :username');
+    $stockStmt->execute(['id_panier' => $idPanier, 'username' => $username]);
+    $stockInfo = $stockStmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$stockInfo) {
+        $_SESSION['panier_error'] = 'Element de panier introuvable.';
+        header('Location: ../html/panier.php');
+        exit();
+    }
+
+    if ($quantite > (int)$stockInfo['stock']) {
+        $_SESSION['panier_error'] = 'Quantite demandee superieure au stock disponible.';
+        header('Location: ../html/panier.php');
+        exit();
+    }
+
     $stmt = $bdd->prepare('UPDATE panier SET quantite = :quantite WHERE id_panier = :id_panier AND username = :username');
     $stmt->execute([
         'quantite' => $quantite,

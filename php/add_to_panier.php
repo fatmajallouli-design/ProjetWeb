@@ -55,6 +55,20 @@ require_once('connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 $username = $_SESSION['user']['username'];
 
+$productStmt = $bdd->prepare('SELECT quantite FROM produit WHERE id_produit = :id_produit');
+$productStmt->execute(['id_produit' => $idProduit]);
+$product = $productStmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$product || (int)$product['quantite'] < 1) {
+    respondPanier([
+        'success' => false,
+        'message' => 'Produit en rupture de stock.',
+        'redirect' => $redirectTo
+    ], $isAjax);
+    header('Location: ' . $redirectTo);
+    exit();
+}
+
 $checkStmt = $bdd->prepare('SELECT id_panier, quantite FROM panier WHERE username = :username AND id_produit = :id_produit');
 $checkStmt->execute([
     'username' => $username,
@@ -63,8 +77,19 @@ $checkStmt->execute([
 $existingItem = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
 if ($existingItem) {
-    $updateStmt = $bdd->prepare('UPDATE panier SET quantite = quantite + 1 WHERE id_panier = :id_panier');
-    $updateStmt->execute(['id_panier' => $existingItem['id_panier']]);
+    $newQuantite = (int)$existingItem['quantite'] + 1;
+    if ($newQuantite > (int)$product['quantite']) {
+        respondPanier([
+            'success' => false,
+            'message' => 'Quantité demandée supérieure au stock disponible.',
+            'redirect' => $redirectTo
+        ], $isAjax);
+        header('Location: ' . $redirectTo);
+        exit();
+    }
+
+    $updateStmt = $bdd->prepare('UPDATE panier SET quantite = :quantite WHERE id_panier = :id_panier');
+    $updateStmt->execute(['quantite' => $newQuantite, 'id_panier' => $existingItem['id_panier']]);
 } else {
     $insertStmt = $bdd->prepare('INSERT INTO panier (username, id_produit, quantite) VALUES (:username, :id_produit, 1)');
     $insertStmt->execute([

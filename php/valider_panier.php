@@ -13,7 +13,7 @@ ConnexionBD::ensureWorkflowTables();
 $username = $_SESSION['user']['username'];
 
 $stmt = $bdd->prepare(
-    'SELECT p.id_panier, p.quantite, pr.id_produit, pr.nom_produit, pr.prix, pr.description, pr.categorie, pr.image_path, pr.vendeur_username
+    'SELECT p.id_panier, p.quantite, pr.id_produit, pr.nom_produit, pr.prix, pr.description, pr.categorie, pr.image_path, pr.vendeur_username, pr.quantite AS stock
      FROM panier p
      INNER JOIN produit pr ON pr.id_produit = p.id_produit
      WHERE p.username = :username'
@@ -31,6 +31,20 @@ try {
     $bdd->beginTransaction();
 
     foreach ($items as $item) {
+        if ((int)$item['stock'] < (int)$item['quantite']) {
+            throw new Exception('Le produit "' . ($item['nom_produit'] ?? 'inconnu') . '" n\'est plus disponible en quantite suffisante.');
+        }
+
+        $stockUpdate = $bdd->prepare('UPDATE produit SET quantite = quantite - :quantite WHERE id_produit = :id_produit AND quantite >= :quantite');
+        $stockUpdate->execute([
+            'quantite' => (int)$item['quantite'],
+            'id_produit' => $item['id_produit']
+        ]);
+
+        if ($stockUpdate->rowCount() === 0) {
+            throw new Exception('Stock insuffisant pour "' . ($item['nom_produit'] ?? 'inconnu') . '".');
+        }
+
         $description = trim(($item['description'] ?? '') . "\nQuantité: " . (int)$item['quantite']);
         $prix = ((float)$item['prix']) * ((int)$item['quantite']);
 
@@ -68,9 +82,9 @@ try {
 
     $bdd->commit();
     $_SESSION['panier_success'] = 'Panier validé et envoyé au vendeur.';
-} catch (PDOException $e) {
+} catch (Exception $e) {
     $bdd->rollBack();
-    $_SESSION['panier_error'] = 'Erreur lors de la validation du panier.';
+    $_SESSION['panier_error'] = 'Erreur lors de la validation du panier : ' . $e->getMessage();
 }
 
 header('Location: ../html/panier.php');

@@ -14,6 +14,10 @@ $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 $vendeur = $_SESSION['user']['username'];
 
+$successMessage = $_SESSION['product_success'] ?? '';
+$errorMessage = $_SESSION['product_error'] ?? '';
+unset($_SESSION['product_success'], $_SESSION['product_error']);
+
 $userStmt = $bdd->prepare('SELECT idphoto FROM vendeur WHERE username = :username');
 $userStmt->execute(['username' => $vendeur]);
 $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
@@ -95,6 +99,10 @@ function resolveImagePath(?string $path): string {
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
             </a>
+            <a href="#mes-produits" class="icon-item">
+                <i class="fa-solid fa-box-open" style="color:#B197FC;"></i>
+                <span>Mes produits</span>
+            </a>
             <a href="../html/mon%20compte.php" class="icon-item">
                 <i class="fa-regular fa-user" style="color:#74C0FC;"></i>
                 <span>Mon compte</span>
@@ -156,6 +164,7 @@ function resolveImagePath(?string $path): string {
                 <form action="../php/add_product.php" method="post" enctype="multipart/form-data">
                     <input type="text" name="nom_produit" placeholder="Nom du produit" required>
                     <input type="number" step="0.01" min="1" name="prix" placeholder="Prix" required>
+                    <input type="number" name="quantite" min="0" placeholder="Quantite" value="1" required>
                     <select name="categorie" required>
                         <option value="tous">Tous</option><option value="femme">Femme</option><option value="homme">Homme</option><option value="maison">Maison</option><option value="beaute">Beaute</option>
                     </select>
@@ -165,11 +174,17 @@ function resolveImagePath(?string $path): string {
                 </form>
             </section>
 
-            <section class="content-card">
+            <section class="content-card" id="mes-produits">
                 <div class="section-head">
                     <h2>Mes produits postes</h2>
                     <p><?= count($myProduits) ?> produit(s)</p>
                 </div>
+                <?php if (!empty($successMessage)): ?>
+                    <div class="account-message success-message"><?= htmlspecialchars($successMessage) ?></div>
+                <?php endif; ?>
+                <?php if (!empty($errorMessage)): ?>
+                    <div class="account-message error-message"><?= htmlspecialchars($errorMessage) ?></div>
+                <?php endif; ?>
                 <div class="cards">
                     <?php foreach ($myProduits as $p): ?>
                         <article class="inner-card">
@@ -177,7 +192,15 @@ function resolveImagePath(?string $path): string {
                             <?php if ($prodImage !== ''): ?><img class="prod-img" src="<?= htmlspecialchars($prodImage) ?>" alt="Produit"><?php endif; ?>
                             <h3><?= htmlspecialchars($p['nom_produit']) ?></h3>
                             <p class="meta"><?= htmlspecialchars($p['categorie']) ?> | <?= htmlspecialchars($p['prix']) ?> TND | <?= htmlspecialchars($p['created_at']) ?></p>
+                            <p><strong>Stock :</strong> <?= ((int)$p['quantite'] > 0) ? ((int)$p['quantite'] . ' disponible(s)') : 'Rupture de stock' ?></p>
                             <p><?= htmlspecialchars($p['description'] ?? '') ?></p>
+                            <div class="product-actions">
+                                <a href="../html/edit_product.php?id=<?= (int)$p['id_produit'] ?>" class="secondary-btn">Modifier</a>
+                                <form action="../php/delete_product.php" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer ce produit ?');">
+                                    <input type="hidden" name="id_produit" value="<?= (int)$p['id_produit'] ?>">
+                                    <button type="submit" class="small-btn" style="background:#ffe4e6;color:#b91c1c;">Supprimer</button>
+                                </form>
+                            </div>
                         </article>
                     <?php endforeach; ?>
                 </div>

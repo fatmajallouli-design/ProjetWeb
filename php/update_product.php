@@ -10,18 +10,30 @@ $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 
 $vendeur = $_SESSION['user']['username'];
+$idProduit = isset($_POST['id_produit']) ? (int) $_POST['id_produit'] : 0;
 $nom = trim($_POST['nom_produit'] ?? '');
 $prix = (float)($_POST['prix'] ?? 0);
 $quantite = isset($_POST['quantite']) ? max(0, (int) $_POST['quantite']) : 0;
 $categorie = trim($_POST['categorie'] ?? 'tous');
 $description = trim($_POST['description'] ?? '');
-$imagePath = null;
 
-if ($nom === '' || $prix <= 0) {
+if ($idProduit <= 0 || $nom === '' || $prix <= 0) {
+    $_SESSION['product_error'] = 'Données du produit invalides.';
     header('Location: ../php/page_vendeur.php');
     exit();
 }
 
+$stmt = $bdd->prepare('SELECT * FROM produit WHERE id_produit = :id AND vendeur_username = :vendeur');
+$stmt->execute(['id' => $idProduit, 'vendeur' => $vendeur]);
+$produit = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$produit) {
+    $_SESSION['product_error'] = 'Produit non trouvé ou accès refusé.';
+    header('Location: ../php/page_vendeur.php');
+    exit();
+}
+
+$imagePath = $produit['image_path'];
 if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
     $targetDir = realpath(__DIR__ . "/../files_produit");
     if ($targetDir === false) {
@@ -40,17 +52,18 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
     }
 }
 
-$ins = $bdd->prepare("INSERT INTO produit (vendeur_username, nom_produit, prix, quantite, categorie, description, image_path) VALUES (:v, :n, :p, :q, :c, :d, :i)");
-$ins->execute([
-    'v' => $vendeur,
-    'n' => $nom,
-    'p' => $prix,
-    'q' => $quantite,
-    'c' => $categorie,
-    'd' => $description,
-    'i' => $imagePath
+$update = $bdd->prepare('UPDATE produit SET nom_produit = :nom, prix = :prix, quantite = :quantite, categorie = :categorie, description = :description, image_path = :image WHERE id_produit = :id AND vendeur_username = :vendeur');
+$update->execute([
+    'nom' => $nom,
+    'prix' => $prix,
+    'quantite' => $quantite,
+    'categorie' => $categorie,
+    'description' => $description,
+    'image' => $imagePath,
+    'id' => $idProduit,
+    'vendeur' => $vendeur,
 ]);
 
+$_SESSION['product_success'] = 'Produit mis à jour avec succès.';
 header('Location: ../php/page_vendeur.php');
 exit();
-?>

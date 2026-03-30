@@ -310,6 +310,13 @@ body {
   color: #fff;
 }
 
+.primary-btn:disabled,
+.secondary-btn:disabled,
+.small-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .secondary-btn {
   padding: 12px 20px;
   background: #eef4ff;
@@ -692,7 +699,17 @@ body {
   margin: 0 0 4px;
 }
 
-.account-form input {
+.account-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.account-form input,
+.account-form textarea,
+.account-form select {
   width: 100%;
   padding: 14px 16px;
   border: 1px solid rgba(0, 0, 0, 0.14);
@@ -700,6 +717,11 @@ body {
   font-size: 15px;
   outline: none;
   background: #fff;
+}
+
+.account-form textarea {
+  min-height: 150px;
+  resize: vertical;
 }
 
 .account-form input:focus {

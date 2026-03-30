@@ -5,3 +5,15 @@
 .vendeur-main button[type="submit"] { border:none; border-radius:10px; padding:10px 12px; background:#6a5cff; color:#fff; cursor:pointer; }
 .vendeur-main .prod-img, .vendeur-main .dem-img { width:100%; max-height:180px; object-fit:cover; border-radius:10px; margin-bottom:8px; }
 .vendeur-main .inner-card { background:#fafbff; border:1px solid #ececec; border-radius:14px; padding:14px; }
+
+.product-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.product-actions form,
+.product-actions a {
+  display: inline-flex;
+}

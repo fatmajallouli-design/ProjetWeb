@@ -75,6 +75,7 @@ CREATE TABLE produit (
   vendeur_username VARCHAR(30) NOT NULL,
   nom_produit VARCHAR(80) NOT NULL,
   prix DECIMAL(10,2) NOT NULL,
+  quantite INT NOT NULL DEFAULT 0,
   categorie VARCHAR(30) NOT NULL,
   description TEXT DEFAULT NULL,
   image_path VARCHAR(255) DEFAULT NULL,

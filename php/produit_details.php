@@ -42,12 +42,13 @@ if (!$produit) {
     <h2><?= htmlspecialchars($produit['nom_produit']) ?></h2>
     <p><strong>Prix :</strong> <?= htmlspecialchars($produit['prix']) ?> DT</p>
     <p><?= htmlspecialchars($produit['description']) ?></p>
+    <p><strong>Stock :</strong> <?= ((int)$produit['quantite'] > 0) ? ((int)$produit['quantite'] . ' disponible(s)') : 'Rupture de stock' ?></p>
 
     <div class="detail-actions">
         <form action="../php/add_to_panier.php" method="post" id="detailAddToCartForm">
             <input type="hidden" name="id_produit" value="<?= (int) $produit['id_produit'] ?>">
             <input type="hidden" name="redirect_to" value="../html/details.php?id=<?= (int) $produit['id_produit'] ?>&return_to=<?= urlencode($returnTo) ?>">
-            <button type="submit">Ajouter au panier</button>
+            <button type="submit" <?= ((int)$produit['quantite'] <= 0) ? 'disabled' : '' ?>><?= ((int)$produit['quantite'] <= 0) ? 'Indisponible' : 'Ajouter au panier' ?></button>
         </form>
         <a class="back-link" href="<?= htmlspecialchars($returnTo) ?>">Retour</a>
     </div>
