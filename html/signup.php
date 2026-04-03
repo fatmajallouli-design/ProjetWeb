@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 $error = $_SESSION['error'] ?? '';
@@ -28,7 +28,7 @@ unset($_SESSION['error'], $_SESSION['old']);
         </div>
     </div>
 
-    <form class="login-form" action="../php/register_login.php" method="post" id="registerForm" enctype="multipart/form-data">
+    <form class="login-form" action="/php/register_login.php" method="post" id="registerForm" enctype="multipart/form-data">
         <input
             type="text"
             name="username"
@@ -82,7 +82,7 @@ unset($_SESSION['error'], $_SESSION['old']);
         <img id="preview" class="preview-img" alt="">
 
         <button type="submit">Sign up</button>
-            <a href="../html/login.php">Tu as deja un compte ?Se connecter</a>
+            <a href="/login.php">Tu as deja un compte ?Se connecter</a>
 
     </form>
 </div>
@@ -95,3 +95,4 @@ function closeError() {
 </script>
 </body>
 </html>
+

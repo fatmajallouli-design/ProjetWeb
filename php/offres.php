@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 session_start();
-require_once("../php/connexionBD.php");
+require_once(__DIR__ . '/connexionBD.php');
 
 $bdd = ConnexionBD::getInstance();
 
@@ -37,7 +37,7 @@ $offres = $req->fetchAll();
 <header class="top-header">
 
     <div class="header-left">
-        <a href="../html/client-interface.php" class="logo">
+        <a href="/client-interface.php" class="logo">
             <img src="../files_profil/logo.png" alt="Importy" class="logo-img">
         </a>
     </div>
@@ -47,8 +47,8 @@ $offres = $req->fetchAll();
     </div>
 
     <div class="header-right" >
-      <a href="../html/mes_demandes.php" class="btn-retour-pro">
-      <span class="arrow">←</span>Retour a mes demandes
+      <a href="/mes_demandes.php" class="btn-retour-pro">
+      <span class="arrow">â†</span>Retour a mes demandes
       </a>       
     </div>
 
@@ -64,7 +64,7 @@ $offres = $req->fetchAll();
     <div class="offer-header">
       <img src="../files_profil/<?= htmlspecialchars($offre['photo_profil']) ?>" class="avatar">
 
-      <a href="../html/vendor_profile.php?vendeur=<?= urlencode($offre['vendeur_username']) ?>" class="vendeur-name">
+      <a href="/vendor_profile.php?vendeur=<?= urlencode($offre['vendeur_username']) ?>" class="vendeur-name">
         <?= htmlspecialchars($offre['vendeur_username']) ?>
       </a>
     </div>
@@ -82,14 +82,14 @@ $offres = $req->fetchAll();
     <!-- ACTIONS -->
     <div class="actions">
 
-      <!-- 🔥 ACCEPTER -->
-      <form method="POST" action="../php/accepter_offre.php">
+      <!-- ðŸ”¥ ACCEPTER -->
+      <form method="POST" action="/php/accepter_offre.php">
         <input type="hidden" name="id_deal" value="<?= $offre['id_deal'] ?>">
         <button class="btn-accept">Accepter</button>
       </form>
 
       <!-- CHAT -->
-      <a href="../html/messages.php?deal=<?= $offre['id_deal'] ?>" class="btn-chat">
+      <a href="/messages.php?deal=<?= $offre['id_deal'] ?>" class="btn-chat">
         Chat
       </a>
 

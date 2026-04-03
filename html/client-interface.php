@@ -1,23 +1,24 @@
-<?php
+﻿<?php
 session_start();
 if (empty($_SESSION['user']['username'])) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
-require_once('../php/connexionBD.php');
+require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 $username = $_SESSION['user']['username'];
 $role = $_SESSION['user']['role'] ?? 'client';
 
-if ($role === 'client') {
-    $userStmt = $bdd->prepare('SELECT idphoto FROM client WHERE username = :username');
-} else {
-    $userStmt = $bdd->prepare('SELECT idphoto FROM vendeur WHERE username = :username');
-}
+// if ($role === 'client') {
+//     $userStmt = $bdd->prepare('SELECT idphoto FROM client WHERE username = :username');
+// } else {
+//     $userStmt = $bdd->prepare('SELECT idphoto FROM vendeur WHERE username = :username');
+// }
 
-$userStmt->execute(['username' => $username]);
-$userInfo = $userStmt->fetch(PDO::FETCH_ASSOC);
+// $userStmt->execute(['username' => $username]);
+// $userInfo = $userStmt->fetch(PDO::FETCH_ASSOC);
+$userInfo = ['idphoto' => ''];
 $photoPath = trim($userInfo['idphoto'] ?? '');
 $photoUrl = '';
 $hasPhoto = false;
@@ -52,18 +53,50 @@ try {
 
 function resolveProductImagePath(?string $path): string {
     $raw = trim((string)$path);
-    if ($raw === '') return '';
-    $candidates = [
-        $raw,
-        str_replace('../files_demande/', '../files_produits/', $raw),
-    ];
+    if ($raw === '') return '/files_profil/logo.png';
+    $normalized = str_replace('\\', '/', $raw);
+    $normalized = preg_replace('#^\.\./+#', '/', $normalized);
+
+    $candidates = [];
+    if (strpos($normalized, '/files_produit/') === 0 || strpos($normalized, '/files_produits/') === 0) {
+        $candidates[] = $normalized;
+        if (strpos($normalized, '/files_produit/') === 0) {
+            $candidates[] = str_replace('/files_produit/', '/files_produits/', $normalized);
+        } else {
+            $candidates[] = str_replace('/files_produits/', '/files_produit/', $normalized);
+        }
+    } else {
+        if (strpos($normalized, 'files_produit/') === 0 || strpos($normalized, 'files_produits/') === 0) {
+            $candidates[] = '/' . ltrim($normalized, '/');
+        }
+        $candidates[] = '/files_produit/' . ltrim($normalized, '/');
+        $candidates[] = '/files_produits/' . ltrim($normalized, '/');
+    }
+
+    $root = realpath(__DIR__ . '/..');
     foreach ($candidates as $candidate) {
-        $resolved = realpath(__DIR__ . '/' . $candidate);
-        if ($resolved !== false && is_file($resolved)) {
+        $absPath = realpath($root . $candidate);
+        if ($absPath !== false && is_file($absPath)) {
             return $candidate;
         }
     }
-    return '';
+
+    $basename = pathinfo($normalized, PATHINFO_BASENAME);
+    if ($basename !== '') {
+        foreach (['/files_produit', '/files_produits', '/files_demande'] as $dir) {
+            $absDir = $root . $dir;
+            if (!is_dir($absDir)) {
+                continue;
+            }
+            foreach (glob($absDir . '/*' . $basename . '*') as $match) {
+                if (is_file($match)) {
+                    return $dir . '/' . basename($match);
+                }
+            }
+        }
+    }
+
+    return '/files_profil/logo.png';
 }
 ?>
 <!DOCTYPE html>
@@ -85,7 +118,7 @@ function resolveProductImagePath(?string $path): string {
         </button>
 
         <a class="logo" aria-label="Importy - Accueil">
-            <img class="logo-img" src="../files_profil/logo.png" alt="Importy">
+            <img class="logo-img" src="/files_profil/logo.png" alt="Importy">
         </a>
 
         <div class="search">
@@ -94,31 +127,31 @@ function resolveProductImagePath(?string $path): string {
         </div>
 
         <div class="icons quick-actions">
-            <a href="../html/mon%20compte.php" class="icon-item">
+            <a href="/mon%20compte.php" class="icon-item">
                 <i class="fa-regular fa-user" style="color:#B197FC;"></i>
                 <span>Mon compte</span>
             </a>
 
-            <a href="../html/panier.php" class="icon-item">
+            <a href="/panier.php" class="icon-item">
                 <i class="fa-solid fa-bag-shopping" style="color:#B197FC;"></i>
                 <span>Panier</span>
             </a>
 
-            <a href="demande.html" class="icon-item">
+            <a href="demande.php" class="icon-item">
                 <i class="fa-solid fa-plus" style="color:#74C0FC;"></i>
                 <span>Demande</span>
             </a>
-            <a href="../html/mes_demandes.php" class="icon-item">
+            <a href="/mes_demandes.php" class="icon-item">
                 <i class="fa-solid fa-list-check" style="color:#74C0FC;"></i>
                 <span>Mes demandes</span>
             </a>
 
-            <a href="../html/notifications.php" class="icon-item">
+            <a href="/notifications.php" class="icon-item">
                 <i class="fa-solid fa-bell" style="color:#74C0FC;"></i>
                 <span>Notification</span>
             </a>
 
-            <a href="../html/messages.php" class="icon-item">
+            <a href="/messages.php" class="icon-item">
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
             </a>
@@ -130,7 +163,7 @@ function resolveProductImagePath(?string $path): string {
     <aside class="side-menu client-side-menu" id="sideMenu" aria-hidden="true">
         <div class="side-header">
             <a class="brand" aria-label="Importy - Accueil">
-                <img class="brand-img" src="../files_profil/logo.png" alt="Importy">
+                <img class="brand-img" src="/files_profil/logo.png" alt="Importy">
             </a>
             <button class="menu-close-btn" id="closeMenu" type="button" aria-label="Fermer le menu">
                 <i class="fa-solid fa-xmark"></i>
@@ -139,13 +172,13 @@ function resolveProductImagePath(?string $path): string {
 
         <div class="section">
             <h4>Navigation</h4>
-            <a href="../html/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
-            <a href="../html/panier.php"><i class="fa-solid fa-bag-shopping"></i> Panier</a>
-            <a href="demande.html"><i class="fa-solid fa-plus"></i> Demande</a>
-            <a href="../html/mes_demandes.php"><i class="fa-solid fa-list-check"></i> Mes demandes</a>
-            <a href="../html/notifications.php"><i class="fa-solid fa-bell"></i> Notification</a>
-            <a href="../html/messages.php"><i class="fa-solid fa-envelope"></i> Message</a>
-            <a href="../php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
+            <a href="/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
+            <a href="/panier.php"><i class="fa-solid fa-bag-shopping"></i> Panier</a>
+            <a href="/demande.php"><i class="fa-solid fa-plus"></i> Demande</a>
+            <a href="/mes_demandes.php"><i class="fa-solid fa-list-check"></i> Mes demandes</a>
+            <a href="/notifications.php"><i class="fa-solid fa-bell"></i> Notification</a>
+            <a href="/messages.php"><i class="fa-solid fa-envelope"></i> Message</a>
+            <a href="/php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
         </div>
     </aside>
 
@@ -190,7 +223,7 @@ function resolveProductImagePath(?string $path): string {
                                 <h3><?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?></h3>
                                 <p>
                                     Vendeur :
-                                    <a href="./vendor_profile.php?vendeur=<?php echo urlencode($prod['vendeur_username'] ?? ''); ?>">
+                                    <a href="/vendor_profile.php?vendeur=<?php echo urlencode($prod['vendeur_username'] ?? ''); ?>">
                                         <?php echo htmlspecialchars($prod['vendeur_username'] ?? 'Inconnu'); ?>
                                     </a>
                                 </p>
@@ -199,11 +232,11 @@ function resolveProductImagePath(?string $path): string {
                                 <p>Date : <?php echo htmlspecialchars($prod['created_at'] ?? ''); ?></p>
                                 <p><?php echo htmlspecialchars($prod['description'] ?? 'Aucune description.'); ?></p>
                                 <div class="product-actions">
-                                    <a class="small-btn" href="../php/produit_details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('../html/client-interface.php'); ?>">Voir produit</a>
+                                    <a class="small-btn" href="/php/produit_details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('/client-interface.php'); ?>">Voir produit</a>
                                     
-                                    <form action="../php/add_to_panier.php" method="post" class="add-to-cart-form">
+                                    <form action="/php/add_to_panier.php" method="post" class="add-to-cart-form">
                                         <input type="hidden" name="id_produit" value="<?php echo (int) ($prod['id_produit'] ?? 0); ?>">
-                                        <input type="hidden" name="redirect_to" value="../html/client-interface.php">
+                                        <input type="hidden" name="redirect_to" value="/client-interface.php">
                                         <button class="primary-btn product-cart-btn" type="submit" <?= ((int)($prod['quantite'] ?? 0) <= 0) ? 'disabled' : '' ?>><?= ((int)($prod['quantite'] ?? 0) <= 0) ? 'Indisponible' : 'Ajouter au panier' ?></button>
                                     </form>
                                 </div>
@@ -217,7 +250,7 @@ function resolveProductImagePath(?string $path): string {
         </section>
     </main>
 
-    <a href="../html/panier.php" class="floating-cart-btn" aria-label="Voir le panier">
+    <a href="/panier.php" class="floating-cart-btn" aria-label="Voir le panier">
         <i class="fa-solid fa-bag-shopping"></i>
     </a>
 
@@ -311,3 +344,6 @@ function resolveProductImagePath(?string $path): string {
     </script>
 </body>
 </html>
+
+
+

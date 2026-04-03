@@ -5,11 +5,11 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'vendeur')) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
-require_once('connexionBD.php');
+require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 $vendeur = $_SESSION['user']['username'];
@@ -50,19 +50,64 @@ $myProduits = $myProdStmt->fetchAll(PDO::FETCH_ASSOC);
 
 function resolveImagePath(?string $path): string {
     $raw = trim((string)$path);
-    if ($raw === '') return '';
-    $candidates = [
-        $raw,
-        str_replace('../files_produits/', '../files_produit/', $raw),
-        str_replace('../files_demande/', '../files_produit/', $raw),
-    ];
+    if ($raw === '') return '/files_profil/logo.png';
+    $normalized = str_replace('\\', '/', $raw);
+    $normalized = preg_replace('#^\.\./+#', '/', $normalized);
+
+    $candidates = [];
+    if (strpos($normalized, '/files_produit/') === 0 || strpos($normalized, '/files_produits/') === 0) {
+        $candidates[] = $normalized;
+        if (strpos($normalized, '/files_produit/') === 0) {
+            $candidates[] = str_replace('/files_produit/', '/files_produits/', $normalized);
+        } else {
+            $candidates[] = str_replace('/files_produits/', '/files_produit/', $normalized);
+        }
+    } else {
+        if (strpos($normalized, 'files_produit/') === 0 || strpos($normalized, 'files_produits/') === 0) {
+            $candidates[] = '/' . ltrim($normalized, '/');
+        }
+        $candidates[] = '/files_produit/' . ltrim($normalized, '/');
+        $candidates[] = '/files_produits/' . ltrim($normalized, '/');
+    }
+
+    $root = realpath(__DIR__ . '/..');
     foreach ($candidates as $candidate) {
-        $resolved = realpath(__DIR__ . '/' . $candidate);
-        if ($resolved !== false && is_file($resolved)) {
+        $absPath = realpath($root . $candidate);
+        if ($absPath !== false && is_file($absPath)) {
             return $candidate;
         }
     }
-    return '';
+
+    return '/files_profil/logo.png';
+}
+
+function resolveDemandeImagePath(?string $path): string {
+    $raw = trim((string)$path);
+    if ($raw === '') {
+        return '/files_profil/logo.png';
+    }
+    $normalized = str_replace('\\', '/', $raw);
+    $normalized = preg_replace('#^\.\./+#', '/', $normalized);
+
+    $candidates = [];
+    if (strpos($normalized, '/files_demande/') === 0 || strpos($normalized, '/files_produit/') === 0 || strpos($normalized, '/files_produits/') === 0) {
+        $candidates[] = $normalized;
+    } else {
+        $base = ltrim($normalized, '/');
+        $candidates[] = '/files_demande/' . $base;
+        $candidates[] = '/files_produits/' . $base;
+        $candidates[] = '/files_produit/' . $base;
+    }
+
+    $root = realpath(__DIR__ . '/..');
+    foreach ($candidates as $candidate) {
+        $absPath = realpath($root . $candidate);
+        if ($absPath !== false && is_file($absPath)) {
+            return $candidate;
+        }
+    }
+
+    return '/files_profil/logo.png';
 }
 ?>
 <!DOCTYPE html>
@@ -82,20 +127,20 @@ function resolveImagePath(?string $path): string {
             <i class="fa-solid fa-align-justify"></i>
         </button>
 
-        <a class="logo" href="../php/page_vendeur.php" aria-label="Importy - Espace vendeur">
+        <a class="logo" href="/php/page_vendeur.php" aria-label="Importy - Espace vendeur">
             <img class="logo-img" src="../files_profil/logo.png" alt="Importy">
         </a>
 
         <div class="icons quick-actions">
-            <a href="../html/commande_vendeur.php" class="icon-item">
+            <a href="/commande_vendeur.php" class="icon-item">
                 <i class="fa-solid fa-handshake" style="color:#B197FC;"></i>
                 <span>Mes commandes</span>
             </a>
-            <a href="../html/vendor_offers.php" class="icon-item">
+            <a href="/vendor_offers.php" class="icon-item">
                 <i class="fa-solid fa-paper-plane" style="color:#B197FC;"></i>
                 <span>Mes offres</span>
             </a>    
-            <a href="../html/messages.php" class="icon-item">
+            <a href="/messages.php" class="icon-item">
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
             </a>
@@ -103,11 +148,11 @@ function resolveImagePath(?string $path): string {
                 <i class="fa-solid fa-box-open" style="color:#B197FC;"></i>
                 <span>Mes produits</span>
             </a>
-            <a href="../html/mon%20compte.php" class="icon-item">
+            <a href="/mon%20compte.php" class="icon-item">
                 <i class="fa-regular fa-user" style="color:#74C0FC;"></i>
                 <span>Mon compte</span>
             </a>
-            <a href="../php/logout.php" class="icon-item">
+            <a href="/php/logout.php" class="icon-item">
                 <i class="fa-solid fa-right-from-bracket" style="color:#74C0FC;"></i>
                 <span>Logout</span>
             </a>
@@ -118,7 +163,7 @@ function resolveImagePath(?string $path): string {
 
     <aside class="side-menu client-side-menu" id="sideMenu" aria-hidden="true">
         <div class="side-header">
-            <a class="brand" href="../php/page_vendeur.php" aria-label="Importy - Espace vendeur">
+            <a class="brand" href="/php/page_vendeur.php" aria-label="Importy - Espace vendeur">
                 <img class="brand-img" src="../files_profil/logo.png" alt="Importy">
             </a>
             <button class="menu-close-btn" id="closeMenu" type="button" aria-label="Fermer le menu">
@@ -128,11 +173,11 @@ function resolveImagePath(?string $path): string {
 
         <div class="section">
             <h4>Navigation</h4>
-            <a href="../php/page_vendeur.php"><i class="fa-solid fa-store"></i> Espace vendeur</a>
-            <a href="../html/vendor_offers.php"><i class="fa-solid fa-paper-plane"></i> Mes offres</a>
-            <a href="../html/messages.php"><i class="fa-solid fa-envelope"></i> Messages</a>
-            <a href="../html/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
-            <a href="../php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
+            <a href="/php/page_vendeur.php"><i class="fa-solid fa-store"></i> Espace vendeur</a>
+            <a href="/vendor_offers.php"><i class="fa-solid fa-paper-plane"></i> Mes offres</a>
+            <a href="/messages.php"><i class="fa-solid fa-envelope"></i> Messages</a>
+            <a href="/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
+            <a href="/php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
         </div>
     </aside>
 
@@ -161,7 +206,7 @@ function resolveImagePath(?string $path): string {
                 <div class="section-head">
                     <h2>Publier un produit</h2>
                 </div>
-                <form action="../php/add_product.php" method="post" enctype="multipart/form-data">
+                <form action="/php/add_product.php" method="post" enctype="multipart/form-data">
                     <input type="text" name="nom_produit" placeholder="Nom du produit" required>
                     <input type="number" step="0.01" min="1" name="prix" placeholder="Prix" required>
                     <input type="number" name="quantite" min="0" placeholder="Quantite" value="1" required>
@@ -195,8 +240,8 @@ function resolveImagePath(?string $path): string {
                             <p><strong>Stock :</strong> <?= ((int)$p['quantite'] > 0) ? ((int)$p['quantite'] . ' disponible(s)') : 'Rupture de stock' ?></p>
                             <p><?= htmlspecialchars($p['description'] ?? '') ?></p>
                             <div class="product-actions">
-                                <a href="../html/edit_product.php?id=<?= (int)$p['id_produit'] ?>" class="secondary-btn">Modifier</a>
-                                <form action="../php/delete_product.php" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer ce produit ?');">
+                                <a href="/edit_product.php?id=<?= (int)$p['id_produit'] ?>" class="secondary-btn">Modifier</a>
+                                <form action="/php/delete_product.php" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer ce produit ?');">
                                     <input type="hidden" name="id_produit" value="<?= (int)$p['id_produit'] ?>">
                                     <button type="submit" class="small-btn" style="background:#ffe4e6;color:#b91c1c;">Supprimer</button>
                                 </form>
@@ -215,11 +260,13 @@ function resolveImagePath(?string $path): string {
                 <div class="cards">
                     <?php foreach ($demandes as $d): ?>
                         <article class="inner-card">
-                            <?php if (!empty($d['id_photo'])): ?><img class="dem-img" src="<?= htmlspecialchars($d['id_photo']) ?>" alt="Demande"><?php endif; ?>
+                            <?php if (!empty($d['id_photo'])): ?>
+                                <img class="dem-img" src="<?= htmlspecialchars(resolveDemandeImagePath($d['id_photo'])) ?>" alt="Demande">
+                            <?php endif; ?>
                             <h3><?= htmlspecialchars($d['nom_produit']) ?></h3>
                             <p class="meta">Client: <?= htmlspecialchars($d['username']) ?> | Budget: <?= htmlspecialchars($d['prix']) ?> TND | Date: <?= htmlspecialchars($d['created_at'] ?? '') ?></p>
                             <p><?= htmlspecialchars($d['description']) ?></p>
-                            <form action="../php/send_offer.php" method="post">
+                            <form action="/php/send_offer.php" method="post">
                                 <input type="hidden" name="id_demande" value="<?= (int)$d['id_demande'] ?>">
                                 <input type="number" name="prix_propose" min="1" step="0.01" placeholder="Votre prix propose" required>
                                 <textarea name="message" rows="2" placeholder="Votre message..." required></textarea>
@@ -267,3 +314,6 @@ function resolveImagePath(?string $path): string {
     </script>
 </body>
 </html>
+
+
+

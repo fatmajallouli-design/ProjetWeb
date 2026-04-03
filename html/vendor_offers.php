@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'vendeur')) {
     header('Location: ./login.php');
     exit();
 }
-require_once('../php/connexionBD.php');
+require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 $vendeur = $_SESSION['user']['username'];
@@ -27,28 +27,28 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
             <i class="fa-solid fa-align-justify"></i>
         </button>
 
-        <a class="logo" href="../php/page_vendeur.php" aria-label="Importy - Espace vendeur">
-            <img class="logo-img" src="../files_profil/logo.png" alt="Importy">
+        <a class="logo" href="/php/page_vendeur.php" aria-label="Importy - Espace vendeur">
+            <img class="logo-img" src="/files_profil/logo.png" alt="Importy">
         </a>
 
         <div class="icons quick-actions">
-             <a href="../html/commande_vendeur.php" class="icon-item">
+             <a href="/commande_vendeur.php" class="icon-item">
                 <i class="fa-solid fa-handshake" style="color:#B197FC;"></i>
                 <span>Mes commandes</span>
             </a>
-            <a href="../html/vendor_offers.php" class="icon-item">
+            <a href="/vendor_offers.php" class="icon-item">
                 <i class="fa-solid fa-paper-plane" style="color:#B197FC;"></i>
                 <span>Mes offres</span>
             </a>
-            <a href="../html/messages.php" class="icon-item">
+            <a href="/messages.php" class="icon-item">
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
             </a>
-            <a href="../html/mon%20compte.php" class="icon-item">
+            <a href="/mon%20compte.php" class="icon-item">
                 <i class="fa-regular fa-user" style="color:#74C0FC;"></i>
                 <span>Mon compte</span>
             </a>
-            <a href="../php/logout.php" class="icon-item">
+            <a href="/php/logout.php" class="icon-item">
                 <i class="fa-solid fa-right-from-bracket" style="color:#74C0FC;"></i>
                 <span>Logout</span>
             </a>
@@ -58,8 +58,8 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
 
     <aside class="side-menu client-side-menu" id="sideMenu" aria-hidden="true">
         <div class="side-header">
-            <a class="brand" href="../php/page_vendeur.php" aria-label="Importy - Espace vendeur">
-                <img class="brand-img" src="../files_profil/logo.png" alt="Importy">
+            <a class="brand" href="/php/page_vendeur.php" aria-label="Importy - Espace vendeur">
+                <img class="brand-img" src="/files_profil/logo.png" alt="Importy">
             </a>
             <button class="menu-close-btn" id="closeMenu" type="button" aria-label="Fermer le menu">
                 <i class="fa-solid fa-xmark"></i>
@@ -68,11 +68,11 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="section">
             <h4>Navigation</h4>
-            <a href="../php/page_vendeur.php"><i class="fa-solid fa-store"></i> Espace vendeur</a>
-            <a href="../html/vendor_offers.php"><i class="fa-solid fa-paper-plane"></i> Mes offres</a>
-            <a href="../html/messages.php"><i class="fa-solid fa-envelope"></i> Messages</a>
-            <a href="../html/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
-            <a href="../php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
+            <a href="/php/page_vendeur.php"><i class="fa-solid fa-store"></i> Espace vendeur</a>
+            <a href="/vendor_offers.php"><i class="fa-solid fa-paper-plane"></i> Mes offres</a>
+            <a href="/messages.php"><i class="fa-solid fa-envelope"></i> Messages</a>
+            <a href="/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
+            <a href="/php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
         </div>
     </aside>
 
@@ -83,7 +83,7 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
         <h3><?= htmlspecialchars($r['nom_produit']) ?></h3>
         <p>Client: <?= htmlspecialchars($r['client_username']) ?> | Prix: <?= htmlspecialchars($r['prix_propose']) ?> TND | Date: <?= htmlspecialchars($r['created_at']) ?></p>
         <p><?= nl2br(htmlspecialchars($r['message'])) ?></p>
-        <a href="./messages.php?deal=<?= (int)$r['id_deal'] ?>">Ouvrir chat</a>
+        <a href="/messages.php?deal=<?= (int)$r['id_deal'] ?>">Ouvrir chat</a>
       </article>
     <?php endforeach; ?>
     <?php if (empty($rows)): ?><p>Aucune offre envoyee.</p><?php endif; ?>
@@ -123,3 +123,4 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
     </script>
 </body>
 </html>
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 $error = $_SESSION['login_error'] ?? '';
@@ -23,7 +23,7 @@ unset($_SESSION['login_error'], $_SESSION['login_old']);
             </div>
         <?php endif; ?>
 
-        <form id="loginForm" action="../php/login_user.php" method="post">
+        <form id="loginForm" action="/php/login_user.php" method="post">
             <input
                 type="text"
                 name="username"
@@ -48,8 +48,9 @@ unset($_SESSION['login_error'], $_SESSION['login_old']);
 
 
             <button type="submit">Login</button>
-            <a href="../html/signup.php">Tu n'as pas un compte ?Créer un compte</a>
+            <a href="/signup.php">Tu n'as pas un compte ?CrÃ©er un compte</a>
         </form>
     </div>
 </body>
 </html>
+

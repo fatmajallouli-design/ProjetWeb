@@ -1,16 +1,16 @@
 <?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'client')) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
-require_once('connexionBD.php');
+require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 
 $idProduit = (int)($_POST['id_produit'] ?? 0);
 if ($idProduit <= 0) {
-    header('Location: ../html/client-interface.php');
+    header('Location: /login.php');
     exit();
 }
 
@@ -18,7 +18,7 @@ $p = $bdd->prepare("SELECT * FROM produit WHERE id_produit = :id");
 $p->execute(['id' => $idProduit]);
 $prod = $p->fetch(PDO::FETCH_ASSOC);
 if (!$prod) {
-    header('Location: ../html/client-interface.php');
+    header('Location: /login.php');
     exit();
 }
 
@@ -33,6 +33,8 @@ $ins->execute([
     'u' => $_SESSION['user']['username']
 ]);
 
-header('Location: ../html/mes_demandes.php');
+header('Location: /mes_demandes.php');
 exit();
 ?>
+
+

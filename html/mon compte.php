@@ -1,11 +1,11 @@
-<?php
+﻿<?php
 session_start();
 if (empty($_SESSION['user']['username'])) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
-require_once('../php/connexionBD.php');
+require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 $username = $_SESSION['user']['username'];
 $role = $_SESSION['user']['role'] ?? 'client';
@@ -120,11 +120,11 @@ if ($photoPath !== '') {
             </form>
 
             <div class="account-actions">
-                <a href="<?php echo ($role === 'vendeur') ? '../php/page_vendeur.php' : '../html/client-interface.php'; ?>" 
+                <a href="<?php echo ($role === 'vendeur') ? '../php/page_vendeur.php' : '/client-interface.php'; ?>" 
    class="secondary-btn">
    Retour
 </a>
-                <a href="../php/logout.php" class="small-btn" id="logoutAccountLink">Se deconnecter</a>
+                <a href="/php/logout.php" class="small-btn" id="logoutAccountLink">Se deconnecter</a>
             </div>
         </section>
     </main>
@@ -143,3 +143,6 @@ if ($photoPath !== '') {
     </script>
 </body>
 </html>
+
+
+

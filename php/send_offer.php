@@ -1,11 +1,11 @@
 <?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'vendeur')) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
-require_once('connexionBD.php');
+require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 
@@ -15,7 +15,7 @@ $message = trim($_POST['message'] ?? '');
 $vendeur = $_SESSION['user']['username'];
 
 if ($idDemande <= 0 || $prix <= 0 || $message === '') {
-    header('Location: ../php/page_vendeur.php');
+    header('Location: /php/page_vendeur.php');
     exit();
 }
 
@@ -23,7 +23,7 @@ $q = $bdd->prepare("SELECT username FROM demande WHERE id_demande = :id");
 $q->execute(['id' => $idDemande]);
 $row = $q->fetch(PDO::FETCH_ASSOC);
 if (!$row) {
-    header('Location: ../php/page_vendeur.php');
+    header('Location: /php/page_vendeur.php');
     exit();
 }
 
@@ -36,6 +36,8 @@ $ins->execute([
     'm' => $message
 ]);
 
-header('Location: ../html/vendor_offers.php');
+header('Location: /vendor_offers.php');
 exit();
 ?>
+
+

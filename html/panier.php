@@ -1,12 +1,12 @@
-<?php
+﻿<?php
 session_start();
 
 if (empty($_SESSION['user']['username'])) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
-require_once('../php/connexionBD.php');
+require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 $username = $_SESSION['user']['username'];
 $success = $_SESSION['panier_success'] ?? '';
@@ -45,7 +45,7 @@ foreach ($items as $item) {
 
 <div class="header-left">
     <a href="client-interface.php" class="logo">
-        <img src="../files_profil/logo.png" alt="Importy" class="logo-img">
+        <img src="/files_profil/logo.png" alt="Importy" class="logo-img">
     </a>
 </div>
 
@@ -54,7 +54,7 @@ foreach ($items as $item) {
 </div>
 
 <div class="header-right">
-    <a href="client-interface.php" class="header-btn retour-btn">← Retour à l’interface client</a>
+    <a href="client-interface.php" class="header-btn retour-btn">â† Retour Ã  lâ€™interface client</a>
 </header>
     <main class="panier-page">
         <section class="content-card panier-card">
@@ -91,7 +91,7 @@ foreach ($items as $item) {
                                 <p><strong>Sous-total :</strong> <?= number_format(((float) $item['prix']) * ((int) $item['quantite']), 2, '.', '') ?> DT</p>
 
                                 <div class="panier-controls">
-                                    <form action="../php/update_panier.php" method="post" class="panier-form">
+                                    <form action="/php/update_panier.php" method="post" class="panier-form">
                                         <input type="hidden" name="action" value="update">
                                         <input type="hidden" name="id_panier" value="<?= (int) $item['id_panier'] ?>">
                                         <label class="panier-qty-label">
@@ -101,7 +101,7 @@ foreach ($items as $item) {
                                         <button type="submit" class="secondary-btn">Modifier</button>
                                     </form>
 
-                                    <form action="../php/update_panier.php" method="post" class="panier-form">
+                                    <form action="/php/update_panier.php" method="post" class="panier-form">
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="id_panier" value="<?= (int) $item['id_panier'] ?>">
                                         <button type="submit" class="small-btn panier-delete-btn">Supprimer</button>
@@ -115,17 +115,19 @@ foreach ($items as $item) {
                 <div class="panier-summary">
                     <strong>Total : <?= number_format($total, 2, '.', '') ?> DT</strong>
                     <div class="panier-actions">
-                        <form action="../php/valider_panier.php" method="post" style="display:inline-block; margin-right:12px;">
+                        <form action="/php/valider_panier.php" method="post" style="display:inline-block; margin-right:12px;">
                             <button type="submit" class="primary-btn">Valider le panier</button>
                         </form>
-                        <a href="../html/client-interface.php" class="secondary-btn">Retour</a>
+                        <a href="/client-interface.php" class="secondary-btn">Retour</a>
                     </div>
                 </div>
             <?php else: ?>
                 <p class="empty-products">Votre panier est vide.</p>
-                <a href="../html/client-interface.php" class="secondary-btn">Voir les produits</a>
+                <a href="/client-interface.php" class="secondary-btn">Voir les produits</a>
             <?php endif; ?>
         </section>
     </main>
 </body>
 </html>
+
+

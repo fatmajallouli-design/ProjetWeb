@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 session_start();
 if (empty($_SESSION['user']['username'])) {
     header('Location: ./login.php');
     exit();
 }
-require_once('../php/connexionBD.php');
+require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 
@@ -12,14 +12,16 @@ $viewer = $_SESSION['user']['username'];
 $viewerRole = $_SESSION['user']['role'] ?? '';
 $vendeur = trim($_GET['vendeur'] ?? '');
 if ($vendeur === '') {
-    die('Vendeur manquant.');
+    header('Location: ./client-interface.php');
+    exit();
 }
 
 $vStmt = $bdd->prepare("SELECT username, email, adresse, num_tel, idphoto FROM vendeur WHERE username = :u");
 $vStmt->execute(['u' => $vendeur]);
 $vendor = $vStmt->fetch(PDO::FETCH_ASSOC);
 if (!$vendor) {
-    die('Vendeur introuvable.');
+    header('Location: ./client-interface.php');
+    exit();
 }
 
 $rStmt = $bdd->prepare("SELECT client_username, rating, commentaire, created_at FROM review WHERE vendeur_username = :v ORDER BY created_at DESC, id_review DESC");
@@ -53,6 +55,21 @@ $req->execute(["u" => $vendeur]);
 $data = $req->fetch();
 
 $vendeur_photo = $data['idphoto'] ?? 'default.png';
+
+function normalizeProfilePhoto(?string $path): string {
+    $raw = trim((string)$path);
+    if ($raw === '') return '/files_profil/logo.png';
+    $raw = str_replace('\\', '/', $raw);
+    if (strpos($raw, '/files_profil/') === 0 || strpos($raw, '/files_profil/') === 0) {
+        return $raw;
+    }
+    if (strpos($raw, '../files_profil/') === 0) {
+        return '/' . ltrim(substr($raw, 3), '/');
+    }
+    return $raw;
+}
+
+$vendeur_photo_url = normalizeProfilePhoto($vendeur_photo);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -64,11 +81,11 @@ $vendeur_photo = $data['idphoto'] ?? 'default.png';
   <link rel="stylesheet" href="../css/vendor_profile.css">
 </head>
 <body>
-  <header class="top-header"><a href="../html/client-interface.php" class="logo"><img class="logo-img" src="../files_profil/logo.png" alt="Importy"></a></header>
+  <header class="top-header"><a href="/client-interface.php" class="logo"><img class="logo-img" src="/files_profil/logo.png" alt="Importy"></a></header>
   <main class="wrap">
     <section class="card">
       <div class="profile-header">
-  <img src="../files_profil/<?= htmlspecialchars($vendeur_photo) ?>" class="avatar">
+  <img src="<?= htmlspecialchars($vendeur_photo_url) ?>" class="avatar">
 
         <h2>
           Profil vendeur: <?= htmlspecialchars($vendeur) ?>
@@ -86,7 +103,7 @@ $vendeur_photo = $data['idphoto'] ?? 'default.png';
         <div class="review">
           <p>
             <strong><?= htmlspecialchars($rev['client_username']) ?></strong>
-            - <span class="review-stars"><?= str_repeat('★', (int)$rev['rating']) . str_repeat('☆', max(0, 5 - (int)$rev['rating'])) ?></span>
+            - <span class="review-stars"><?= str_repeat('â˜…', (int)$rev['rating']) . str_repeat('â˜†', max(0, 5 - (int)$rev['rating'])) ?></span>
             - <?= htmlspecialchars($rev['created_at']) ?>
           </p>
           <p><?= nl2br(htmlspecialchars($rev['commentaire'] ?? '')) ?></p>
@@ -98,10 +115,10 @@ $vendeur_photo = $data['idphoto'] ?? 'default.png';
     <?php if ($viewerRole === 'client'): ?>
     <section class="card">
       <h3>Laisser un nouvel avis</h3>
-      <form class="review-form" action="../php/leave_review_profile.php" method="post">
+      <form class="review-form" action="/php/leave_review_profile.php" method="post">
         <input type="hidden" name="vendeur_username" value="<?= htmlspecialchars($vendeur) ?>">
         <select name="id_deal" required>
-          <option value="">Selectionner le deal concerné</option>
+          <option value="">Selectionner le deal concernÃ©</option>
           <?php foreach ($eligibleDeals as $d): ?>
             <option value="<?= (int)$d['id_deal'] ?>">
               Deal #<?= (int)$d['id_deal'] ?> - <?= htmlspecialchars($d['nom_produit']) ?> (<?= htmlspecialchars($d['created_at']) ?>)
@@ -120,3 +137,4 @@ $vendeur_photo = $data['idphoto'] ?? 'default.png';
   </main>
 </body>
 </html>
+

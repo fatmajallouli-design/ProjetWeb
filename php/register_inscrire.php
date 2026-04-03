@@ -10,7 +10,7 @@ if (empty($username) || empty($password) || empty($role)) {
     exit();
 }
 
-require_once("connexionBD.php");
+require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 
 // Vérifier si le compte existe déjà
@@ -45,7 +45,7 @@ if ($role === 'client') {
     ]);
 
     $_SESSION['user'] = ['username' => $username, 'role' => $role];
-    header("Location: ../html/client-interface.php");
+    header("Location: /client-interface.php");
     exit();
 } elseif ($role === 'vendeur') {
     $req = $bdd->prepare("INSERT INTO vendeur (username, email, adresse, num_tel, idphoto, password) VALUES (:username, :email, :adresse, :num_tel, :idphoto, :password)");
@@ -69,3 +69,4 @@ if ($role === 'client') {
 
 
 ?>
+

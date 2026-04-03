@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 session_start();
 
-require_once("../php/connexionBD.php");
+require_once(__DIR__ . '/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
@@ -45,7 +45,7 @@ if (!$produit) {
     <p><strong>Stock :</strong> <?= ((int)$produit['quantite'] > 0) ? ((int)$produit['quantite'] . ' disponible(s)') : 'Rupture de stock' ?></p>
 
     <div class="detail-actions">
-        <form action="../php/add_to_panier.php" method="post" id="detailAddToCartForm">
+        <form action="/php/add_to_panier.php" method="post" id="detailAddToCartForm">
             <input type="hidden" name="id_produit" value="<?= (int) $produit['id_produit'] ?>">
             <input type="hidden" name="redirect_to" value="../html/details.php?id=<?= (int) $produit['id_produit'] ?>&return_to=<?= urlencode($returnTo) ?>">
             <button type="submit" <?= ((int)$produit['quantite'] <= 0) ? 'disabled' : '' ?>><?= ((int)$produit['quantite'] <= 0) ? 'Indisponible' : 'Ajouter au panier' ?></button>

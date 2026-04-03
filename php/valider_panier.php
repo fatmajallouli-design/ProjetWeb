@@ -2,11 +2,11 @@
 session_start();
 
 if (empty($_SESSION['user']['username'])) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
-require_once("connexionBD.php");
+require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 
@@ -23,7 +23,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (empty($items)) {
     $_SESSION['panier_error'] = 'Votre panier est vide.';
-    header('Location: ../html/panier.php');
+    header('Location: /panier.php');
     exit();
 }
 
@@ -87,5 +87,7 @@ try {
     $_SESSION['panier_error'] = 'Erreur lors de la validation du panier : ' . $e->getMessage();
 }
 
-header('Location: ../html/panier.php');
+header('Location: /panier.php');
 exit();
+
+

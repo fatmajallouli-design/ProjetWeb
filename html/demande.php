@@ -1,3 +1,10 @@
+﻿<?php
+session_start();
+if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'client')) {
+    header('Location: /login.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,8 +19,18 @@
 <div class="card">
 
   <div class="top-actions">
-    <a class="home-button" href="../html/client-interface.php">Accueil</a>
+    <a class="home-button" href="/client-interface.php">Accueil</a>
   </div>
+
+<?php if (!empty($_SESSION['demande_error'])): ?>
+  <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['demande_error']) ?></div>
+  <?php unset($_SESSION['demande_error']); ?>
+<?php endif; ?>
+
+<?php if (!empty($_SESSION['demande_success'])): ?>
+  <div class="alert alert-success"><?= htmlspecialchars($_SESSION['demande_success']) ?></div>
+  <?php unset($_SESSION['demande_success']); ?>
+<?php endif; ?>
 
   <div class="title">demander produit</div>
 
@@ -23,7 +40,7 @@
     Photo
   </div>
 
-  <form class="form" action="../php/demande.php" method="POST" enctype="multipart/form-data">
+  <form class="form" action="/php/demande.php" method="POST" enctype="multipart/form-data">
 
     <input type="file" name="image" id="imageInput" hidden>
 

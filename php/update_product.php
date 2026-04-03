@@ -1,11 +1,11 @@
 <?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'vendeur')) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
-require_once('connexionBD.php');
+require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 
@@ -19,7 +19,7 @@ $description = trim($_POST['description'] ?? '');
 
 if ($idProduit <= 0 || $nom === '' || $prix <= 0) {
     $_SESSION['product_error'] = 'DonnÃ©es du produit invalides.';
-    header('Location: ../php/page_vendeur.php');
+    header('Location: /php/page_vendeur.php');
     exit();
 }
 
@@ -29,26 +29,35 @@ $produit = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$produit) {
     $_SESSION['product_error'] = 'Produit non trouvÃ© ou accÃ¨s refusÃ©.';
-    header('Location: ../php/page_vendeur.php');
+    header('Location: /php/page_vendeur.php');
     exit();
 }
 
 $imagePath = $produit['image_path'];
-if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-    $targetDir = realpath(__DIR__ . "/../files_produit");
-    if ($targetDir === false) {
-        $targetDir = __DIR__ . "/../files_produit";
-        if (!is_dir($targetDir)) {
-            @mkdir($targetDir, 0777, true);
+$imageError = '';
+if (isset($_FILES['image'])) {
+    if ($_FILES['image']['error'] === UPLOAD_ERR_NO_FILE) {
+        // rien à faire, conserve l'image existante
+    } elseif ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+        $imageError = 'Erreur d\u00e9pot d\u2019image (code ' . (int)$_FILES['image']['error'] . ').';
+    } else {
+        $targetDir = realpath(__DIR__ . "/../files_produit");
+        if ($targetDir === false) {
+            $targetDir = __DIR__ . "/../files_produit";
+            if (!is_dir($targetDir)) {
+                @mkdir($targetDir, 0777, true);
+            }
         }
-    }
 
-    $fileName = uniqid() . "_" . basename($_FILES['image']['name']);
-    $absoluteTarget = rtrim($targetDir, "/\\") . DIRECTORY_SEPARATOR . $fileName;
-    $relativeTarget = "../files_produit/" . $fileName;
+        $fileName = uniqid() . "_" . basename($_FILES['image']['name']);
+        $absoluteTarget = rtrim($targetDir, "/\\") . DIRECTORY_SEPARATOR . $fileName;
+        $relativeTarget = "/files_produit/" . $fileName;
 
-    if (@move_uploaded_file($_FILES['image']['tmp_name'], $absoluteTarget)) {
-        $imagePath = $relativeTarget;
+        if (@move_uploaded_file($_FILES['image']['tmp_name'], $absoluteTarget)) {
+            $imagePath = $relativeTarget;
+        } else {
+            $imageError = 'Impossible de copier l\u2019image sur le serveur.';
+        }
     }
 }
 
@@ -64,6 +73,12 @@ $update->execute([
     'vendeur' => $vendeur,
 ]);
 
-$_SESSION['product_success'] = 'Produit mis Ã  jour avec succÃ¨s.';
-header('Location: ../php/page_vendeur.php');
+if ($imageError !== '') {
+    $_SESSION['product_error'] = "Produit mis à jour, mais : $imageError";
+} else {
+    $_SESSION['product_success'] = 'Produit mis à jour avec succès.';
+}
+header('Location: /php/page_vendeur.php');
 exit();
+
+

@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'client')) {
     header('Location: ./login.php');
     exit();
 }
-require_once('../php/connexionBD.php');
+require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 $client = $_SESSION['user']['username'];
@@ -26,7 +26,7 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
 <header class="top-header">
     <div class="header-left">
         <a href="client-interface.php" class="logo">
-            <img src="../files_profil/logo.png" alt="Importy" class="logo-img">
+            <img src="/files_profil/logo.png" alt="Importy" class="logo-img">
         </a>
     </div>
 
@@ -35,7 +35,7 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div class="header-right">
-        <a href="client-interface.php" class="header-btn retour-btn">← Retour à l’interface client</a>
+        <a href="client-interface.php" class="header-btn retour-btn">â† Retour Ã  lâ€™interface client</a>
     </div>
 </header>
   <main class="notif-wrap">
@@ -45,7 +45,7 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
         <h3><?= htmlspecialchars($r['nom_produit']) ?></h3>
         <p class="notif-meta">
           Vendeur:
-          <a class="vendor-link" href="./vendor_profile.php?vendeur=<?= urlencode($r['vendeur_username']) ?>">
+          <a class="vendor-link" href="/vendor_profile.php?vendeur=<?= urlencode($r['vendeur_username']) ?>">
             <?= htmlspecialchars($r['vendeur_username']) ?>
           </a>
           | Prix: <?= htmlspecialchars($r['prix_propose']) ?> TND
@@ -54,15 +54,15 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
         <p><?= nl2br(htmlspecialchars($r['message'])) ?></p>
         <div class="notif-actions">
           <?php if (trim(strtolower($r['status'])) !== 'accepte'): ?>
-            <form method="POST" action="../php/accepter_offre.php" style="display:inline;">
+            <form method="POST" action="/php/accepter_offre.php" style="display:inline;">
               <input type="hidden" name="id_deal" value="<?= (int)$r['id_deal'] ?>">
               <button type="submit" class="btn-accept">Accepter offre</button>
             </form>
           <?php else: ?>
-            <span class="status-label">Offre acceptée</span>
+            <span class="status-label">Offre acceptÃ©e</span>
           <?php endif; ?>
-          <a href="./messages.php?deal=<?= (int)$r['id_deal'] ?>">Ouvrir chat</a>
-          <a href="./vendor_profile.php?vendeur=<?= urlencode($r['vendeur_username']) ?>">Voir profil vendeur</a>
+          <a href="/messages.php?deal=<?= (int)$r['id_deal'] ?>">Ouvrir chat</a>
+          <a href="/vendor_profile.php?vendeur=<?= urlencode($r['vendeur_username']) ?>">Voir profil vendeur</a>
         </div>
       </article>
     <?php endforeach; ?>
@@ -70,3 +70,4 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
   </main>
 </body>
 </html>
+

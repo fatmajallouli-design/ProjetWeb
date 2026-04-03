@@ -1,5 +1,5 @@
 <?php
-require_once("connexionBD.php");
+require_once(__DIR__ . "/connexionBD.php");
 
 $bdd = ConnexionBD::getInstance();
 

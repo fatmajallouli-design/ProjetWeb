@@ -1,11 +1,11 @@
-<?php
+﻿<?php
 session_start();
 if (empty($_SESSION['user']['username'])) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
-require_once('../php/connexionBD.php');
+require_once(__DIR__ . '/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 $username = $_SESSION['user']['username'];
 $role = $_SESSION['user']['role'] ?? 'client';
@@ -48,9 +48,11 @@ $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
 
             <div class="account-actions">
-                <a href="../html/client-interface.php" class="secondary-btn">Retour a l'interface</a>
+                <a href="/client-interface.php" class="secondary-btn">Retour a l'interface</a>
             </div>
         </section>
     </main>
 </body>
 </html>
+
+

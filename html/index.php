@@ -1,9 +1,61 @@
 <?php
-require_once('../php/connexionBD.php');
+require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 
 $produitStmt = $bdd->query('SELECT * FROM produit ORDER BY id_produit DESC LIMIT 12');
 $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
+
+function resolveProductImagePath(?string $path): string {
+    $raw = trim((string)$path);
+    if ($raw === '') {
+        return '/files_profil/logo.png';
+    }
+    $normalized = str_replace('\\', '/', $raw);
+    $normalized = preg_replace('#^\.\./+#', '/', $normalized);
+
+    if (strpos($normalized, 'files_produit/') === 0 || strpos($normalized, 'files_produits/') === 0) {
+        $normalized = '/' . ltrim($normalized, '/');
+    }
+
+    $fixedPaths = [];
+    if (strpos($normalized, '/files_produit/') === 0 || strpos($normalized, '/files_produits/') === 0) {
+        $fixedPaths[] = $normalized;
+    }
+    if (strpos($normalized, '/files_produit/') === 0) {
+        $fixedPaths[] = str_replace('/files_produit/', '/files_produits/', $normalized);
+    } elseif (strpos($normalized, '/files_produits/') === 0) {
+        $fixedPaths[] = str_replace('/files_produits/', '/files_produit/', $normalized);
+    }
+
+    $root = realpath(__DIR__ . '/..');
+    foreach ($fixedPaths as $candidate) {
+        if ($candidate === '') continue;
+        $local = $root . $candidate;
+        if (is_file($local)) {
+            return $candidate;
+        }
+    }
+
+    $basename = pathinfo($normalized, PATHINFO_BASENAME);
+    if ($basename !== '') {
+        $dirsToTry = [
+            $root . '/files_produit',
+            $root . '/files_produits',
+            $root . '/files_demande',
+        ];
+        foreach ($dirsToTry as $dir) {
+            if (!is_dir($dir)) continue;
+            foreach (glob($dir . '/*' . $basename . '*') as $match) {
+                if (is_file($match)) {
+                    $publicDir = str_replace($root, '', dirname($match));
+                    return rtrim($publicDir, '/') . '/' . basename($match);
+                }
+            }
+        }
+    }
+
+    return '/files_profil/logo.png';
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -24,7 +76,7 @@ $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
         </button>
 
         <a class="logo" aria-label="Importy - Accueil">
-            <img class="logo-img" src="../files_profil/logo.png" alt="Importy">
+            <img class="logo-img" src="/files_profil/logo.png" alt="Importy">
         </a>
 
         <div class="search">
@@ -48,7 +100,7 @@ $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
                 <span>Notification</span>
             </a>
 
-            <a href="../html/login.php" class="icon-item">
+            <a href="login.php" class="icon-item">
                 <i class="fa-regular fa-user" style="color:#74C0FC;"></i>
                 <span>Se connecter</span>
             </a>
@@ -60,15 +112,15 @@ $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="side-menu" id="sideMenu">
         <div class="side-header">
             <a class="brand" aria-label="Importy - Accueil">
-                <img class="brand-img" src="../files_profil/logo.png" alt="Importy">
+                <img class="brand-img" src="/files_profil/logo.png" alt="Importy">
             </a>
             <i class="fa-solid fa-xmark" id="closeMenu"></i>
         </div>
 
         <div class="section">
             <h4>Compte</h4>
-            <a href="../html/signup.php"><i class="fa-solid fa-user"></i> Sign up</a>
-            <a href="../html/login.php"><i class="fa-regular fa-user"></i> Login</a>
+            <a href="signup.php"><i class="fa-solid fa-user"></i> Sign up</a>
+            <a href="login.php"><i class="fa-regular fa-user"></i> Login</a>
         </div>
     </div>
 
@@ -86,8 +138,9 @@ $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
                             <article class="product-card searchable-product">
                                 <span class="product-badge"><?php echo htmlspecialchars($prod['categorie'] ?? 'Sans categorie'); ?></span>
                                 <div class="product-image">
-                                    <?php if (!empty($prod['image_path'])): ?>
-                                        <img src="<?php echo htmlspecialchars($prod['image_path']); ?>" alt="<?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?>">
+                                    <?php $productImage = resolveProductImagePath($prod['image_path'] ?? ''); ?>
+                                    <?php if ($productImage !== ''): ?>
+                                        <img src="<?php echo htmlspecialchars($productImage); ?>" alt="<?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?>">
                                     <?php else: ?>
                                         <i class="fa-solid fa-box"></i>
                                     <?php endif; ?>
@@ -97,7 +150,7 @@ $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
                                 <p>Stock : <?php echo ((int)($prod['quantite'] ?? 0) > 0) ? ((int)$prod['quantite'] . ' disponible(s)') : 'Rupture de stock'; ?></p>
                                 <p><?php echo htmlspecialchars($prod['description'] ?? 'Aucune description.'); ?></p>
                                 <div class="product-actions">
-                                    <a class="small-btn" href="details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('../html/index.php'); ?>">Voir produit</a>
+                                    <a class="small-btn" href="details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('index.php'); ?>">Voir produit</a>
                                     <button class="primary-btn product-cart-btn open-index-sidebar" type="button">Ajouter au panier</button>
                                 </div>
                             </article>

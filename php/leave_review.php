@@ -1,10 +1,10 @@
 <?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'client')) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
-require_once('connexionBD.php');
+require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 
@@ -22,7 +22,7 @@ $q = $bdd->prepare("SELECT client_username, vendeur_username FROM deal_request W
 $q->execute(['id' => $idDeal]);
 $row = $q->fetch(PDO::FETCH_ASSOC);
 if (!$row || $row['client_username'] !== $client) {
-    header('Location: ../html/messages.php');
+    header('Location: /messages.php');
     exit();
 }
 
@@ -37,3 +37,5 @@ $ins->execute([
 header('Location: ../html/messages.php?deal=' . $idDeal);
 exit();
 ?>
+
+

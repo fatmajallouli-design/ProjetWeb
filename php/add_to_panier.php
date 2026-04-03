@@ -18,10 +18,10 @@ function respondPanier($payload, $isAjax)
 if (empty($_SESSION['user']['username'])) {
     respondPanier([
         'success' => false,
-        'redirect' => '../html/login.php',
+        'redirect' => '/login.php',
         'message' => 'Veuillez vous connecter.'
     ], $isAjax);
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
@@ -31,7 +31,7 @@ if (($_SESSION['user']['role'] ?? 'client') !== 'client') {
         'redirect' => '../html/index.php',
         'message' => 'Action reservee au client.'
     ], $isAjax);
-    header('Location: ../html/index.php');
+    header('Location: /index.php');
     exit();
 }
 
@@ -51,7 +51,7 @@ if ($idProduit <= 0) {
     exit();
 }
 
-require_once('connexionBD.php');
+require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 $username = $_SESSION['user']['username'];
 
@@ -106,3 +106,6 @@ respondPanier([
 
 header('Location: ' . $redirectTo);
 exit();
+
+
+

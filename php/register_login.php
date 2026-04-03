@@ -49,7 +49,7 @@ try {
         throw new Exception("Rôle invalide.");
     }
 
-    require_once("connexionBD.php");
+    require_once(__DIR__ . "/connexionBD.php");
     $bdd = ConnexionBD::getInstance();
 
  
@@ -87,7 +87,7 @@ try {
         ]);
 
         unset($_SESSION['old']);
-        header("Location: ../html/client-interface.php");
+        header("Location: /client-interface.php");
         exit();
     } else {
         $req = $bdd->prepare("INSERT INTO vendeur(username,email,adresse,num_tel,idphoto,password)
@@ -112,3 +112,5 @@ try {
     exit();
 }
 ?>
+
+

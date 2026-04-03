@@ -1,11 +1,11 @@
 <?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'client')) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
-require_once('connexionBD.php');
+require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 
@@ -16,14 +16,14 @@ $rating = (int)($_POST['rating'] ?? 0);
 $commentaire = trim($_POST['commentaire'] ?? '');
 
 if ($vendeur === '' || $idDeal <= 0 || $rating < 1 || $rating > 5) {
-    header('Location: ../html/vendor_profile.php?vendeur=' . urlencode($vendeur));
+    header('Location: /vendor_profile.php?vendeur=' . urlencode($vendeur));
     exit();
 }
 
 $exists = $bdd->prepare("SELECT username FROM vendeur WHERE username = :u");
 $exists->execute(['u' => $vendeur]);
 if (!$exists->fetch(PDO::FETCH_ASSOC)) {
-    header('Location: ../html/client-interface.php');
+    header('Location: /login.php');
     exit();
 }
 
@@ -40,7 +40,7 @@ $dealCheck->execute([
     'vendeur' => $vendeur
 ]);
 if (!$dealCheck->fetch(PDO::FETCH_ASSOC)) {
-    header('Location: ../html/vendor_profile.php?vendeur=' . urlencode($vendeur));
+    header('Location: /vendor_profile.php?vendeur=' . urlencode($vendeur));
     exit();
 }
 
@@ -48,7 +48,7 @@ if (!$dealCheck->fetch(PDO::FETCH_ASSOC)) {
 $dup = $bdd->prepare("SELECT id_review FROM review WHERE id_deal = :id AND client_username = :client LIMIT 1");
 $dup->execute(['id' => $idDeal, 'client' => $client]);
 if ($dup->fetch(PDO::FETCH_ASSOC)) {
-    header('Location: ../html/vendor_profile.php?vendeur=' . urlencode($vendeur));
+    header('Location: /vendor_profile.php?vendeur=' . urlencode($vendeur));
     exit();
 }
 
@@ -61,6 +61,9 @@ $ins->execute([
     'm' => $commentaire
 ]);
 
-header('Location: ../html/vendor_profile.php?vendeur=' . urlencode($vendeur));
+header('Location: /vendor_profile.php?vendeur=' . urlencode($vendeur));
 exit();
 ?>
+
+
+

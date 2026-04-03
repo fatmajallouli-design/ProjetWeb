@@ -1,8 +1,12 @@
 body { background: var(--bg-soft);
     color: var(--text); }
-.msg-wrap { max-width:980px; margin:24px auto; padding:0 16px; }
-.conv-item { background:#fff; border:1px solid #e8e8ef; border-radius:12px; padding:12px; margin-bottom:10px; }
-.chat-box { background:#fff; border:1px solid #e8e8ef; border-radius:14px; padding:12px; max-height:420px; overflow:auto; }
+.msg-wrap { max-width:980px; margin:24px auto; padding:0 16px; display:grid; grid-template-columns: 320px 1fr; gap:16px; align-items:start; }
+.conversations-list { background:#fbfbff; padding:12px; border:1px solid #e8e8ef; border-radius:14px; max-height:760px; overflow:auto; }
+.conversation-detail { background:#fbfbff; padding:12px; border:1px solid #e8e8ef; border-radius:14px; max-height:760px; overflow:auto; }
+.conv-item { background:#fff; border:1px solid #e8e8ef; border-radius:12px; padding:12px; margin-bottom:10px; transition: all 0.2s ease; }
+.conv-item.active { border-color:#6a5cff; background:#eef2ff; }
+.conv-item .last-preview { font-size:0.9rem; color:#666; margin-top:4px; }
+.chat-box { background:#fff; border:1px solid #e8e8ef; border-radius:14px; padding:12px; max-height:64vh; overflow:auto; }
 .msg-line { margin-bottom:8px; padding:10px; border-radius:10px; }
 .msg-me { background:#e9fff1; }
 .msg-other { background:#f1f3ff; }

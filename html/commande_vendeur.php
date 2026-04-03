@@ -1,16 +1,16 @@
-<?php
+﻿<?php
 session_start();
 
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'vendeur') {
-    die("Accès refusé");
+    die("AccÃ¨s refusÃ©");
 }
 
-require_once("../php/connexionBD.php");
+require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 
 $vendeur = $_SESSION['user']['username'];
 
-// récupérer commandes du vendeur
+// rÃ©cupÃ©rer commandes du vendeur
 $req = $bdd->prepare("
 SELECT 
   c.*, 
@@ -44,28 +44,28 @@ $commandes = $req->fetchAll();
             <i class="fa-solid fa-align-justify"></i>
         </button>
 
-        <a class="logo" href="../php/page_vendeur.php" aria-label="Importy - Espace vendeur">
-            <img class="logo-img" src="../files_profil/logo.png" alt="Importy">
+        <a class="logo" href="/php/page_vendeur.php" aria-label="Importy - Espace vendeur">
+            <img class="logo-img" src="/files_profil/logo.png" alt="Importy">
         </a>
 
         <div class="icons quick-actions">
-             <a href="../html/commande_vendeur.php" class="icon-item">
+             <a href="/commande_vendeur.php" class="icon-item">
                 <i class="fa-solid fa-handshake" style="color:#B197FC;"></i>
                 <span>Mes commandes</span>
             </a>
-            <a href="../html/vendor_offers.php" class="icon-item">
+            <a href="/vendor_offers.php" class="icon-item">
                 <i class="fa-solid fa-paper-plane" style="color:#B197FC;"></i>
                 <span>Mes offres</span>
             </a>
-            <a href="../html/messages.php" class="icon-item">
+            <a href="/messages.php" class="icon-item">
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
             </a>
-            <a href="../html/mon%20compte.php" class="icon-item">
+            <a href="/mon%20compte.php" class="icon-item">
                 <i class="fa-regular fa-user" style="color:#74C0FC;"></i>
                 <span>Mon compte</span>
             </a>
-            <a href="../php/logout.php" class="icon-item">
+            <a href="/php/logout.php" class="icon-item">
                 <i class="fa-solid fa-right-from-bracket" style="color:#74C0FC;"></i>
                 <span>Logout</span>
             </a>
@@ -92,7 +92,7 @@ $commandes = $req->fetchAll();
     <p><strong>Client :</strong> <?= htmlspecialchars($cmd['client']) ?></p>
     <p><strong>Description :</strong> <?= htmlspecialchars($cmd['description']) ?></p>
 
-    <!-- 🔥 LIEN PRODUIT -->
+    <!-- ðŸ”¥ LIEN PRODUIT -->
     <?php if (!empty($cmd['lien_produit'])): ?>
       <a href="<?= htmlspecialchars($cmd['lien_produit']) ?>" target="_blank" class="btn-link">
         Voir produit
@@ -101,14 +101,14 @@ $commandes = $req->fetchAll();
 
     <p><strong>Statut :</strong> <?= htmlspecialchars($cmd['statut']) ?></p>
 
-    <form method="POST" action="../php/update_commande.php">
+    <form method="POST" action="/php/update_commande.php">
       <input type="hidden" name="id" value="<?= $cmd['id'] ?>">
 
       <select name="statut" onchange="this.form.submit()">
         <option value="en cours">En cours</option>
-        <option value="livre">Livré</option>
-        <option value="termine">Terminé</option>
-        <option value="annule">Annulé</option>
+        <option value="livre">LivrÃ©</option>
+        <option value="termine">TerminÃ©</option>
+        <option value="annule">AnnulÃ©</option>
       </select>
     </form>
   </div>

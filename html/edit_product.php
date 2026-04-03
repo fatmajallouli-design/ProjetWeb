@@ -1,11 +1,11 @@
-<?php
+﻿<?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'vendeur')) {
-    header('Location: ../html/login.php');
+    header('Location: /login.php');
     exit();
 }
 
-require_once('../php/connexionBD.php');
+require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 ConnexionBD::ensureWorkflowTables();
 
@@ -13,7 +13,7 @@ $vendeur = $_SESSION['user']['username'];
 $idProduit = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
 if ($idProduit <= 0) {
-    header('Location: ../php/page_vendeur.php');
+    header('Location: /php/page_vendeur.php');
     exit();
 }
 
@@ -22,7 +22,7 @@ $stmt->execute(['id' => $idProduit, 'vendeur' => $vendeur]);
 $produit = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$produit) {
-    header('Location: ../php/page_vendeur.php');
+    header('Location: /php/page_vendeur.php');
     exit();
 }
 ?>
@@ -40,9 +40,9 @@ if (!$produit) {
         <section class="content-card">
             <div class="section-head">
                 <h2>Modifier le produit</h2>
-                <a href="../php/page_vendeur.php" class="secondary-btn">Retour</a>
+                <a href="/php/page_vendeur.php" class="secondary-btn">Retour</a>
             </div>
-            <form action="../php/update_product.php" method="post" enctype="multipart/form-data" class="account-form">
+            <form action="/php/update_product.php" method="post" enctype="multipart/form-data" class="account-form">
                 <input type="hidden" name="id_produit" value="<?= (int)$produit['id_produit'] ?>">
                 <label>
                     Nom du produit
@@ -53,17 +53,17 @@ if (!$produit) {
                     <input type="number" step="0.01" min="0.01" name="prix" value="<?= htmlspecialchars($produit['prix']) ?>" required>
                 </label>
                 <label>
-                    Quantité
+                    QuantitÃ©
                     <input type="number" name="quantite" min="0" value="<?= (int) ($produit['quantite'] ?? 0) ?>" required>
                 </label>
                 <label>
-                    Catégorie
+                    CatÃ©gorie
                     <select name="categorie" required>
                         <option value="tous" <?= $produit['categorie'] === 'tous' ? 'selected' : '' ?>>Tous</option>
                         <option value="femme" <?= $produit['categorie'] === 'femme' ? 'selected' : '' ?>>Femme</option>
                         <option value="homme" <?= $produit['categorie'] === 'homme' ? 'selected' : '' ?>>Homme</option>
                         <option value="maison" <?= $produit['categorie'] === 'maison' ? 'selected' : '' ?>>Maison</option>
-                        <option value="beaute" <?= $produit['categorie'] === 'beaute' ? 'selected' : '' ?>>Beauté</option>
+                        <option value="beaute" <?= $produit['categorie'] === 'beaute' ? 'selected' : '' ?>>BeautÃ©</option>
                     </select>
                 </label>
                 <label>
@@ -85,3 +85,5 @@ if (!$produit) {
     </main>
 </body>
 </html>
+
+

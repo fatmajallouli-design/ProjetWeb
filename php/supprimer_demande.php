@@ -5,7 +5,7 @@ if (!isset($_SESSION['user'])) {
     die("Utilisateur non connecté");
 }
 
-require_once("connexionBD.php");
+require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 
 $id = $_GET['id'] ?? null;
