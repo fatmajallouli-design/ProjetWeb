@@ -10,6 +10,20 @@ $bdd = ConnexionBD::getInstance();
 $username = $_SESSION['user']['username'];
 $role = $_SESSION['user']['role'] ?? 'client';
 
+$notifCount = 0;
+$messageCount = 0;
+try {
+    $stmt = $bdd->prepare("SELECT COUNT(*) AS c FROM deal_request WHERE client_username = :u AND etat = 'en attente'");
+    $stmt->execute(['u' => $username]);
+    $notifCount = (int)($stmt->fetchColumn() ?? 0);
+
+    $stmt = $bdd->prepare("SELECT COUNT(*) AS c FROM message WHERE receiver_username = :u");
+    $stmt->execute(['u' => $username]);
+    $messageCount = (int)($stmt->fetchColumn() ?? 0);
+} catch (PDOException $e) {
+    // ignore count errors, keep as 0
+}
+
 // if ($role === 'client') {
 //     $userStmt = $bdd->prepare('SELECT idphoto FROM client WHERE username = :username');
 // } else {
@@ -149,11 +163,17 @@ function resolveProductImagePath(?string $path): string {
             <a href="/notifications.php" class="icon-item">
                 <i class="fa-solid fa-bell" style="color:#74C0FC;"></i>
                 <span>Notification</span>
+                <?php if ($notifCount > 0): ?>
+                    <span class="badge"><?= htmlspecialchars($notifCount) ?></span>
+                <?php endif; ?>
             </a>
 
             <a href="/messages.php" class="icon-item">
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
+                <?php if ($messageCount > 0): ?>
+                    <span class="badge"><?= htmlspecialchars($messageCount) ?></span>
+                <?php endif; ?>
             </a>
         </div>
     </header>
