@@ -31,27 +31,41 @@ if (!$produit) {
 <link rel="stylesheet" href="../css/details.css">
 </head>
 <body>
-<div class="cart-toast" id="cartToast">Produit ajoute dans le panier.</div>
 
-<div class="box">
-    <?php if (!empty($produit['image_path'])): ?>
-        <img src="<?= htmlspecialchars($produit['image_path']) ?>" alt="<?= htmlspecialchars($produit['nom_produit']) ?>">
-    <?php endif; ?>
 
-    <span class="detail-badge"><?= htmlspecialchars($produit['categorie'] ?? 'Sans categorie') ?></span>
-    <h2><?= htmlspecialchars($produit['nom_produit']) ?></h2>
-    <p><strong>Prix :</strong> <?= htmlspecialchars($produit['prix']) ?> DT</p>
-    <p><?= htmlspecialchars($produit['description']) ?></p>
-    <p><strong>Stock :</strong> <?= ((int)$produit['quantite'] > 0) ? ((int)$produit['quantite'] . ' disponible(s)') : 'Rupture de stock' ?></p>
+<div class="product-page">
 
-    <div class="detail-actions">
-        <form action="/php/add_to_panier.php" method="post" id="detailAddToCartForm">
-            <input type="hidden" name="id_produit" value="<?= (int) $produit['id_produit'] ?>">
-            <input type="hidden" name="redirect_to" value="../html/details.php?id=<?= (int) $produit['id_produit'] ?>&return_to=<?= urlencode($returnTo) ?>">
-            <button type="submit" <?= ((int)$produit['quantite'] <= 0) ? 'disabled' : '' ?>><?= ((int)$produit['quantite'] <= 0) ? 'Indisponible' : 'Ajouter au panier' ?></button>
-        </form>
-        <a class="back-link" href="<?= htmlspecialchars($returnTo) ?>">Retour</a>
+  <div class="product-left">
+    <img src="<?= htmlspecialchars($produit['image_path']) ?>" alt="">
+  </div>
+
+  <div class="product-right">
+
+    <span class="category"><?= htmlspecialchars($produit['categorie']) ?></span>
+
+    <h1><?= htmlspecialchars($produit['nom_produit']) ?></h1>
+
+    <p class="price"><strong>prix: </strong><?= htmlspecialchars($produit['prix']) ?> DT</p>
+
+
+    
+
+    <!-- BOUTON -->
+    <form action="../html/login.php" method="post">
+      <input type="hidden" name="id_produit" value="<?= $produit['id_produit'] ?>">
+
+      <button class="btn-cart"
+        <?= ((int)$produit['quantite'] <= 0) ? 'disabled' : '' ?>>
+        <?= ((int)$produit['quantite'] <= 0) ? 'Indisponible' : 'Ajouter au panier' ?>
+      </button>
+    </form>
+    <p class="toggle-desc" onclick="toggleDescription()">Voir la description</p>
+    <div class="description" id="descriptionBox">
+      <?= htmlspecialchars($produit['description']) ?>
     </div>
+
+  </div>
+
 </div>
 
 <script>
@@ -94,7 +108,19 @@ if (detailAddToCartForm) {
       showCartToast('Erreur lors de l ajout au panier.');
     }
   });
+
 }
+
+function toggleDescription() {
+  let box = document.getElementById("descriptionBox");
+
+  if (box.style.display === "block") {
+    box.style.display = "none";
+  } else {
+    box.style.display = "block";
+  }
+}
+
 </script>
 </body>
 </html>

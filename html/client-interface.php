@@ -125,7 +125,17 @@ function resolveProductImagePath(?string $path): string {
 </head>
 <body>
     <div class="cart-toast" id="cartToast">Produit ajoute dans le panier.</div>
-
+    <div class="top-banner">
+        <div class="banner-track">
+        <span>livraison sur toute la <strong>Tunisie</strong>• </span>
+        <span>Chez nous,poster votre demandes et chercher la meilleure offre pour vous</span>
+        <span>livraison sur toute la <strong>Tunisie</strong> •</span>
+        <span>Chez nous,poster votre demandes et chercher la meilleure offre pour vous</span>
+        <span>livraison sur toute la <strong>Tunisie</strong> •</span>
+        <span>Chez nous,poster votre demandes et chercher la meilleure offre pour vous</span>
+        
+         </div>
+    </div>
     <header class="top-header simple-client-header">
         <button id="menuBtn" class="menu-btn" type="button" aria-label="Ouvrir le menu">
             <i class="fa-solid fa-align-justify"></i>
@@ -141,26 +151,26 @@ function resolveProductImagePath(?string $path): string {
         </div>
 
         <div class="icons quick-actions">
-            <a href="/mon%20compte.php" class="icon-item">
+            <a href="../html/mon compte.php" class="icon-item">
                 <i class="fa-regular fa-user" style="color:#B197FC;"></i>
                 <span>Mon compte</span>
             </a>
 
-            <a href="/panier.php" class="icon-item">
+            <a href="../html/panier.php" class="icon-item">
                 <i class="fa-solid fa-bag-shopping" style="color:#B197FC;"></i>
                 <span>Panier</span>
             </a>
 
-            <a href="demande.php" class="icon-item">
+            <a href="../html/demande.php" class="icon-item">
                 <i class="fa-solid fa-plus" style="color:#74C0FC;"></i>
                 <span>Demande</span>
             </a>
-            <a href="/mes_demandes.php" class="icon-item">
+            <a href="../html/mes_demandes.php" class="icon-item">
                 <i class="fa-solid fa-list-check" style="color:#74C0FC;"></i>
                 <span>Mes demandes</span>
             </a>
 
-            <a href="/notifications.php" class="icon-item">
+            <a href="../html/notifications.php" class="icon-item">
                 <i class="fa-solid fa-bell" style="color:#74C0FC;"></i>
                 <span>Notification</span>
                 <?php if ($notifCount > 0): ?>
@@ -168,7 +178,7 @@ function resolveProductImagePath(?string $path): string {
                 <?php endif; ?>
             </a>
 
-            <a href="/messages.php" class="icon-item">
+            <a href="../html/messages.php" class="icon-item">
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
                 <?php if ($messageCount > 0): ?>
@@ -177,6 +187,9 @@ function resolveProductImagePath(?string $path): string {
             </a>
         </div>
     </header>
+    <div class="hero">
+    <img src="../files_profil/image.png" alt="promo" class="hero-img">
+    </div>
 
     <div class="overlay" id="overlay"></div>
 
@@ -192,13 +205,13 @@ function resolveProductImagePath(?string $path): string {
 
         <div class="section">
             <h4>Navigation</h4>
-            <a href="/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
-            <a href="/panier.php"><i class="fa-solid fa-bag-shopping"></i> Panier</a>
-            <a href="/demande.php"><i class="fa-solid fa-plus"></i> Demande</a>
-            <a href="/mes_demandes.php"><i class="fa-solid fa-list-check"></i> Mes demandes</a>
-            <a href="/notifications.php"><i class="fa-solid fa-bell"></i> Notification</a>
-            <a href="/messages.php"><i class="fa-solid fa-envelope"></i> Message</a>
-            <a href="/php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
+            <a href="../html/mon compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
+            <a href="../html/panier.php"><i class="fa-solid fa-bag-shopping"></i> Panier</a>
+            <a href="../html/demande.php"><i class="fa-solid fa-plus"></i> Demande</a>
+            <a href="../html/mes_demandes.php"><i class="fa-solid fa-list-check"></i> Mes demandes</a>
+            <a href="../html/notifications.php"><i class="fa-solid fa-bell"></i> Notification</a>
+            <a href="../html/messages.php"><i class="fa-solid fa-envelope"></i> Message</a>
+            <a href="../php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
         </div>
     </aside>
 
@@ -241,16 +254,9 @@ function resolveProductImagePath(?string $path): string {
                                     <?php endif; ?>
                                 </div>
                                 <h3><?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?></h3>
-                                <p>
-                                    Vendeur :
-                                    <a href="/vendor_profile.php?vendeur=<?php echo urlencode($prod['vendeur_username'] ?? ''); ?>">
-                                        <?php echo htmlspecialchars($prod['vendeur_username'] ?? 'Inconnu'); ?>
-                                    </a>
-                                </p>
-                                <p>Budget : <?php echo htmlspecialchars($prod['prix'] ?? '0'); ?> DT</p>
-                                <p>Stock : <?php echo ((int)$prod['quantite'] > 0) ? ((int)$prod['quantite'] . ' disponible(s)') : 'Rupture de stock'; ?></p>
-                                <p>Date : <?php echo htmlspecialchars($prod['created_at'] ?? ''); ?></p>
-                                <p><?php echo htmlspecialchars($prod['description'] ?? 'Aucune description.'); ?></p>
+                                
+                                <p><strong>Prix:</strong> : <?php echo htmlspecialchars($prod['prix'] ?? '0'); ?> DT</p>
+                                
                                 <div class="product-actions">
                                     <a class="small-btn" href="/php/produit_details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('/client-interface.php'); ?>">Voir produit</a>
                                     
@@ -270,7 +276,7 @@ function resolveProductImagePath(?string $path): string {
         </section>
     </main>
 
-    <a href="/panier.php" class="floating-cart-btn" aria-label="Voir le panier">
+    <a href="../html/panier.php" class="floating-cart-btn" aria-label="Voir le panier">
         <i class="fa-solid fa-bag-shopping"></i>
     </a>
 
@@ -362,6 +368,60 @@ function resolveProductImagePath(?string $path): string {
             });
         });
     </script>
+    <div class="about-site">
+     <h4><strong>A propos de nous</strong></h4>                               
+    <p>
+    Importy est un site de vente en ligne qui permet de découvrir et d’acheter
+     facilement différents produits dans plusieurs catégories comme la beauté, la mode,
+      l’électroménager ou encore les produits technologiques.
+       Le but est de proposer une plateforme simple et agréable à utiliser,
+        où l’utilisateur peut rechercher des articles.Ce qui distingue Importy,
+         c’est qu'avec cette platforme, les utilisateurs peuvent également poster des demandes spécifiques pour des produits qu’ils recherchent,
+         permettant ainsi aux vendeurs de proposer des offres personnalisées.
+    
+            Importy vise à offrir une expérience d’achat fluide et sécurisée, avec un large choix de produits
+            pour répondre aux attentes de tous les clients.
+           
+  </p>
+</div>
+
+    <div class="services">
+  
+    <div class="service">
+        <div class="icon"><i class="fa-solid fa-store"></i></div>
+            <div>
+                <h4>pour les vendeurs</h4>
+                <p>Proposez vos produits et gérez votre activité en toute simplicité.</p>
+            </div>
+    </div>
+
+    <div class="service">
+        <div class="icon"><i class="fa-solid fa-truck"></i></div>
+        <div>
+            <h4>Livraison standard offerte</h4>
+            <p>just verifier votre adresse dans le compte</p>
+            
+        </div>
+  </div>
+
+  <div class="service">
+    <div class="icon"><i class="fa-regular fa-credit-card"></i></div>
+    <div>
+      <h4>Paiements a la livraison</h4>
+      <p>vous payez le livreur lorsque vous recevez votre commande</p>
+      
+    </div>
+  </div>
+
+  <div class="service">
+    <div class="icon"><i class="fa-solid fa-undo"></i></div>
+    <div>
+      <h4>Retours</h4>
+      <p>sous 14 jours</p>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
 

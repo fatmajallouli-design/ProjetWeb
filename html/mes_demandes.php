@@ -30,7 +30,7 @@ $demandes = $req->fetchAll();
 <header class="top-header">
 
     <div class="header-left">
-        <a href="client-interface.php" class="logo">
+        <a href="../html/client-interface.php" class="logo">
             <img src="/files_profil/logo.png" alt="Importy" class="logo-img">
         </a>
     </div>
@@ -40,11 +40,11 @@ $demandes = $req->fetchAll();
     </div>
 
     <div class="header-right">
-        <a href="client-interface.php" class="header-btn retour-btn">â† Retour Ã  lâ€™interface client</a>
-        <a class="header-btn retour-btn" href="/demande.php">+ Ajouter une demande</a>
-        <a href="/mon%20compte.php" class="header-btn small-btn">Mon compte</a>
-        <a href="messages.php" class="header-btn small-btn">Messages</a>
-        <a href="notifications.php" class="header-btn small-btn">Notifications</a>
+        <a href="client-interface.php" class="header-btn retour-btn"> Retour l'interface client</a>
+        <a class="header-btn retour-btn" href="../html/demande.php">+ Ajouter une demande</a>
+        <a href="../html/mon compte.php" class="header-btn small-btn">Mon compte</a>
+        <a href="../html/messages.php" class="header-btn small-btn">Messages</a>
+        <a href="../html/notifications.php" class="header-btn small-btn">Notifications</a>
     </div>
 
 </header>

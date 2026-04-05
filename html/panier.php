@@ -54,7 +54,7 @@ foreach ($items as $item) {
 </div>
 
 <div class="header-right">
-    <a href="client-interface.php" class="header-btn retour-btn">â† Retour Ã  lâ€™interface client</a>
+    <a href="../html/client-interface.php" class="header-btn retour-btn">Retour à l'interface client</a>
 </header>
     <main class="panier-page">
         <section class="content-card panier-card">
@@ -118,12 +118,12 @@ foreach ($items as $item) {
                         <form action="/php/valider_panier.php" method="post" style="display:inline-block; margin-right:12px;">
                             <button type="submit" class="primary-btn">Valider le panier</button>
                         </form>
-                        <a href="/client-interface.php" class="secondary-btn">Retour</a>
+                        <a href="../html/client-interface.php" class="secondary-btn">Retour</a>
                     </div>
                 </div>
             <?php else: ?>
                 <p class="empty-products">Votre panier est vide.</p>
-                <a href="/client-interface.php" class="secondary-btn">Voir les produits</a>
+                <a href="../html/client-interface.php" class="secondary-btn">Voir les produits</a>
             <?php endif; ?>
         </section>
     </main>

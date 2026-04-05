@@ -120,7 +120,7 @@ if ($photoPath !== '') {
             </form>
 
             <div class="account-actions">
-                <a href="<?php echo ($role === 'vendeur') ? '../php/page_vendeur.php' : '/client-interface.php'; ?>" 
+                <a href="<?php echo ($role === 'vendeur') ? '../php/page_vendeur.php' : '../html/client-interface.php'; ?>" 
    class="secondary-btn">
    Retour
 </a>

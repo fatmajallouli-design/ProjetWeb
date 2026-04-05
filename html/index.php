@@ -69,8 +69,19 @@ function resolveProductImagePath(?string $path): string {
 </head>
 <body>
     <div class="cart-toast" id="cartToast">Produit ajoute dans le panier.</div>
-
+    <div class="top-banner">
+        <div class="banner-track">
+        <span>livraison sur toute la <strong>Tunisie</strong>• </span>
+        <span>Chez nous,poster votre demandes et chercher la meilleure offre pour vous</span>
+        <span>livraison sur toute la <strong>Tunisie</strong> •</span>
+        <span>Chez nous,poster votre demandes et chercher la meilleure offre pour vous</span>
+        <span>livraison sur toute la <strong>Tunisie</strong> •</span>
+        <span>Chez nous,poster votre demandes et chercher la meilleure offre pour vous</span>
+        
+         </div>
+    </div>
     <header class="top-header">
+        
         <button id="menuBtn" class="menu-btn">
             <i class="fa-solid fa-align-justify"></i>
         </button>
@@ -90,15 +101,9 @@ function resolveProductImagePath(?string $path): string {
                 <span>Votre Panier</span>
             </a>
 
-            <a href="#" class="icon-item" id="demandeTrigger">
-                <i class="fa-solid fa-plus" style="color:#74C0FC;"></i>
-                <span>Demande</span>
-            </a>
+            
 
-            <a href="#" class="icon-item" id="notificationTrigger">
-                <i class="fa-solid fa-bell" style="color:#74C0FC;"></i>
-                <span>Notification</span>
-            </a>
+            
 
             <a href="login.php" class="icon-item">
                 <i class="fa-regular fa-user" style="color:#74C0FC;"></i>
@@ -106,6 +111,10 @@ function resolveProductImagePath(?string $path): string {
             </a>
         </div>
     </header>
+    <div class="hero">
+    <img src="../files_profil/image.png" alt="promo" class="hero-img">
+    </div>
+
 
     <div class="overlay" id="overlay"></div>
 
@@ -146,11 +155,10 @@ function resolveProductImagePath(?string $path): string {
                                     <?php endif; ?>
                                 </div>
                                 <h3><?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?></h3>
-                                <p>Budget : <?php echo htmlspecialchars($prod['prix'] ?? '0'); ?> DT</p>
-                                <p>Stock : <?php echo ((int)($prod['quantite'] ?? 0) > 0) ? ((int)$prod['quantite'] . ' disponible(s)') : 'Rupture de stock'; ?></p>
-                                <p><?php echo htmlspecialchars($prod['description'] ?? 'Aucune description.'); ?></p>
+                                <p><strong>Prix : </strong><?php echo htmlspecialchars($prod['prix'] ?? '0'); ?> DT</p>
+                               
                                 <div class="product-actions">
-                                    <a class="small-btn" href="details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('index.php'); ?>">Voir produit</a>
+                                    <a class="small-btn" href="../php/produit_details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('index.php'); ?>">Voir produit</a>
                                     <button class="primary-btn product-cart-btn open-index-sidebar" type="button">Ajouter au panier</button>
                                 </div>
                             </article>
@@ -260,5 +268,61 @@ function resolveProductImagePath(?string $path): string {
             });
         });
     </script>
+
+                    
+    <div class="about-site">
+     <h4><strong>A propos de nous</strong></h4>                               
+    <p>
+    Importy est un site de vente en ligne qui permet de découvrir et d’acheter
+     facilement différents produits dans plusieurs catégories comme la beauté, la mode,
+      l’électroménager ou encore les produits technologiques.
+       Le but est de proposer une plateforme simple et agréable à utiliser,
+        où l’utilisateur peut rechercher des articles.Ce qui distingue Importy,
+         c’est qu'avec cette platforme, les utilisateurs peuvent également poster des demandes spécifiques pour des produits qu’ils recherchent,
+         permettant ainsi aux vendeurs de proposer des offres personnalisées.
+    
+            Importy vise à offrir une expérience d’achat fluide et sécurisée, avec un large choix de produits
+            pour répondre aux attentes de tous les clients.
+           
+  </p>
+</div>
+
+    <div class="services">
+  
+    <div class="service">
+        <div class="icon"><i class="fa-solid fa-store"></i></div>
+            <div>
+                <h4>pour les vendeurs</h4>
+                <p>Proposez vos produits et gérez votre activité en toute simplicité.</p>
+            </div>
+    </div>
+
+    <div class="service">
+        <div class="icon"><i class="fa-solid fa-truck"></i></div>
+        <div>
+            <h4>Livraison standard offerte</h4>
+            <p>just verifier votre adresse dans le compte</p>
+            
+        </div>
+  </div>
+
+  <div class="service">
+    <div class="icon"><i class="fa-regular fa-credit-card"></i></div>
+    <div>
+      <h4>Paiements a la livraison</h4>
+      <p>vous payez le livreur lorsque vous recevez votre commande</p>
+      
+    </div>
+  </div>
+
+  <div class="service">
+    <div class="icon"><i class="fa-solid fa-undo"></i></div>
+    <div>
+      <h4>Retours</h4>
+      <p>sous 14 jours</p>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>

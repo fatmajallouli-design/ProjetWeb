@@ -82,7 +82,7 @@ unset($_SESSION['error'], $_SESSION['old']);
         <img id="preview" class="preview-img" alt="">
 
         <button type="submit">Sign up</button>
-            <a href="/login.php">Tu as deja un compte ?Se connecter</a>
+            <a href="../html/login.php">Tu as deja un compte ?Se connecter</a>
 
     </form>
 </div>

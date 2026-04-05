@@ -51,7 +51,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
     $_SESSION['login_error'] = 'Nom d\'utilisateur, mot de passe ou role incorrect.';
-    header('Location: /login.php');
+    header('Location: ../html/login.php');
     exit();
 }
 
@@ -62,11 +62,11 @@ $_SESSION['user'] = [
 ];
 
 if ($role === 'client') {
-    header('Location: /client-interface.php');
+    header('Location: ../html/client-interface.php');
     exit();
 }
 
-header('Location: /php/page_vendeur.php');
+header('Location: ../php/page_vendeur.php');
 exit();
 
 

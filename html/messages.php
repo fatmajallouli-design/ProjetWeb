@@ -69,7 +69,7 @@ if ($deal > 0) {
 
     <div class="header-right" >
       <a href="client-interface.php" class="btn-retour-pro">
-      <span class="arrow">â†</span>Retour Ã  lâ€™interface
+      <span class="arrow">+</span>Retour A l'interface 
       </a>       
     </div>
 
@@ -86,11 +86,11 @@ if ($deal > 0) {
             $lastPreview = $lastMessageRow['contenu'] ?? '';
         ?>
           <div class="conv-item <?= $active ?>" data-deal="<?= (int)$d['id_deal'] ?>">
-            <a href="/messages.php?deal=<?= (int)$d['id_deal'] ?>">Deal #<?= (int)$d['id_deal'] ?> â€” <?= htmlspecialchars($o) ?></a>
+            <a href="../html/messages.php?deal=<?= (int)$d['id_deal'] ?>">Deal  avec <?= htmlspecialchars($o) ?></a>
           <?php if ($role === 'client'): ?>
-            - <a class="vendor-link" href="/vendor_profile.php?vendeur=<?= urlencode($d['vendeur_username']) ?>">Profil vendeur</a>
+            - <a class="vendor-link" href="../html/vendor_profile.php?vendeur=<?= urlencode($d['vendeur_username']) ?>">Profil vendeur</a>
           <?php endif; ?>
-          <div><small>DerniÃ¨re activitÃ©: <?= htmlspecialchars($d['last_activity']) ?> | Messages: <span class="meta-count"><?= (int)$d['message_count'] ?></span></small></div>
+          <div><small>Derniere activite: <?= htmlspecialchars($d['last_activity']) ?> | Messages: <span class="meta-count"><?= (int)$d['message_count'] ?></span></small></div>
           <div class="last-preview"><?= $lastPreview !== '' ? 'Dernier message : ' . htmlspecialchars(mb_strimwidth($lastPreview, 0, 48, '...')) : 'Aucun message encore.' ?></div>
         </div>
       <?php endforeach; ?>
@@ -99,12 +99,12 @@ if ($deal > 0) {
 
     <section class="conversation-detail">
       <?php if ($deal <= 0): ?>
-        <div class="no-deal">SÃ©lectionnez une conversation pour afficher le chat.</div>
+        <div class="no-deal">Selectionnez une conversation pour afficher le chat.</div>
       <?php else: ?>
         <h2>
           Chat avec <?= htmlspecialchars($other) ?>
         <?php if ($role === 'client'): ?>
-          - <a class="vendor-link" href="/vendor_profile.php?vendeur=<?= urlencode($other) ?>">Voir profil vendeur</a>
+          - <a class="vendor-link" href="../html/vendor_profile.php?vendeur=<?= urlencode($other) ?>">Voir profil vendeur</a>
         <?php endif; ?>
       </h2>
       <div class="chat-box">
@@ -112,7 +112,7 @@ if ($deal > 0) {
           <div class="msg-line <?= $msg['sender_username']===$user ? 'msg-me' : 'msg-other' ?>">
             <strong>
               <?php if ($role === 'client' && $msg['sender_username'] !== $user): ?>
-                <a class="vendor-link" href="/vendor_profile.php?vendeur=<?= urlencode($msg['sender_username']) ?>"><?= htmlspecialchars($msg['sender_username']) ?></a>
+                <a class="vendor-link" href="../html/vendor_profile.php?vendeur=<?= urlencode($msg['sender_username']) ?>"><?= htmlspecialchars($msg['sender_username']) ?></a>
               <?php else: ?>
                 <?= htmlspecialchars($msg['sender_username']) ?>
               <?php endif; ?>
@@ -122,7 +122,7 @@ if ($deal > 0) {
         <?php endforeach; ?>
         <?php if (empty($messages)): ?><p>Aucun message.</p><?php endif; ?>
       </div>
-      <form id="msgForm" action="/php/send_message.php" method="post" class="msg-form">
+      <form id="msgForm" action="../php/send_message.php" method="post" class="msg-form">
         <input type="hidden" name="id_deal" value="<?= $deal ?>">
         <input id="msgInput" type="text" name="contenu" required placeholder="Votre message...">
         <button type="submit">Envoyer</button>
