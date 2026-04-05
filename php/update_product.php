@@ -1,4 +1,4 @@
-<?php
+ï»¿<?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'vendeur')) {
     header('Location: /login.php');
@@ -37,7 +37,7 @@ $imagePath = $produit['image_path'];
 $imageError = '';
 if (isset($_FILES['image'])) {
     if ($_FILES['image']['error'] === UPLOAD_ERR_NO_FILE) {
-        // rien à faire, conserve l'image existante
+        // rien ï¿½ faire, conserve l'image existante
     } elseif ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
         $imageError = 'Erreur d\u00e9pot d\u2019image (code ' . (int)$_FILES['image']['error'] . ').';
     } else {
@@ -74,9 +74,9 @@ $update->execute([
 ]);
 
 if ($imageError !== '') {
-    $_SESSION['product_error'] = "Produit mis à jour, mais : $imageError";
+    $_SESSION['product_error'] = "Produit mis ï¿½ jour, mais : $imageError";
 } else {
-    $_SESSION['product_success'] = 'Produit mis à jour avec succès.';
+    $_SESSION['product_success'] = 'Produit mis ï¿½ jour avec succï¿½s.';
 }
 header('Location: /php/page_vendeur.php');
 exit();

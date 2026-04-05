@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 $isAjax = (
@@ -11,7 +11,7 @@ function respondPanier($payload, $isAjax)
     if ($isAjax) {
         header('Content-Type: application/json');
         echo json_encode($payload);
-        exit();
+        exit(); 
     }
 }
 
@@ -21,25 +21,27 @@ if (empty($_SESSION['user']['username'])) {
         'redirect' => '/login.php',
         'message' => 'Veuillez vous connecter.'
     ], $isAjax);
-    header('Location: /login.php');
+
+    header('Location: ../html/login.php');
     exit();
 }
 
 if (($_SESSION['user']['role'] ?? 'client') !== 'client') {
     respondPanier([
         'success' => false,
-        'redirect' => '../html/index.php',
+        'redirect' => '/index.php',
         'message' => 'Action reservee au client.'
     ], $isAjax);
-    header('Location: /index.php');
+
+    header('Location: ./html/index.php');
     exit();
 }
 
 $idProduit = isset($_POST['id_produit']) ? (int) $_POST['id_produit'] : 0;
-$redirectTo = trim($_POST['redirect_to'] ?? '../html/panier.php');
+$redirectTo = trim($_POST['redirect_to'] ?? '/panier.php');
 
 if ($redirectTo === '' || preg_match('/^https?:/i', $redirectTo)) {
-    $redirectTo = '../html/panier.php';
+    $redirectTo = '/panier.php';
 }
 
 if ($idProduit <= 0) {
@@ -47,8 +49,11 @@ if ($idProduit <= 0) {
         'success' => false,
         'message' => 'Produit invalide.'
     ], $isAjax);
-    header('Location: ' . $redirectTo);
-    exit();
+
+    if (!$isAjax) {
+        header('Location: ' . $redirectTo);
+        exit();
+    }
 }
 
 require_once(__DIR__ . "/connexionBD.php");
@@ -65,10 +70,14 @@ if (!$product || (int)$product['quantite'] < 1) {
         'message' => 'Produit en rupture de stock.',
         'redirect' => $redirectTo
     ], $isAjax);
-    header('Location: ' . $redirectTo);
-    exit();
+
+    if (!$isAjax) {
+        header('Location: ' . $redirectTo);
+        exit();
+    }
 }
 
+/* ====== CHECK PANIER ====== */
 $checkStmt = $bdd->prepare('SELECT id_panier, quantite FROM panier WHERE username = :username AND id_produit = :id_produit');
 $checkStmt->execute([
     'username' => $username,
@@ -78,18 +87,26 @@ $existingItem = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
 if ($existingItem) {
     $newQuantite = (int)$existingItem['quantite'] + 1;
+
     if ($newQuantite > (int)$product['quantite']) {
         respondPanier([
             'success' => false,
             'message' => 'Quantité demandée supérieure au stock disponible.',
             'redirect' => $redirectTo
         ], $isAjax);
-        header('Location: ' . $redirectTo);
-        exit();
+
+        if (!$isAjax) {
+            header('Location: ' . $redirectTo);
+            exit();
+        }
     }
 
     $updateStmt = $bdd->prepare('UPDATE panier SET quantite = :quantite WHERE id_panier = :id_panier');
-    $updateStmt->execute(['quantite' => $newQuantite, 'id_panier' => $existingItem['id_panier']]);
+    $updateStmt->execute([
+        'quantite' => $newQuantite,
+        'id_panier' => $existingItem['id_panier']
+    ]);
+
 } else {
     $insertStmt = $bdd->prepare('INSERT INTO panier (username, id_produit, quantite) VALUES (:username, :id_produit, 1)');
     $insertStmt->execute([
@@ -100,12 +117,11 @@ if ($existingItem) {
 
 respondPanier([
     'success' => true,
-    'message' => 'Produit ajoute dans le panier.',
+    'message' => 'Produit ajouté dans le panier.',
     'redirect' => $redirectTo
 ], $isAjax);
 
-header('Location: ' . $redirectTo);
-exit();
-
-
-
+if (!$isAjax) {
+    header('Location: ' . $redirectTo);
+    exit();
+}

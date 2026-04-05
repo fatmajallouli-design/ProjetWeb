@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'client')) {
     header('Location: /login.php');
@@ -14,7 +14,7 @@ $commentaire = trim($_POST['commentaire'] ?? '');
 $client = $_SESSION['user']['username'];
 
 if ($idDeal <= 0 || $rating < 1 || $rating > 5) {
-    header('Location: ../html/messages.php?deal=' . $idDeal);
+    header('Location: /messages.php?deal=' . $idDeal);
     exit();
 }
 
@@ -34,7 +34,7 @@ $ins->execute([
     'r' => $rating,
     'm' => $commentaire
 ]);
-header('Location: ../html/messages.php?deal=' . $idDeal);
+header('Location: /messages.php?deal=' . $idDeal);
 exit();
 ?>
 

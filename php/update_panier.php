@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 if (empty($_SESSION['user']['username'])) {
@@ -28,14 +28,14 @@ if ($action === 'delete') {
     ]);
 
     $_SESSION['panier_success'] = 'Produit supprime du panier.';
-    header('Location: /panier.php');
+    header('Location: ../html/panier.php');
     exit();
 }
 
 if ($action === 'update') {
     if ($quantite < 1) {
         $_SESSION['panier_error'] = 'La quantite doit etre au moins 1.';
-        header('Location: /panier.php');
+        header('Location: ../html/panier.php');
         exit();
     }
 
@@ -45,13 +45,13 @@ if ($action === 'update') {
 
     if (!$stockInfo) {
         $_SESSION['panier_error'] = 'Element de panier introuvable.';
-        header('Location: /panier.php');
+        header('Location:../html/panier.php');
         exit();
     }
 
     if ($quantite > (int)$stockInfo['stock']) {
         $_SESSION['panier_error'] = 'Quantite demandee superieure au stock disponible.';
-        header('Location: /panier.php');
+        header('Location: ../html/panier.php');
         exit();
     }
 
@@ -63,12 +63,12 @@ if ($action === 'update') {
     ]);
 
     $_SESSION['panier_success'] = 'Quantite mise a jour.';
-    header('Location: /panier.php');
+    header('Location: ../html/panier.php');
     exit();
 }
 
 $_SESSION['panier_error'] = 'Action panier invalide.';
-header('Location: /panier.php');
+header('Location: ../html/panier.php');
 exit();
 
 

@@ -1,7 +1,7 @@
 ﻿<?php
 session_start();
 if (empty($_SESSION['user']['username'])) {
-    header('Location: ./login.php');
+    header('Location: /login.php');
     exit();
 }
 require_once(__DIR__ . '/../php/connexionBD.php');
@@ -41,6 +41,10 @@ if ($deal > 0) {
         $m = $bdd->prepare("SELECT * FROM message WHERE id_deal = :id ORDER BY created_at ASC, id_message ASC");
         $m->execute(['id' => $deal]);
         $messages = $m->fetchAll(PDO::FETCH_ASSOC);
+
+        // Mark messages in this deal as read for current user
+        $bdd->prepare("UPDATE message SET is_read = 1 WHERE id_deal = :id AND receiver_username = :u AND is_read = 0")
+            ->execute(['id' => $deal, 'u' => $user]);
     }
 }
 
@@ -58,7 +62,7 @@ if ($deal > 0) {
   <header class="top-header">
 
     <div class="header-left">
-        <a href="client-interface.php" class="logo">
+        <a href="<?= ($role === 'vendeur') ? '/php/page_vendeur.php' : '/client-interface.php' ?>" class="logo">
             <img src="/files_profil/logo.png" alt="Importy" class="logo-img">
         </a>
     </div>
@@ -68,8 +72,13 @@ if ($deal > 0) {
     </div>
 
     <div class="header-right" >
+<<<<<<< HEAD
       <a href="client-interface.php" class="btn-retour-pro">
       <span class="arrow">+</span>Retour A l'interface 
+=======
+      <a href="<?= ($role === 'vendeur') ? '/php/page_vendeur.php' : '/client-interface.php' ?>" class="btn-retour-pro">
+      <span class="arrow">â†</span>Retour Ã  lâ€™interface
+>>>>>>> 48755ec7ae00738cec8d61b72255c808a212d69d
       </a>       
     </div>
 

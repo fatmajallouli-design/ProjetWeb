@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (empty($_SESSION['user']['username'])) {
     header('Location: /login.php');
@@ -12,7 +12,7 @@ $idDeal = (int)($_POST['id_deal'] ?? 0);
 $contenu = trim($_POST['contenu'] ?? '');
 $sender = $_SESSION['user']['username'];
 if ($idDeal <= 0 || $contenu === '') {
-    header('Location: ../html/messages.php?deal=' . $idDeal);
+    header('Location: /messages.php?deal=' . $idDeal);
     exit();
 }
 
@@ -47,7 +47,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
     exit();
 }
 
-header('Location: ../html/messages.php?deal=' . $idDeal);
+header('Location: /messages.php?deal=' . $idDeal);
 exit();
 ?>
 

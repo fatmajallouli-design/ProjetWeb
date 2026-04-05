@@ -5,10 +5,10 @@ require_once(__DIR__ . '/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-$returnTo = trim($_GET['return_to'] ?? '../html/index.php');
+$returnTo = trim($_GET['return_to'] ?? '/index.php');
 
 if ($returnTo === '' || preg_match('/^https?:/i', $returnTo)) {
-    $returnTo = '../html/index.php';
+    $returnTo = '/index.php';
 }
 
 if ($id <= 0) {
@@ -62,6 +62,13 @@ if (!$produit) {
     <p class="toggle-desc" onclick="toggleDescription()">Voir la description</p>
     <div class="description" id="descriptionBox">
       <?= htmlspecialchars($produit['description']) ?>
+    <div class="detail-actions">
+        <form action="/php/add_to_panier.php" method="post" id="detailAddToCartForm">
+            <input type="hidden" name="id_produit" value="<?= (int) $produit['id_produit'] ?>">
+            <input type="hidden" name="redirect_to" value="/details.php?id=<?= (int) $produit['id_produit'] ?>&return_to=<?= urlencode($returnTo) ?>">
+            <button type="submit" <?= ((int)$produit['quantite'] <= 0) ? 'disabled' : '' ?>><?= ((int)$produit['quantite'] <= 0) ? 'Indisponible' : 'Ajouter au panier' ?></button>
+        </form>
+        <a class="back-link" href="<?= htmlspecialchars($returnTo) ?>">Retour</a>
     </div>
 
   </div>

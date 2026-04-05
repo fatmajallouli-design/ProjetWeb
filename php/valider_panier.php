@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 if (empty($_SESSION['user']['username'])) {
@@ -23,7 +23,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (empty($items)) {
     $_SESSION['panier_error'] = 'Votre panier est vide.';
-    header('Location: /panier.php');
+    header('Location: ../html/panier.php');
     exit();
 }
 
@@ -87,7 +87,7 @@ try {
     $_SESSION['panier_error'] = 'Erreur lors de la validation du panier : ' . $e->getMessage();
 }
 
-header('Location: /panier.php');
+header('Location: ../html/panier.php');
 exit();
 
 

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once(__DIR__ . "/connexionBD.php");
 
@@ -32,5 +32,5 @@ $insert->execute([
 $update = $bdd->prepare("UPDATE deal_request SET status = 'accepte' WHERE id_deal = :id");
 $update->execute(["id" => $id_deal]);
 
-header("Location: ../html/mes_demandes.php");
+header("Location: /mes_demandes.php");
 exit;

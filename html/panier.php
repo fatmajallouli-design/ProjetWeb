@@ -56,77 +56,121 @@ foreach ($items as $item) {
 <div class="header-right">
     <a href="../html/client-interface.php" class="header-btn retour-btn">Retour à l'interface client</a>
 </header>
-    <main class="panier-page">
-        <section class="content-card panier-card">
-            <div class="section-head">
-                <div>
-                    <h2>Mon panier</h2>
-                    <p><?= count($items) ?> produit(s)</p>
-                </div>
-                
-            </div>
+   <main class="panier-page">
 
-            <?php if (!empty($success)): ?>
-                <div class="account-message success-message"><?= htmlspecialchars($success) ?></div>
-            <?php endif; ?>
+  <div class="panier-layout">
 
-            <?php if (!empty($error)): ?>
-                <div class="account-message error-message"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
+    <!-- LEFT : PRODUITS -->
+    <div class="panier-left">
 
-            <?php if (!empty($items)): ?>
-                <div class="panier-list">
-                    <?php foreach ($items as $item): ?>
-                        <article class="panier-item">
-                            <div class="panier-image">
-                                <?php if (!empty($item['image_path'])): ?>
-                                    <img src="<?= htmlspecialchars($item['image_path']) ?>" alt="<?= htmlspecialchars($item['nom_produit']) ?>">
-                                <?php endif; ?>
-                            </div>
-                            <div class="panier-content">
-                                <span class="product-badge"><?= htmlspecialchars($item['categorie'] ?? 'Sans categorie') ?></span>
-                                <h3><?= htmlspecialchars($item['nom_produit']) ?></h3>
-                                <p><?= htmlspecialchars($item['description']) ?></p>
-                                <strong><?= htmlspecialchars($item['prix']) ?> DT</strong>
-                                <p><strong>Sous-total :</strong> <?= number_format(((float) $item['prix']) * ((int) $item['quantite']), 2, '.', '') ?> DT</p>
+      <section class="content-card panier-card">
 
-                                <div class="panier-controls">
-                                    <form action="/php/update_panier.php" method="post" class="panier-form">
-                                        <input type="hidden" name="action" value="update">
-                                        <input type="hidden" name="id_panier" value="<?= (int) $item['id_panier'] ?>">
-                                        <label class="panier-qty-label">
-                                            <span>Quantite</span>
-                                            <input type="number" name="quantite" min="1" value="<?= (int) $item['quantite'] ?>">
-                                        </label>
-                                        <button type="submit" class="secondary-btn">Modifier</button>
-                                    </form>
+        <div class="section-head">
+          <div>
+            <h2>Mon panier</h2>
+            <p><?= count($items) ?> produit(s)</p>
+          </div>
+        </div>
 
-                                    <form action="/php/update_panier.php" method="post" class="panier-form">
-                                        <input type="hidden" name="action" value="delete">
-                                        <input type="hidden" name="id_panier" value="<?= (int) $item['id_panier'] ?>">
-                                        <button type="submit" class="small-btn panier-delete-btn">Supprimer</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </article>
-                    <?php endforeach; ?>
+        <?php if (!empty($items)): ?>
+
+          <div class="panier-list">
+
+            <?php foreach ($items as $item): ?>
+
+              <article class="panier-item">
+
+                <div class="panier-image">
+                  <img src="<?= htmlspecialchars($item['image_path']) ?>" alt="">
                 </div>
 
-                <div class="panier-summary">
-                    <strong>Total : <?= number_format($total, 2, '.', '') ?> DT</strong>
-                    <div class="panier-actions">
-                        <form action="/php/valider_panier.php" method="post" style="display:inline-block; margin-right:12px;">
-                            <button type="submit" class="primary-btn">Valider le panier</button>
-                        </form>
-                        <a href="../html/client-interface.php" class="secondary-btn">Retour</a>
-                    </div>
+                <div class="panier-content">
+
+                  <span class="product-badge"><?= htmlspecialchars($item['categorie']) ?></span>
+
+                  <h3><?= htmlspecialchars($item['nom_produit']) ?></h3>
+
+                  <p><?= htmlspecialchars($item['description']) ?></p>
+
+                  <strong class="price"><?= htmlspecialchars($item['prix']) ?> DT</strong>
+
+                  <p>
+                    <strong>Sous-total :</strong>
+                    <?= number_format($item['prix'] * $item['quantite'], 2) ?> DT
+                  </p>
+
+                  <div class="panier-controls">
+
+                    <form action="/php/update_panier.php" method="post">
+                      <input type="hidden" name="action" value="update">
+                      <input type="hidden" name="id_panier" value="<?= $item['id_panier'] ?>">
+
+                      <input type="number" name="quantite" value="<?= $item['quantite'] ?>" min="1">
+
+                      <button class="secondary-btn">Modifier</button>
+                    </form>
+
+                    <form action="/php/update_panier.php" method="post">
+                      <input type="hidden" name="action" value="delete">
+                      <input type="hidden" name="id_panier" value="<?= $item['id_panier'] ?>">
+
+                      <button class="delete-btn">Supprimer</button>
+                    </form>
+
+                  </div>
+
                 </div>
-            <?php else: ?>
-                <p class="empty-products">Votre panier est vide.</p>
-                <a href="../html/client-interface.php" class="secondary-btn">Voir les produits</a>
-            <?php endif; ?>
-        </section>
-    </main>
+
+              </article>
+
+            <?php endforeach; ?>
+
+          </div>
+
+        <?php else: ?>
+
+          <p>Votre panier est vide.</p>
+
+        <?php endif; ?>
+
+      </section>
+
+    </div>
+
+    <div class="panier-right">
+
+      <div class="resume-card">
+
+        <h3>Récapitulatif</h3>
+
+        <div class="resume-line">
+          <span>Sous-total</span>
+          <span><?= number_format($total, 2) ?> DT</span>
+        </div>
+
+        <div class="resume-line">
+          <span>Livraison</span>
+          <span>Calculé à l'étape paiement</span>
+        </div>
+
+        <div class="resume-line total">
+          <span>Total</span>
+          <span><?= number_format($total, 2) ?> DT</span>
+        </div>
+
+        <form action="/php/valider_panier.php" method="post">
+  <button type="submit" class="btn-checkout">
+    Valider mon panier
+  </button>
+</form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
 </body>
 </html>
 

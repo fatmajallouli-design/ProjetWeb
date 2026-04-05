@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once(__DIR__ . "/connexionBD.php");
 
 $bdd = ConnexionBD::getInstance();
@@ -15,5 +15,5 @@ if ($id && $etat) {
 }
 
 
-header("Location: ../html/details.php?id=" . $id);
+header("Location: /details.php?id=" . $id);
 exit;

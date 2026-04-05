@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 $username = trim($_POST["username"] ?? "");
@@ -108,7 +108,7 @@ try {
 
 } catch (Exception $e) {
     $_SESSION['error'] = $e->getMessage();
-    header("Location: ../html/signup.php");
+    header("Location: /signup.php");
     exit();
 }
 ?>

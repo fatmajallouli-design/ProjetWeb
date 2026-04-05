@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 $username = trim($_POST['username'] ?? '');
@@ -6,7 +6,7 @@ $password = $_POST['password'] ?? '';
 $role = $_POST['role'] ?? '';
 
 if (empty($username) || empty($password) || empty($role)) {
-    header("Location: ../html/inscrire.html?error=missing_fields");
+    header("Location: /inscrire.html?error=missing_fields");
     exit();
 }
 
@@ -23,7 +23,7 @@ $req->execute(['username' => $username]);
 $existsVendeur = $req->fetchColumn();
 
 if ($existsClient || $existsVendeur) {
-    header("Location: ../html/inscrire.html?error=user_exists");
+    header("Location: /inscrire.html?error=user_exists");
     exit();
 }
 
@@ -62,7 +62,7 @@ if ($role === 'client') {
     header("Location: ../php/page_vendeur.php");
     exit();
 } else {
-    header("Location: ../html/inscrire.html?error=invalid_role");
+    header("Location: /inscrire.html?error=invalid_role");
     exit();
 }
 
