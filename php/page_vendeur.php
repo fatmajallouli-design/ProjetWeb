@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user'])) {
-    header("Location: ../html/index.php");
+    header("Location: /index.php");
     exit();
 }
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'vendeur')) {
@@ -43,6 +43,22 @@ if ($photoPath !== '') {
 
 $demandesStmt = $bdd->query("SELECT * FROM demande WHERE etat <> 'recu' ORDER BY COALESCE(created_at, NOW()) DESC, id_demande DESC");
 $demandes = $demandesStmt->fetchAll(PDO::FETCH_ASSOC);
+
+$notifCount = 0;
+$messageCount = 0;
+try {
+    // unread notifications: deals where vendeur hasn't seen yet, or new ones since last seen
+    $stmt = $bdd->prepare("SELECT COUNT(*) FROM deal_request WHERE vendeur_username = :u AND (vendeur_seen_at IS NULL OR created_at > vendeur_seen_at)");
+    $stmt->execute(['u' => $vendeur]);
+    $notifCount = (int) ($stmt->fetchColumn() ?? 0);
+
+    // unread messages
+    $stmt = $bdd->prepare("SELECT COUNT(*) FROM message WHERE receiver_username = :u AND is_read = 0");
+    $stmt->execute(['u' => $vendeur]);
+    $messageCount = (int) ($stmt->fetchColumn() ?? 0);
+} catch (PDOException $e) {
+    // keep 0
+}
 
 $myProdStmt = $bdd->prepare("SELECT * FROM produit WHERE vendeur_username = :username ORDER BY created_at DESC, id_produit DESC");
 $myProdStmt->execute(['username' => $vendeur]);
@@ -139,10 +155,20 @@ function resolveDemandeImagePath(?string $path): string {
             <a href="/vendor_offers.php" class="icon-item">
                 <i class="fa-solid fa-paper-plane" style="color:#B197FC;"></i>
                 <span>Mes offres</span>
+            </a>
+            <a href="/notifications.php" class="icon-item">
+                <i class="fa-solid fa-bell" style="color:#74C0FC;"></i>
+                <span>Notifications</span>
+                <?php if ($notifCount > 0): ?>
+                    <span class="badge"><?= htmlspecialchars($notifCount) ?></span>
+                <?php endif; ?>
             </a>    
             <a href="/messages.php" class="icon-item">
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
+                <?php if ($messageCount > 0): ?>
+                    <span class="badge"><?= htmlspecialchars($messageCount) ?></span>
+                <?php endif; ?>
             </a>
             <a href="#mes-produits" class="icon-item">
                 <i class="fa-solid fa-box-open" style="color:#B197FC;"></i>

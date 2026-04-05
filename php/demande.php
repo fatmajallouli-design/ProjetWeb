@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'client')) {
     header('Location: /login.php');

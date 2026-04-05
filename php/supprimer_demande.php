@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 if (!isset($_SESSION['user'])) {
@@ -21,6 +21,6 @@ $req->execute([
     "username" => $username
 ]);
 
-header("Location: ../html/mes_demandes.php");
+header("Location: /mes_demandes.php");
 exit();
 ?>

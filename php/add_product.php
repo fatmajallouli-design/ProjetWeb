@@ -1,4 +1,4 @@
-<?php
+ï»¿<?php
 session_start();
 if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !== 'vendeur')) {
     header('Location: /login.php');
@@ -25,7 +25,7 @@ if ($nom === '' || $prix <= 0) {
 
 if (isset($_FILES['image'])) {
     if ($_FILES['image']['error'] === UPLOAD_ERR_NO_FILE) {
-        // Pas d'image téléchargée, produit ajouté sans image.
+        // Pas d'image tï¿½lï¿½chargï¿½e, produit ajoutï¿½ sans image.
         $imagePath = null;
     } elseif ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
         $imageError = 'Erreur d\u00e9pot d\u2019image (code ' . (int)$_FILES['image']['error'] . ').';
@@ -62,9 +62,9 @@ $ins->execute([
 ]);
 
 if ($imageError !== '') {
-    $_SESSION['product_error'] = "Produit ajouté, mais : $imageError";
+    $_SESSION['product_error'] = "Produit ajoutï¿½, mais : $imageError";
 } else {
-    $_SESSION['product_success'] = 'Produit ajouté avec succès.';
+    $_SESSION['product_success'] = 'Produit ajoutï¿½ avec succï¿½s.';
 }
 
 header('Location: /php/page_vendeur.php');

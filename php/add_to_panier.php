@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 $isAjax = (
@@ -28,7 +28,7 @@ if (empty($_SESSION['user']['username'])) {
 if (($_SESSION['user']['role'] ?? 'client') !== 'client') {
     respondPanier([
         'success' => false,
-        'redirect' => '../html/index.php',
+        'redirect' => '/index.php',
         'message' => 'Action reservee au client.'
     ], $isAjax);
     header('Location: /index.php');
@@ -36,10 +36,10 @@ if (($_SESSION['user']['role'] ?? 'client') !== 'client') {
 }
 
 $idProduit = isset($_POST['id_produit']) ? (int) $_POST['id_produit'] : 0;
-$redirectTo = trim($_POST['redirect_to'] ?? '../html/panier.php');
+$redirectTo = trim($_POST['redirect_to'] ?? '/panier.php');
 
 if ($redirectTo === '' || preg_match('/^https?:/i', $redirectTo)) {
-    $redirectTo = '../html/panier.php';
+    $redirectTo = '/panier.php';
 }
 
 if ($idProduit <= 0) {

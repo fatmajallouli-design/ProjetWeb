@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 $username = trim($_POST['username'] ?? '');

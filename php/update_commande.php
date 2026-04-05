@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once(__DIR__ . "/connexionBD.php");
 $bdd = ConnexionBD::getInstance();
 
@@ -34,5 +34,5 @@ if ($id && $statut) {
     }
 }
 
-header("Location: ../html/commande_vendeur.php");
+header("Location: /commande_vendeur.php");
 exit;

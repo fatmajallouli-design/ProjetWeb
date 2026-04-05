@@ -13,11 +13,13 @@ $role = $_SESSION['user']['role'] ?? 'client';
 $notifCount = 0;
 $messageCount = 0;
 try {
-    $stmt = $bdd->prepare("SELECT COUNT(*) AS c FROM deal_request WHERE client_username = :u AND etat = 'en attente'");
+    // unread notifications: deals where client hasn't seen yet
+    $stmt = $bdd->prepare("SELECT COUNT(*) AS c FROM deal_request WHERE client_username = :u AND (client_seen_at IS NULL OR created_at > client_seen_at)");
     $stmt->execute(['u' => $username]);
     $notifCount = (int)($stmt->fetchColumn() ?? 0);
 
-    $stmt = $bdd->prepare("SELECT COUNT(*) AS c FROM message WHERE receiver_username = :u");
+    // unread messages
+    $stmt = $bdd->prepare("SELECT COUNT(*) AS c FROM message WHERE receiver_username = :u AND is_read = 0");
     $stmt->execute(['u' => $username]);
     $messageCount = (int)($stmt->fetchColumn() ?? 0);
 } catch (PDOException $e) {

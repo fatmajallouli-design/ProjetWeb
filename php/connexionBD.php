@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 class ConnexionBD
 {
 private static $_dbname = "my_site";
@@ -98,9 +98,22 @@ public static function ensureWorkflowTables()
             sender_username VARCHAR(30) NOT NULL,
             receiver_username VARCHAR(30) NOT NULL,
             contenu TEXT NOT NULL,
+            is_read TINYINT NOT NULL DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
+
+    try {
+        $bdd->exec("ALTER TABLE message ADD COLUMN is_read TINYINT NOT NULL DEFAULT 0");
+    } catch (PDOException $e) { /* already exists */ }
+
+    try {
+        $bdd->exec("ALTER TABLE deal_request ADD COLUMN client_seen_at TIMESTAMP NULL DEFAULT NULL");
+    } catch (PDOException $e) { /* already exists */ }
+
+    try {
+        $bdd->exec("ALTER TABLE deal_request ADD COLUMN vendeur_seen_at TIMESTAMP NULL DEFAULT NULL");
+    } catch (PDOException $e) { /* already exists */ }
 
     $bdd->exec("
         CREATE TABLE IF NOT EXISTS review (
