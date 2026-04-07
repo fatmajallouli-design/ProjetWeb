@@ -190,7 +190,7 @@ function resolveProductImagePath(?string $path): string {
         </div>
     </header>
     <div class="hero">
-    <img src="../files_profil/image.png" alt="promo" class="hero-img">
+    <img src="../files_profil/img.png" alt="promo" class="hero-img">
     </div>
 
     <div class="overlay" id="overlay"></div>

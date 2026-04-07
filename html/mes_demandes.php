@@ -23,6 +23,8 @@ $demandes = $req->fetchAll();
     <meta charset="UTF-8">
     <title>Mes demandes</title>
     <link rel="stylesheet" href="../css/mes_demandes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 
 <body>
@@ -145,5 +147,55 @@ function resolveDemandeImagePath(?string $path): string {
 
 <script src="../javascript/mes_demandes.js"></script>
 
+<div class="about-site">
+     <h4><strong>A propos de nous</strong></h4>                               
+    <p>
+    Importy est un site de vente en ligne qui permet de découvrir et d’acheter
+     facilement différents produits dans plusieurs catégories 
+       
+    
+            Importy vise à offrir une expérience d’achat fluide et sécurisée, avec un large choix de produits
+            pour répondre aux attentes de tous les clients.
+           
+  </p>
+</div>
+
+    <div class="services">
+  
+    <div class="service">
+        <div class="icon"><i class="fa-solid fa-store"></i></div>
+            <div>
+                <h4>pour les vendeurs</h4>
+                <p>Proposez vos produits et gérez votre activité en toute simplicité.</p>
+            </div>
+    </div>
+
+    <div class="service">
+        <div class="icon"><i class="fa-solid fa-truck"></i></div>
+        <div>
+            <h4>Livraison standard offerte</h4>
+            <p>just verifier votre adresse dans le compte</p>
+            
+        </div>
+  </div>
+
+  <div class="service">
+    <div class="icon"><i class="fa-regular fa-credit-card"></i></div>
+    <div>
+      <h4>Paiements a la livraison</h4>
+      <p>vous payez le livreur lorsque vous recevez votre commande</p>
+      
+    </div>
+  </div>
+
+  <div class="service">
+    <div class="icon"><i class="fa-solid fa-undo"></i></div>
+    <div>
+      <h4>Retours</h4>
+      <p>sous 14 jours</p>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>

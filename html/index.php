@@ -112,7 +112,7 @@ function resolveProductImagePath(?string $path): string {
         </div>
     </header>
     <div class="hero">
-    <img src="../files_profil/image.png" alt="promo" class="hero-img">
+    <img src="../files_profil/img.png" alt="promo" class="hero-img">
     </div>
 
 
@@ -128,7 +128,7 @@ function resolveProductImagePath(?string $path): string {
 
         <div class="section">
             <h4>Compte</h4>
-            <a href="signup.php"><i class="fa-solid fa-user"></i> Sign up</a>
+            
             <a href="login.php"><i class="fa-regular fa-user"></i> Login</a>
         </div>
     </div>

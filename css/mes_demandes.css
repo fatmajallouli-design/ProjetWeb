@@ -78,7 +78,7 @@ body {
 
 .title {
   margin: 0;
-  color: #6a5cff;
+  color: #1d119f;
   font-size: 29px;
   font-weight: 700;
   text-align: center;
@@ -311,4 +311,72 @@ body {
     justify-content: center;
   }
 }
+/* Section About */
+.about-site {
+    background: #c9d6dc; /* bleu/gris clair */
+    padding: 60px 20px;
+    text-align: center;
+}
 
+.about-site h4 {
+    color: purple;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.about-site p {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #222;
+}
+
+/* Section services */
+.services {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    background: #f5f5f5;
+    padding: 30px 20px;
+    flex-wrap: wrap;
+}
+
+.service {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    max-width: 250px;
+}
+
+/* Icônes */
+.icon {
+    font-size: 22px;
+    color: #222;
+    margin-top: 5px;
+}
+
+/* Titres services */
+.service h4 {
+    font-size: 16px;
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Texte services */
+.service p {
+    font-size: 14px;
+    margin: 5px 0 0;
+    color: #444;
+}
+@media (max-width: 768px) {
+    .services {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .service {
+        max-width: 100%;
+    }
+}

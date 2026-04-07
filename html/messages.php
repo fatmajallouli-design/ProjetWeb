@@ -62,7 +62,7 @@ if ($deal > 0) {
   <header class="top-header">
 
     <div class="header-left">
-        <a href="<?= ($role === 'vendeur') ? '/php/page_vendeur.php' : '/client-interface.php' ?>" class="logo">
+        <a href="<?= ($role === 'vendeur') ? '/php/page_vendeur.php' : '../html/client-interface.php' ?>" class="logo">
             <img src="/files_profil/logo.png" alt="Importy" class="logo-img">
         </a>
     </div>
@@ -72,13 +72,8 @@ if ($deal > 0) {
     </div>
 
     <div class="header-right" >
-<<<<<<< HEAD
       <a href="client-interface.php" class="btn-retour-pro">
-      <span class="arrow">+</span>Retour A l'interface 
-=======
-      <a href="<?= ($role === 'vendeur') ? '/php/page_vendeur.php' : '/client-interface.php' ?>" class="btn-retour-pro">
-      <span class="arrow">â†</span>Retour Ã  lâ€™interface
->>>>>>> 48755ec7ae00738cec8d61b72255c808a212d69d
+      <span class="arrow"></span>Retour  a l'interface
       </a>       
     </div>
 
@@ -140,7 +135,13 @@ if ($deal > 0) {
       <form action="/php/leave_review.php" method="post" class="review-box">
         <h3>Laisser un avis au fournisseur</h3>
         <input type="hidden" name="id_deal" value="<?= $deal ?>">
-        <input type="number" name="rating" min="1" max="5" required placeholder="Note (1-5)">
+        <div class="stars">
+          <input type="radio" name="rating" id="star5" value="5"><label for="star5">★</label>
+          <input type="radio" name="rating" id="star4" value="4"><label for="star4">★</label>
+          <input type="radio" name="rating" id="star3" value="3"><label for="star3">★</label>
+          <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
+          <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
+        </div>
         <input type="text" name="commentaire" placeholder="Commentaire">
         <button type="submit">Publier avis</button>
       </form>
@@ -215,6 +216,60 @@ if ($deal > 0) {
       });
     });
   </script>
+  <div class="about-site">
+     <h4><strong>A propos de nous</strong></h4>                               
+    <p>
+    Importy est un site de vente en ligne qui permet de découvrir et d’acheter
+     facilement différents produits dans plusieurs catégories comme la beauté, la mode,
+      l’électroménager ou encore les produits technologiques.
+       Le but est de proposer une plateforme simple et agréable à utiliser,
+        où l’utilisateur peut rechercher des articles.Ce qui distingue Importy,
+         c’est qu'avec cette platforme, les utilisateurs peuvent également poster des demandes spécifiques pour des produits qu’ils recherchent,
+         permettant ainsi aux vendeurs de proposer des offres personnalisées.
+    
+            Importy vise à offrir une expérience d’achat fluide et sécurisée, avec un large choix de produits
+            pour répondre aux attentes de tous les clients.
+           
+  </p>
+</div>
+
+    <div class="services">
+  
+    <div class="service">
+        <div class="icon"><i class="fa-solid fa-store"></i></div>
+            <div>
+                <h4>pour les vendeurs</h4>
+                <p>Proposez vos produits et gérez votre activité en toute simplicité.</p>
+            </div>
+    </div>
+
+    <div class="service">
+        <div class="icon"><i class="fa-solid fa-truck"></i></div>
+        <div>
+            <h4>Livraison standard offerte</h4>
+            <p>just verifier votre adresse dans le compte</p>
+            
+        </div>
+  </div>
+
+  <div class="service">
+    <div class="icon"><i class="fa-regular fa-credit-card"></i></div>
+    <div>
+      <h4>Paiements a la livraison</h4>
+      <p>vous payez le livreur lorsque vous recevez votre commande</p>
+      
+    </div>
+  </div>
+
+  <div class="service">
+    <div class="icon"><i class="fa-solid fa-undo"></i></div>
+    <div>
+      <h4>Retours</h4>
+      <p>sous 14 jours</p>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
 
