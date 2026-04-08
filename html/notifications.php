@@ -1,8 +1,8 @@
 ﻿<?php
 session_start();
 if (empty($_SESSION['user']['username'])) {
-    header('Location: /login.php');
-    exit();
+  header('Location: /login.php');
+  exit();
 }
 $role = $_SESSION['user']['role'] ?? 'client';
 require_once(__DIR__ . '/../php/connexionBD.php');
@@ -11,22 +11,22 @@ ConnexionBD::ensureWorkflowTables();
 $client = $_SESSION['user']['username'];
 $homeUrl = ($role === 'vendeur') ? '/php/page_vendeur.php' : '/client-interface.php';
 if ($role === 'vendeur') {
-    $req = $bdd->prepare("SELECT dr.*, d.nom_produit FROM deal_request dr JOIN demande d ON d.id_demande = dr.id_demande WHERE dr.vendeur_username = :c ORDER BY dr.created_at DESC, dr.id_deal DESC");
+  $req = $bdd->prepare("SELECT dr.*, d.nom_produit FROM deal_request dr JOIN demande d ON d.id_demande = dr.id_demande WHERE dr.vendeur_username = :c ORDER BY dr.created_at DESC, dr.id_deal DESC");
 } else {
-    $req = $bdd->prepare("SELECT dr.*, d.nom_produit FROM deal_request dr JOIN demande d ON d.id_demande = dr.id_demande WHERE dr.client_username = :c ORDER BY dr.created_at DESC, dr.id_deal DESC");
+  $req = $bdd->prepare("SELECT dr.*, d.nom_produit FROM deal_request dr JOIN demande d ON d.id_demande = dr.id_demande WHERE dr.client_username = :c ORDER BY dr.created_at DESC, dr.id_deal DESC");
 }
 $req->execute(['c' => $client]);
 $rows = $req->fetchAll(PDO::FETCH_ASSOC);
 
-// Mark notifications as seen
 if ($role === 'vendeur') {
-    $bdd->prepare("UPDATE deal_request SET vendeur_seen_at = NOW() WHERE vendeur_username = :u")->execute(['u' => $client]);
+  $bdd->prepare("UPDATE deal_request SET vendeur_seen_at = NOW() WHERE vendeur_username = :u")->execute(['u' => $client]);
 } else {
-    $bdd->prepare("UPDATE deal_request SET client_seen_at = NOW() WHERE client_username = :u")->execute(['u' => $client]);
+  $bdd->prepare("UPDATE deal_request SET client_seen_at = NOW() WHERE client_username = :u")->execute(['u' => $client]);
 }
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,20 +34,28 @@ if ($role === 'vendeur') {
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/notifications.css">
 </head>
+
 <body>
-<header class="top-header">
+  <header class="top-header">
     <div class="header-left">
-        <a href="<?= $homeUrl ?>" class="logo">
-            <img src="/files_profil/logo.png" alt="Importy" class="logo-img">
-        </a>
+      <a href="<?= $homeUrl ?>" class="logo">
+        <img src="/files_profil/logo.png" alt="Importy" class="logo-img">
+      </a>
     </div>
     <div class="header-center">
-        <h1 class="title">Mes notifications</h1>
+      <h1 class="title">Mes notifications</h1>
     </div>
     <div class="header-right">
-      <a href="../html/client-interface.php" class="header-btn retour-btn">← Retour à l'accueil</a>
+      <?php if ($role == "client") {
+        $chemin = "../html/client-interface.php";
+      } else {
+        $chemin = "/php/page_vendeur.php";
+      }
+      ?>
+      <a href=<?= $chemin ?> class="header-btn retour-btn">← Retour à l'accueil</a>
+
     </div>
-</header>
+  </header>
   <main class="notif-wrap">
     <h2><?= $role === 'vendeur' ? 'Offres envoy&eacute;es' : 'Demandes des vendeurs' ?></h2>
     <?php foreach ($rows as $r): ?>
@@ -55,12 +63,12 @@ if ($role === 'vendeur') {
         <h3><?= htmlspecialchars($r['nom_produit']) ?></h3>
         <p class="notif-meta">
           <?php if ($role === 'client'): ?>
-          Vendeur:
-          <a class="vendor-link" href="../html      /vendor_profile.php?vendeur=<?= urlencode($r['vendeur_username']) ?>">
-            <?= htmlspecialchars($r['vendeur_username']) ?>
-          </a>
+            Vendeur:
+            <a class="vendor-link" href="../html      /vendor_profile.php?vendeur=<?= urlencode($r['vendeur_username']) ?>">
+              <?= htmlspecialchars($r['vendeur_username']) ?>
+            </a>
           <?php else: ?>
-          Client: <?= htmlspecialchars($r['client_username']) ?>
+            Client: <?= htmlspecialchars($r['client_username']) ?>
           <?php endif; ?>
           | Prix: <?= htmlspecialchars($r['prix_propose']) ?> TND
           | Date: <?= htmlspecialchars($r['created_at']) ?>
@@ -84,4 +92,5 @@ if ($role === 'vendeur') {
     <?php if (empty($rows)): ?><p>Aucune notification.</p><?php endif; ?>
   </main>
 </body>
+
 </html>

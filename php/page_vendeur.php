@@ -47,24 +47,22 @@ $demandes = $demandesStmt->fetchAll(PDO::FETCH_ASSOC);
 $notifCount = 0;
 $messageCount = 0;
 try {
-    // unread notifications: deals where vendeur hasn't seen yet, or new ones since last seen
     $stmt = $bdd->prepare("SELECT COUNT(*) FROM deal_request WHERE vendeur_username = :u AND (vendeur_seen_at IS NULL OR created_at > vendeur_seen_at)");
     $stmt->execute(['u' => $vendeur]);
     $notifCount = (int) ($stmt->fetchColumn() ?? 0);
 
-    // unread messages
     $stmt = $bdd->prepare("SELECT COUNT(*) FROM message WHERE receiver_username = :u AND is_read = 0");
     $stmt->execute(['u' => $vendeur]);
     $messageCount = (int) ($stmt->fetchColumn() ?? 0);
 } catch (PDOException $e) {
-    // keep 0
 }
 
 $myProdStmt = $bdd->prepare("SELECT * FROM produit WHERE vendeur_username = :username ORDER BY created_at DESC, id_produit DESC");
 $myProdStmt->execute(['username' => $vendeur]);
 $myProduits = $myProdStmt->fetchAll(PDO::FETCH_ASSOC);
 
-function resolveImagePath(?string $path): string {
+function resolveImagePath(?string $path): string
+{
     $raw = trim((string)$path);
     if ($raw === '') return '/files_profil/logo.png';
     $normalized = str_replace('\\', '/', $raw);
@@ -97,7 +95,8 @@ function resolveImagePath(?string $path): string {
     return '/files_profil/logo.png';
 }
 
-function resolveDemandeImagePath(?string $path): string {
+function resolveDemandeImagePath(?string $path): string
+{
     $raw = trim((string)$path);
     if ($raw === '') {
         return '/files_profil/logo.png';
@@ -128,6 +127,7 @@ function resolveDemandeImagePath(?string $path): string {
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -137,6 +137,7 @@ function resolveDemandeImagePath(?string $path): string {
     <link rel="stylesheet" href="../css/vendeur_style.css">
     <link rel="stylesheet" href="../css/page_vendeur.css">
 </head>
+
 <body>
     <header class="top-header simple-client-header">
         <button id="menuBtn" class="menu-btn" type="button" aria-label="Ouvrir le menu">
@@ -148,22 +149,22 @@ function resolveDemandeImagePath(?string $path): string {
         </a>
 
         <div class="icons quick-actions">
-            <a href="/commande_vendeur.php" class="icon-item">
+            <a href="/html/commande_vendeur.php" class="icon-item">
                 <i class="fa-solid fa-handshake" style="color:#B197FC;"></i>
                 <span>Mes commandes</span>
             </a>
-            <a href="/vendor_offers.php" class="icon-item">
+            <a href="/html/vendor_offers.php" class="icon-item">
                 <i class="fa-solid fa-paper-plane" style="color:#B197FC;"></i>
                 <span>Mes offres</span>
             </a>
-            <a href="/notifications.php" class="icon-item">
+            <a href="/html/notifications.php" class="icon-item">
                 <i class="fa-solid fa-bell" style="color:#74C0FC;"></i>
                 <span>Notifications</span>
                 <?php if ($notifCount > 0): ?>
                     <span class="badge"><?= htmlspecialchars($notifCount) ?></span>
                 <?php endif; ?>
-            </a>    
-            <a href="/messages.php" class="icon-item">
+            </a>
+            <a href="/html/messages.php" class="icon-item">
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
                 <?php if ($messageCount > 0): ?>
@@ -174,7 +175,7 @@ function resolveDemandeImagePath(?string $path): string {
                 <i class="fa-solid fa-box-open" style="color:#B197FC;"></i>
                 <span>Mes produits</span>
             </a>
-            <a href="/mon%20compte.php" class="icon-item">
+            <a href="/html/mon%20compte.php" class="icon-item">
                 <i class="fa-regular fa-user" style="color:#74C0FC;"></i>
                 <span>Mon compte</span>
             </a>
@@ -202,8 +203,7 @@ function resolveDemandeImagePath(?string $path): string {
             <a href="/php/page_vendeur.php"><i class="fa-solid fa-store"></i> Espace vendeur</a>
             <a href="/vendor_offers.php"><i class="fa-solid fa-paper-plane"></i> Mes offres</a>
             <a href="/messages.php"><i class="fa-solid fa-envelope"></i> Messages</a>
-            <a href="/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a>
-            <a href="/php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
+            <a href="/html/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a> <a href="/php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
         </div>
     </aside>
 
@@ -215,8 +215,7 @@ function resolveDemandeImagePath(?string $path): string {
                         <img
                             class="account-avatar-image welcome-avatar-image"
                             src="<?= htmlspecialchars($photoUrl) ?>"
-                            alt="Photo de profil de <?= htmlspecialchars($vendeur) ?>"
-                        >
+                            alt="Photo de profil de <?= htmlspecialchars($vendeur) ?>">
                     <?php else: ?>
                         <div class="avatar-circle welcome-avatar"><?= strtoupper(substr($vendeur, 0, 1)) ?></div>
                     <?php endif; ?>
@@ -237,7 +236,11 @@ function resolveDemandeImagePath(?string $path): string {
                     <input type="number" step="0.01" min="1" name="prix" placeholder="Prix" required>
                     <input type="number" name="quantite" min="0" placeholder="Quantite" value="1" required>
                     <select name="categorie" required>
-                        <option value="tous">Tous</option><option value="femme">Femme</option><option value="homme">Homme</option><option value="maison">Maison</option><option value="beaute">Beaute</option>
+                        <option value="tous">Tous</option>
+                        <option value="femme">Femme</option>
+                        <option value="homme">Homme</option>
+                        <option value="maison">Maison</option>
+                        <option value="beaute">Beaute</option>
                     </select>
                     <textarea name="description" rows="3" placeholder="Description"></textarea>
                     <input type="file" name="image" accept="image/*">
@@ -331,7 +334,7 @@ function resolveDemandeImagePath(?string $path): string {
         }
 
         if (logoutLink) {
-            logoutLink.addEventListener('click', function (event) {
+            logoutLink.addEventListener('click', function(event) {
                 if (!window.confirm('Est tu sure que tu veux te deconnecter ?')) {
                     event.preventDefault();
                 }
@@ -339,7 +342,5 @@ function resolveDemandeImagePath(?string $path): string {
         }
     </script>
 </body>
+
 </html>
-
-
-
