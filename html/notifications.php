@@ -84,7 +84,7 @@ if ($role === 'vendeur') {
             <?php else: ?>
               <span class="status-label">Offre accept&eacute;e</span>
             <?php endif; ?>
-            <a href="../html/vendor_profile.php?vendeur=<?= urlencode($r['vendeur_username']) ?>">Voir profil vendeur</a>
+            <a href="../html/vendor_profile_client.php?vendeur=<?= urlencode($r['vendeur_username']) ?>">Voir profil vendeur</a>
           <?php endif; ?>
         </div>
       </article>
