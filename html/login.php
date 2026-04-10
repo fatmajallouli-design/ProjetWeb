@@ -8,11 +8,13 @@ unset($_SESSION['login_error'], $_SESSION['login_old']);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Login - IMPORTY</title>
     <link rel="stylesheet" href="../css/style_inscription.css">
 </head>
+
 <body class="inscription-body">
     <div class="inscription-container">
         <h2>Login</h2>
@@ -29,8 +31,7 @@ unset($_SESSION['login_error'], $_SESSION['login_old']);
                 name="username"
                 placeholder="Nom d'utilisateur"
                 value="<?php echo htmlspecialchars($old['username'] ?? ''); ?>"
-                required
-            >
+                required>
 
             <input type="password" name="password" placeholder="Mot de passe" required>
 
@@ -48,9 +49,9 @@ unset($_SESSION['login_error'], $_SESSION['login_old']);
 
 
             <button type="submit">Login</button>
-            <a href="/signup.php">Tu n'as pas un compte ?creer un compte</a>
+            <a href="/html/inscrire.html">Tu n'as pas un compte ?Créer  un compte</a>
         </form>
     </div>
 </body>
-</html>
 
+</html>

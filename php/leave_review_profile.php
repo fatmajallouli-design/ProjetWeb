@@ -16,7 +16,7 @@ $rating = (int)($_POST['rating'] ?? 0);
 $commentaire = trim($_POST['commentaire'] ?? '');
 
 if ($vendeur === '' || $idDeal <= 0 || $rating < 1 || $rating > 5) {
-    header('Location: /vendor_profile.php?vendeur=' . urlencode($vendeur));
+    header('Location: /html/vendor_profile_client.php?vendeur=' . urlencode($vendeur));
     exit();
 }
 
@@ -27,32 +27,46 @@ if (!$exists->fetch(PDO::FETCH_ASSOC)) {
     exit();
 }
 
-// Validate that this deal belongs to the same client/vendor pair
 $dealCheck = $bdd->prepare("
-    SELECT id_deal FROM deal_request
+    SELECT id_deal
+    FROM deal_request
     WHERE id_deal = :id
       AND client_username = :client
       AND vendeur_username = :vendeur
+      AND status = 'accepte'
 ");
 $dealCheck->execute([
     'id' => $idDeal,
     'client' => $client,
     'vendeur' => $vendeur
 ]);
+
 if (!$dealCheck->fetch(PDO::FETCH_ASSOC)) {
-    header('Location: /vendor_profile.php?vendeur=' . urlencode($vendeur));
+    header('Location: /html/vendor_profile_client.php?vendeur=' . urlencode($vendeur));
     exit();
 }
 
-// Avoid duplicate review per client and deal
-$dup = $bdd->prepare("SELECT id_review FROM review WHERE id_deal = :id AND client_username = :client LIMIT 1");
-$dup->execute(['id' => $idDeal, 'client' => $client]);
+$dup = $bdd->prepare("
+    SELECT id_review
+    FROM review
+    WHERE id_deal = :id
+    AND client_username = :client
+    LIMIT 1
+");
+$dup->execute([
+    'id' => $idDeal,
+    'client' => $client
+]);
+
 if ($dup->fetch(PDO::FETCH_ASSOC)) {
-    header('Location: /vendor_profile.php?vendeur=' . urlencode($vendeur));
+    header('Location: /html/vendor_profile_client.php?vendeur=' . urlencode($vendeur));
     exit();
 }
 
-$ins = $bdd->prepare("INSERT INTO review (id_deal, client_username, vendeur_username, rating, commentaire) VALUES (:id, :c, :v, :r, :m)");
+$ins = $bdd->prepare("
+    INSERT INTO review (id_deal, client_username, vendeur_username, rating, commentaire)
+    VALUES (:id, :c, :v, :r, :m)
+");
 $ins->execute([
     'id' => $idDeal,
     'c' => $client,
@@ -61,9 +75,6 @@ $ins->execute([
     'm' => $commentaire
 ]);
 
-header('Location: /vendor_profile.php?vendeur=' . urlencode($vendeur));
+header('Location: /html/vendor_profile_client.php?vendeur=' . urlencode($vendeur));
 exit();
 ?>
-
-
-

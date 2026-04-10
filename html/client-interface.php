@@ -7,40 +7,42 @@ if (empty($_SESSION['user']['username'])) {
 
 require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
+ConnexionBD::ensureWorkflowTables();
+
 $username = $_SESSION['user']['username'];
 $role = $_SESSION['user']['role'] ?? 'client';
 
 $notifCount = 0;
 $messageCount = 0;
+
 try {
-    // unread notifications: deals where client hasn't seen yet
     $stmt = $bdd->prepare("SELECT COUNT(*) AS c FROM deal_request WHERE client_username = :u AND (client_seen_at IS NULL OR created_at > client_seen_at)");
     $stmt->execute(['u' => $username]);
     $notifCount = (int)($stmt->fetchColumn() ?? 0);
 
-    // unread messages
     $stmt = $bdd->prepare("SELECT COUNT(*) AS c FROM message WHERE receiver_username = :u AND is_read = 0");
     $stmt->execute(['u' => $username]);
     $messageCount = (int)($stmt->fetchColumn() ?? 0);
 } catch (PDOException $e) {
-    // ignore count errors, keep as 0
 }
 
-// if ($role === 'client') {
-//     $userStmt = $bdd->prepare('SELECT idphoto FROM client WHERE username = :username');
-// } else {
-//     $userStmt = $bdd->prepare('SELECT idphoto FROM vendeur WHERE username = :username');
-// }
+/* récupération de la photo du profil */
+if ($role === 'client') {
+    $userStmt = $bdd->prepare('SELECT idphoto FROM client WHERE username = :username');
+} else {
+    $userStmt = $bdd->prepare('SELECT idphoto FROM vendeur WHERE username = :username');
+}
 
-// $userStmt->execute(['username' => $username]);
-// $userInfo = $userStmt->fetch(PDO::FETCH_ASSOC);
-$userInfo = ['idphoto' => ''];
+$userStmt->execute(['username' => $username]);
+$userInfo = $userStmt->fetch(PDO::FETCH_ASSOC);
+
 $photoPath = trim($userInfo['idphoto'] ?? '');
-$photoUrl = '';
+$photoUrl = '/files_profil/logo.png';
 $hasPhoto = false;
 
 if ($photoPath !== '') {
     $normalizedPhotoPath = str_replace('\\', '/', $photoPath);
+    $webPhotoPath = str_replace('../', '/', $normalizedPhotoPath);
 
     if (strpos($normalizedPhotoPath, '../') === 0) {
         $resolvedPhotoPath = realpath(__DIR__ . '/' . $normalizedPhotoPath);
@@ -53,12 +55,10 @@ if ($photoPath !== '') {
 
     if ($resolvedPhotoPath !== false && is_file($resolvedPhotoPath)) {
         $hasPhoto = true;
-        $photoUrl = $normalizedPhotoPath;
+        $photoUrl = $webPhotoPath;
     }
 }
 
-// This project dump may not contain the `produit` table.
-// If it's missing, we still want the client interface to load.
 $produits = [];
 try {
     $produitStmt = $bdd->query('SELECT * FROM produit ORDER BY id_produit DESC LIMIT 12');
@@ -67,9 +67,11 @@ try {
     $produits = [];
 }
 
-function resolveProductImagePath(?string $path): string {
+function resolveProductImagePath(?string $path): string
+{
     $raw = trim((string)$path);
     if ($raw === '') return '/files_profil/logo.png';
+
     $normalized = str_replace('\\', '/', $raw);
     $normalized = preg_replace('#^\.\./+#', '/', $normalized);
 
@@ -117,6 +119,7 @@ function resolveProductImagePath(?string $path): string {
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -125,19 +128,21 @@ function resolveProductImagePath(?string $path): string {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
     <div class="cart-toast" id="cartToast">Produit ajoute dans le panier.</div>
+
     <div class="top-banner">
         <div class="banner-track">
-        <span>livraison sur toute la <strong>Tunisie</strong>• </span>
-        <span>Chez nous,poster votre demandes et chercher la meilleure offre pour vous</span>
-        <span>livraison sur toute la <strong>Tunisie</strong> •</span>
-        <span>Chez nous,poster votre demandes et chercher la meilleure offre pour vous</span>
-        <span>livraison sur toute la <strong>Tunisie</strong> •</span>
-        <span>Chez nous,poster votre demandes et chercher la meilleure offre pour vous</span>
-        
-         </div>
+            <span>livraison sur toute la <strong>Tunisie</strong>• </span>
+            <span>Chez nous, poster vos demandes et cherchez la meilleure offre pour vous</span>
+            <span>livraison sur toute la <strong>Tunisie</strong> •</span>
+            <span>Chez nous, poster vos demandes et cherchez la meilleure offre pour vous</span>
+            <span>livraison sur toute la <strong>Tunisie</strong> •</span>
+            <span>Chez nous, poster vos demandes et cherchez la meilleure offre pour vous</span>
+        </div>
     </div>
+
     <header class="top-header simple-client-header">
         <button id="menuBtn" class="menu-btn" type="button" aria-label="Ouvrir le menu">
             <i class="fa-solid fa-align-justify"></i>
@@ -167,6 +172,7 @@ function resolveProductImagePath(?string $path): string {
                 <i class="fa-solid fa-plus" style="color:#74C0FC;"></i>
                 <span>Demande</span>
             </a>
+
             <a href="../html/mes_demandes.php" class="icon-item">
                 <i class="fa-solid fa-list-check" style="color:#74C0FC;"></i>
                 <span>Mes demandes</span>
@@ -176,7 +182,7 @@ function resolveProductImagePath(?string $path): string {
                 <i class="fa-solid fa-bell" style="color:#74C0FC;"></i>
                 <span>Notification</span>
                 <?php if ($notifCount > 0): ?>
-                    <span class="badge"><?= htmlspecialchars($notifCount) ?></span>
+                    <span class="badge"><?= htmlspecialchars((string)$notifCount) ?></span>
                 <?php endif; ?>
             </a>
 
@@ -184,13 +190,14 @@ function resolveProductImagePath(?string $path): string {
                 <i class="fa-solid fa-envelope" style="color:#B197FC;"></i>
                 <span>Messages</span>
                 <?php if ($messageCount > 0): ?>
-                    <span class="badge"><?= htmlspecialchars($messageCount) ?></span>
+                    <span class="badge"><?= htmlspecialchars((string)$messageCount) ?></span>
                 <?php endif; ?>
             </a>
         </div>
     </header>
+
     <div class="hero">
-    <img src="../files_profil/img.png" alt="promo" class="hero-img">
+        <img src="../files_profil/img.png" alt="promo" class="hero-img">
     </div>
 
     <div class="overlay" id="overlay"></div>
@@ -221,16 +228,14 @@ function resolveProductImagePath(?string $path): string {
         <section class="client-content full-width-content">
             <div class="welcome-banner simple-banner">
                 <div class="welcome-user">
-                    <?php if ($hasPhoto): ?>
-                        <img
-                            class="account-avatar-image welcome-avatar-image"
-                            src="<?php echo htmlspecialchars($photoUrl); ?>"
-                            alt="Photo de profil de <?php echo htmlspecialchars($username); ?>"
-                        >
-                    <?php endif; ?>
+                    <img
+                        class="account-avatar-image welcome-avatar-image"
+                        src="<?= htmlspecialchars($photoUrl) ?>"
+                        alt="Photo de profil de <?= htmlspecialchars($username) ?>">
+
                     <div class="welcome-copy">
                         <p class="welcome-label">Bienvenue</p>
-                        <h1><?php echo htmlspecialchars($username); ?></h1>
+                        <h1><?= htmlspecialchars($username) ?></h1>
                         <p>Utilisez la barre de recherche ou les boutons ci-dessus pour naviguer rapidement.</p>
                     </div>
                 </div>
@@ -239,33 +244,35 @@ function resolveProductImagePath(?string $path): string {
             <section class="content-card" id="produits">
                 <div class="section-head">
                     <h2>Produits</h2>
-                    <p><?php echo count($produits); ?> resultat(s)</p>
+                    <p><?= count($produits) ?> resultat(s)</p>
                 </div>
 
                 <div class="products-grid" id="productsGrid">
                     <?php if (!empty($produits)): ?>
                         <?php foreach ($produits as $prod): ?>
                             <article class="product-card searchable-product">
-                                <span class="product-badge"><?php echo htmlspecialchars($prod['categorie'] ?? 'Sans categorie'); ?></span>
+                                <span class="product-badge"><?= htmlspecialchars($prod['categorie'] ?? 'Sans categorie') ?></span>
                                 <div class="product-image">
                                     <?php $productImage = resolveProductImagePath($prod['image_path'] ?? ''); ?>
                                     <?php if ($productImage !== ''): ?>
-                                        <img src="<?php echo htmlspecialchars($productImage); ?>" alt="<?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?>">
+                                        <img src="<?= htmlspecialchars($productImage) ?>" alt="<?= htmlspecialchars($prod['nom_produit'] ?? 'Produit') ?>">
                                     <?php else: ?>
                                         <i class="fa-solid fa-box"></i>
                                     <?php endif; ?>
                                 </div>
-                                <h3><?php echo htmlspecialchars($prod['nom_produit'] ?? 'Produit'); ?></h3>
-                                
-                                <p><strong>Prix:</strong> : <?php echo htmlspecialchars($prod['prix'] ?? '0'); ?> DT</p>
-                                
+
+                                <h3><?= htmlspecialchars($prod['nom_produit'] ?? 'Produit') ?></h3>
+                                <p><strong>Prix :</strong> <?= htmlspecialchars($prod['prix'] ?? '0') ?> DT</p>
+
                                 <div class="product-actions">
-                                    <a class="small-btn" href="/php/produit_details.php?id=<?php echo urlencode($prod['id_produit'] ?? ''); ?>&return_to=<?php echo urlencode('/client-interface.php'); ?>">Voir produit</a>
-                                    
+                                    <a class="small-btn" href="/php/produit_details.php?id=<?= urlencode($prod['id_produit'] ?? '') ?>&return_to=<?= urlencode('/client-interface.php') ?>">Voir produit</a>
+
                                     <form action="/php/add_to_panier.php" method="post" class="add-to-cart-form">
-                                        <input type="hidden" name="id_produit" value="<?php echo (int) ($prod['id_produit'] ?? 0); ?>">
+                                        <input type="hidden" name="id_produit" value="<?= (int)($prod['id_produit'] ?? 0) ?>">
                                         <input type="hidden" name="redirect_to" value="/client-interface.php">
-                                        <button class="primary-btn product-cart-btn" type="submit" <?= ((int)($prod['quantite'] ?? 0) <= 0) ? 'disabled' : '' ?>><?= ((int)($prod['quantite'] ?? 0) <= 0) ? 'Indisponible' : 'Ajouter au panier' ?></button>
+                                        <button class="primary-btn product-cart-btn" type="submit" <?= ((int)($prod['quantite'] ?? 0) <= 0) ? 'disabled' : '' ?>>
+                                            <?= ((int)($prod['quantite'] ?? 0) <= 0) ? 'Indisponible' : 'Ajouter au panier' ?>
+                                        </button>
                                     </form>
                                 </div>
                             </article>
@@ -312,9 +319,8 @@ function resolveProductImagePath(?string $path): string {
         }
 
         if (logoutLink) {
-            logoutLink.addEventListener('click', function (event) {
+            logoutLink.addEventListener('click', function(event) {
                 const confirmed = window.confirm('Est tu sure que tu veux te deconnecter ?');
-
                 if (!confirmed) {
                     event.preventDefault();
                 }
@@ -322,10 +328,10 @@ function resolveProductImagePath(?string $path): string {
         }
 
         if (searchInput) {
-            searchInput.addEventListener('input', function () {
+            searchInput.addEventListener('input', function() {
                 const query = this.value.toLowerCase().trim();
 
-                productCards.forEach(function (card) {
+                productCards.forEach(function(card) {
                     const text = card.textContent.toLowerCase();
                     card.style.display = text.includes(query) ? '' : 'none';
                 });
@@ -337,13 +343,13 @@ function resolveProductImagePath(?string $path): string {
             cartToast.textContent = message;
             cartToast.classList.add('visible');
             window.clearTimeout(showCartToast.timeoutId);
-            showCartToast.timeoutId = window.setTimeout(function () {
+            showCartToast.timeoutId = window.setTimeout(function() {
                 cartToast.classList.remove('visible');
             }, 2200);
         }
 
-        addToCartForms.forEach(function (form) {
-            form.addEventListener('submit', async function (event) {
+        addToCartForms.forEach(function(form) {
+            form.addEventListener('submit', async function(event) {
                 event.preventDefault();
 
                 try {
@@ -370,62 +376,56 @@ function resolveProductImagePath(?string $path): string {
             });
         });
     </script>
+
     <div class="about-site">
-     <h4><strong>A propos de nous</strong></h4>                               
-    <p>
-    Importy est un site de vente en ligne qui permet de découvrir et d’acheter
-     facilement différents produits dans plusieurs catégories comme la beauté, la mode,
-      l’électroménager ou encore les produits technologiques.
-       Le but est de proposer une plateforme simple et agréable à utiliser,
-        où l’utilisateur peut rechercher des articles.Ce qui distingue Importy,
-         c’est qu'avec cette platforme, les utilisateurs peuvent également poster des demandes spécifiques pour des produits qu’ils recherchent,
-         permettant ainsi aux vendeurs de proposer des offres personnalisées.
-    
+        <h4><strong>A propos de nous</strong></h4>
+        <p>
+            Importy est un site de vente en ligne qui permet de découvrir et d’acheter
+            facilement différents produits dans plusieurs catégories comme la beauté, la mode,
+            l’électroménager ou encore les produits technologiques.
+            Le but est de proposer une plateforme simple et agréable à utiliser,
+            où l’utilisateur peut rechercher des articles. Ce qui distingue Importy,
+            c’est qu'avec cette plateforme, les utilisateurs peuvent également poster des demandes spécifiques pour des produits qu’ils recherchent,
+            permettant ainsi aux vendeurs de proposer des offres personnalisées.
+
             Importy vise à offrir une expérience d’achat fluide et sécurisée, avec un large choix de produits
             pour répondre aux attentes de tous les clients.
-           
-  </p>
-</div>
+        </p>
+    </div>
 
     <div class="services">
-  
-    <div class="service">
-        <div class="icon"><i class="fa-solid fa-store"></i></div>
+        <div class="service">
+            <div class="icon"><i class="fa-solid fa-store"></i></div>
             <div>
                 <h4>pour les vendeurs</h4>
                 <p>Proposez vos produits et gérez votre activité en toute simplicité.</p>
             </div>
-    </div>
-
-    <div class="service">
-        <div class="icon"><i class="fa-solid fa-truck"></i></div>
-        <div>
-            <h4>Livraison standard offerte</h4>
-            <p>just verifier votre adresse dans le compte</p>
-            
         </div>
-  </div>
 
-  <div class="service">
-    <div class="icon"><i class="fa-regular fa-credit-card"></i></div>
-    <div>
-      <h4>Paiements a la livraison</h4>
-      <p>vous payez le livreur lorsque vous recevez votre commande</p>
-      
+        <div class="service">
+            <div class="icon"><i class="fa-solid fa-truck"></i></div>
+            <div>
+                <h4>Livraison standard offerte</h4>
+                <p>just verifier votre adresse dans le compte</p>
+            </div>
+        </div>
+
+        <div class="service">
+            <div class="icon"><i class="fa-regular fa-credit-card"></i></div>
+            <div>
+                <h4>Paiements a la livraison</h4>
+                <p>vous payez le livreur lorsque vous recevez votre commande</p>
+            </div>
+        </div>
+
+        <div class="service">
+            <div class="icon"><i class="fa-solid fa-undo"></i></div>
+            <div>
+                <h4>Retours</h4>
+                <p>sous 14 jours</p>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <div class="service">
-    <div class="icon"><i class="fa-solid fa-undo"></i></div>
-    <div>
-      <h4>Retours</h4>
-      <p>sous 14 jours</p>
-    </div>
-  </div>
-
-</div>
 </body>
+
 </html>
-
-
-
