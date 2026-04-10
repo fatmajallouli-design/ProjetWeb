@@ -17,61 +17,8 @@ if (empty($_SESSION['user']['username']) || (($_SESSION['user']['role'] ?? '') !
 
 </head>
 
-
 <body>
 
-<header class="top-header simple-client-header">
-    <button id="menuBtn" class="menu-btn" type="button" aria-label="Ouvrir le menu">
-        <i class="fa-solid fa-align-justify"></i>
-    </button>
-
-    <a class="logo" aria-label="Importy - Accueil">
-        <img class="logo-img" src="/files_profil/logo.png" alt="Importy">
-    </a>
-
-    <div class="search">
-        <i class="fa fa-search"></i>
-        <input type="text" id="productSearch" placeholder="Rechercher un produit dans la base de donnees...">
-    </div>
-
-    <div class="icons quick-actions">
-        <a href="../html/mon compte.php" class="icon-item">
-            <i class="fa-regular fa-user"></i>
-            <span>Mon compte</span>
-        </a>
-
-        <a href="../html/panier.php" class="icon-item">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <span>Panier</span>
-        </a>
-
-        <a href="../html/demande.php" class="icon-item">
-            <i class="fa-solid fa-plus"></i>
-            <span>Demande</span>
-        </a>
-
-        <a href="../html/mes_demandes.php" class="icon-item">
-            <i class="fa-solid fa-list-check"></i>
-            <span>Mes demandes</span>
-        </a>
-
-        <a href="../html/notifications.php" class="icon-item">
-            <i class="fa-solid fa-bell"></i>
-            <span>Notification</span>
-            <?php if ($notifCount > 0): ?>
-                <span class="badge"><?= htmlspecialchars($notifCount) ?></span>
-            <?php endif; ?>
-        </a>
-
-        <a href="../html/messages.php" class="icon-item">
-            <i class="fa-solid fa-envelope"></i>
-            <span>Messages</span>
-            <?php if ($messageCount > 0): ?>
-                <span class="badge"><?= htmlspecialchars($messageCount) ?></span>
-            <?php endif; ?>
-        </a>
-    </div>
-</header>
 <div class="card">
   
 

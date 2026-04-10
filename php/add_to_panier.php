@@ -33,15 +33,15 @@ if (($_SESSION['user']['role'] ?? 'client') !== 'client') {
         'message' => 'Action reservee au client.'
     ], $isAjax);
 
-    header('Location: ./html/index.php');
+    header('Location: ../html/index.php');
     exit();
 }
 
 $idProduit = isset($_POST['id_produit']) ? (int) $_POST['id_produit'] : 0;
-$redirectTo = trim($_POST['redirect_to'] ?? '/panier.php');
+$redirectTo = trim($_POST['redirect_to'] ?? '../html/panier.php');
 
 if ($redirectTo === '' || preg_match('/^https?:/i', $redirectTo)) {
-    $redirectTo = '/panier.php';
+    $redirectTo = '../html/panier.php';
 }
 
 if ($idProduit <= 0) {
