@@ -23,33 +23,44 @@ $demandes = $req->fetchAll();
     <meta charset="UTF-8">
     <title>Mes demandes</title>
     <link rel="stylesheet" href="../css/mes_demandes.css">
+     <link rel="icon" href="/files_profil/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>
 
 <body>
 
-<header class="top-header">
-
-    <div class="header-left">
-        <a href="../html/client-interface.php" class="logo">
-            <img src="/files_profil/logo.png" alt="Importy" class="logo-img">
+<header class="top-header simple-client-header">
+    
+        <a href="../html/client-interface.php" class="logo" aria-label="Importy - Accueil">
+            <img class="logo-img" src="/files_profil/logo.png" alt="Importy">
         </a>
+
+        <div class="header-center">
+        <h1 class="title">Mes demmandes</h1>
     </div>
 
-    <div class="header-center">
-        <h1 class="title">Mes demandes</h1>
-    </div>
+        <div class="icons quick-actions">
+            <a href="../html/mon compte.php" class="icon-item">
+                <i class="fa-regular fa-user" style="color:#B197FC;"></i>
+                <span>Mon compte</span>
+            </a>
 
-    <div class="header-right">
-        <a href="client-interface.php" class="header-btn retour-btn"> Retour l'interface client</a>
-        <a class="header-btn retour-btn" href="../html/demande.php">+ Ajouter une demande</a>
-        <a href="../html/mon compte.php" class="header-btn small-btn">Mon compte</a>
-        <a href="../html/messages.php" class="header-btn small-btn">Messages</a>
-        <a href="../html/notifications.php" class="header-btn small-btn">Notifications</a>
-    </div>
+            <a href="../html/panier.php" class="icon-item">
+                <i class="fa-solid fa-bag-shopping" style="color:#B197FC;"></i>
+                <span>Panier</span>
+            </a>
 
-</header>
+            <a href="../html/demande.php" class="icon-item">
+                <i class="fa-solid fa-plus" style="color:#74C0FC;"></i>
+                <span>Demande</span>
+            </a>
+            <a href="../html/client-interface.php" class="icon-item">
+                <i class="fa-solid fa-home" style="color:#74C0FC;"></i>
+                <span>acceuil</span>
+            </a>
+        </div>
+    </header>
 
 <div class="top-actions">
     <span class="count-pill"><?= count($demandes) ?> demande(s)</span>

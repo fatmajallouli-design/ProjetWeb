@@ -828,9 +828,38 @@ body {
   color: #334155;
 }
 
-.account-upload input[type="file"] {
-  padding: 10px 12px;
-  background: #fff;
+.account-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.account-upload-btn {
+  align-self: flex-start;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  color: #4338ca;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.account-upload-btn:hover {
+  background: #e0e7ff;
+}
+
+.account-file-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
 }
 
 .account-actions {
@@ -1242,7 +1271,7 @@ select {
 
 /* CARD DROITE */
 .resume-card {
-  background: #d9e4f1;
+  background:#e1e7ff;
   padding: 10px;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.05);
@@ -1272,7 +1301,7 @@ select {
   width: 100%;
   margin-top: 20px;
   padding: 15px;
-  background: #140c7e;
+  background: #8b87e4;
   color: white;
   border-radius: 10px;
   border: none;

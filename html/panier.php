@@ -43,7 +43,7 @@ foreach ($items as $item) {
 
 </head>
 <body>
-<header class="top-header">
+<header class="top-header simple-client-header">
 
 <div class="header-left">
     <a href="client-interface.php" class="logo">
@@ -54,9 +54,25 @@ foreach ($items as $item) {
 <div class="header-center">
     <h1 class="title">Mon panier</h1>
 </div>
+<div class="icons quick-actions">
+    <a href="../html/mon compte.php" class="icon-item">
+                <i class="fa-regular fa-user" style="color:#B197FC;"></i>
+                <span>Mon compte</span>
+            </a>
+            <a href="../html/mes_demandes.php" class="icon-item">
+                <i class="fa-solid fa-list-check" style="color:#74C0FC;"></i>
+                <span>Mes demandes</span>
+            </a>
+            <a href="../html/demande.php" class="icon-item">
+                <i class="fa-solid fa-plus" style="color:#74C0FC;"></i>
+                <span>Demande</span>
+            </a>
+            <a href="../html/client-interface.php" class="icon-item">
+                <i class="fa-solid fa-home" style="color:#74C0FC;"></i>
+                <span>acceuil</span>
+            </a>
 
-<div class="header-right">
-    <a href="../html/client-interface.php" class="header-btn retour-btn">Retour à l'interface client</a>
+  </div>
 </header>
    <main class="panier-page">
 
