@@ -46,7 +46,7 @@ $commande = $cmdReq->fetch();
   <a href="mes_demandes.php" class="back-link">← Retour à mes demandes</a>
 
   <div class="box">
-      <img src="../files_produit/<?= htmlspecialchars($demande['id_photo']) ?>" alt="Produit">
+      <img src="<?= htmlspecialchars($demande['id_photo']) ?>" alt="Produit">
 
       <form method="POST" action="../php/update_etat.php">
     <input type="hidden" name="id" value="<?= $demande['id_demande'] ?>">

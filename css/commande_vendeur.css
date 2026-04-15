@@ -1,80 +1,285 @@
 body {
-  background: #f6f7fb;
+  background:
+    radial-gradient(circle at top right, rgba(116, 192, 252, 0.12), transparent 22%),
+    linear-gradient(180deg, #f6f7fb, #eef2ff);
   font-family: Arial, sans-serif;
 }
 
-.container {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 0 15px;
+.vendor-shell {
+  max-width: 1120px;
+  margin: 28px auto 44px;
+  padding: 0 16px;
 }
 
-.card {
+.vendor-hero-card {
   display: flex;
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 18px;
+  padding: 26px 30px;
+  border-radius: 28px;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, rgba(20, 12, 126, 0.95), rgba(91, 70, 229, 0.9));
+  color: #fff;
+  box-shadow: 0 20px 38px rgba(52, 44, 146, 0.22);
 }
 
-.card-img {
-  width: 200px;
-  height: 180px;
-  background: #f2f3f8;
+.vendor-kicker {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.vendor-hero-card h2 {
+  margin: 0 0 10px;
+  font-size: 30px;
+}
+
+.vendor-hero-text {
+  max-width: 720px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.vendor-pill {
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.vendor-list {
   display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.vendor-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.vendor-filter-chip {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: #3f3a8a;
+  border: 1px solid rgba(91, 70, 229, 0.12);
+  font-weight: 700;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
 }
 
-.card-img img {
+.vendor-filter-chip span {
+  min-width: 28px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #eef2ff;
+  text-align: center;
+}
+
+.vendor-filter-chip.active {
+  background: linear-gradient(135deg, #140c7e, #5b46e5);
+  color: #fff;
+  box-shadow: 0 14px 28px rgba(20, 12, 126, 0.18);
+}
+
+.vendor-filter-chip.active span {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.vendor-record-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(91, 70, 229, 0.08);
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.07);
+}
+
+.vendor-record-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 18px;
+}
+
+.vendor-record-image {
+  height: 220px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(177, 151, 252, 0.18), rgba(116, 192, 252, 0.18));
+}
+
+.vendor-record-image img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block;
 }
 
-.card-content {
-  padding: 15px;
-  flex: 1;
+.vendor-record-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.vendor-record-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.vendor-record-head h3 {
+  margin: 0 0 10px;
+  font-size: 24px;
+  color: #18135f;
+}
+
+.vendor-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.vendor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #f4f5ff;
+  color: #5545d4;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.vendor-chip.strong {
+  background: #eef7ff;
+  color: #0f4c81;
+}
+
+.vendor-status-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  background: #fff4db;
+  color: #b76a00;
+}
+
+.vendor-status-chip.livre {
+  background: #e9fff2;
+  color: #15803d;
+}
+
+.vendor-status-chip.termine {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.vendor-status-chip.annule {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.vendor-message-preview {
+  color: #465466;
+  line-height: 1.7;
+}
+
+.vendor-items-box {
+  border: 1px solid #e3ebff;
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: #f8fbff;
+}
+
+.vendor-items-head,
+.vendor-item-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.vendor-items-head {
+  margin-bottom: 10px;
+  color: #191970;
+}
+
+.vendor-item-line {
+  padding: 8px 0;
+  border-top: 1px solid rgba(91, 70, 229, 0.08);
+  color: #465466;
 }
 
 .btn-link {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 6px 10px;
-  background: #5b46e5;
-  color: white;
-  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #140c7e, #5b46e5);
+  color: #fff;
+  border-radius: 12px;
   text-decoration: none;
+  box-shadow: 0 12px 24px rgba(20, 12, 126, 0.16);
 }
 
-.btn-cancel {
-  background: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  margin-top: 8px;
-  cursor: pointer;
+.vendor-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.btn-cancel:hover {
-  background: #e60000;
+.vendor-status-form select {
+  min-width: 180px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: #fff;
 }
 
-.card-content h3 {
-  margin-bottom: 8px;
-  font-size: 18px;
+.vendor-empty-box {
+  padding: 42px 28px;
+  border-radius: 24px;
+  background: #fff;
+  border: 1px dashed rgba(91, 70, 229, 0.24);
+  text-align: center;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.06);
 }
 
-.card-content p {
-  margin: 5px 0;
-  color: #555;
+.vendor-empty-box h3 {
+  margin-bottom: 10px;
+  color: #18135f;
 }
 
-select {
-  margin-top: 10px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.vendor-empty-box p {
+  color: #596579;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .vendor-hero-card,
+  .vendor-record-grid,
+  .vendor-record-head {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .vendor-record-image {
+    height: 200px;
+    width: 100%;
+  }
 }

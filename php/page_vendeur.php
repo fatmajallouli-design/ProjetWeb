@@ -41,7 +41,7 @@ if ($photoPath !== '') {
     }
 }
 
-$demandesStmt = $bdd->query("SELECT * FROM demande WHERE etat <> 'recu' ORDER BY COALESCE(created_at, NOW()) DESC, id_demande DESC");
+$demandesStmt = $bdd->query("SELECT * FROM demande WHERE etat <> 'recu' AND COALESCE(source, 'demande') = 'demande' ORDER BY COALESCE(created_at, NOW()) DESC, id_demande DESC");
 $demandes = $demandesStmt->fetchAll(PDO::FETCH_ASSOC);
 
 $notifCount = 0;
@@ -60,6 +60,16 @@ try {
 $myProdStmt = $bdd->prepare("SELECT * FROM produit WHERE vendeur_username = :username ORDER BY created_at DESC, id_produit DESC");
 $myProdStmt->execute(['username' => $vendeur]);
 $myProduits = $myProdStmt->fetchAll(PDO::FETCH_ASSOC);
+
+$ordersCountStmt = $bdd->prepare("SELECT COUNT(*) FROM commandes WHERE vendeur = :vendeur");
+$ordersCountStmt->execute(['vendeur' => $vendeur]);
+$ordersCount = (int)($ordersCountStmt->fetchColumn() ?? 0);
+
+$offersCountStmt = $bdd->prepare("SELECT COUNT(*) FROM deal_request WHERE vendeur_username = :vendeur");
+$offersCountStmt->execute(['vendeur' => $vendeur]);
+$offersCount = (int)($offersCountStmt->fetchColumn() ?? 0);
+
+$activeProductsCount = count(array_filter($myProduits, static fn($p) => (int)($p['quantite'] ?? 0) > 0));
 
 function resolveImagePath(?string $path): string
 {
@@ -171,7 +181,7 @@ function resolveDemandeImagePath(?string $path): string
                     <span class="badge"><?= htmlspecialchars($messageCount) ?></span>
                 <?php endif; ?>
             </a>
-            <a href="#mes-produits" class="icon-item">
+            <a href="/html/mes_produits_vendeur.php" class="icon-item">
                 <i class="fa-solid fa-box-open" style="color:#B197FC;"></i>
                 <span>Mes produits</span>
             </a>
@@ -227,31 +237,91 @@ function resolveDemandeImagePath(?string $path): string
                 </div>
             </div>
 
-            <section class="content-card">
-                <div class="section-head">
-                    <h2>Publier un produit</h2>
-                </div>
-                <form action="/php/add_product.php" method="post" enctype="multipart/form-data">
-                    <input type="text" name="nom_produit" placeholder="Nom du produit" required>
-                    <input type="number" step="0.01" min="1" name="prix" placeholder="Prix" required>
-                    <input type="number" name="quantite" min="0" placeholder="Quantite" value="1" required>
-                    <select name="categorie" required>
-                        <option value="tous">Tous</option>
-                        <option value="femme">Femme</option>
-                        <option value="homme">Homme</option>
-                        <option value="maison">Maison</option>
-                        <option value="beaute">Beaute</option>
-                    </select>
-                    <textarea name="description" rows="3" placeholder="Description"></textarea>
-                    <input type="file" name="image" accept="image/*">
-                    <button type="submit">Poster produit</button>
-                </form>
+            <section class="vendeur-stats-grid">
+                <article class="vendeur-stat-card">
+                    <span class="vendeur-stat-icon"><i class="fa-solid fa-box-open"></i></span>
+                    <strong><?= count($myProduits) ?></strong>
+                    <span>Produits publies</span>
+                </article>
+                <article class="vendeur-stat-card">
+                    <span class="vendeur-stat-icon"><i class="fa-solid fa-cubes"></i></span>
+                    <strong><?= $activeProductsCount ?></strong>
+                    <span>Produits en stock</span>
+                </article>
+                <article class="vendeur-stat-card">
+                    <span class="vendeur-stat-icon"><i class="fa-solid fa-paper-plane"></i></span>
+                    <strong><?= $offersCount ?></strong>
+                    <span>Offres envoyees</span>
+                </article>
+                <article class="vendeur-stat-card">
+                    <span class="vendeur-stat-icon"><i class="fa-solid fa-handshake"></i></span>
+                    <strong><?= $ordersCount ?></strong>
+                    <span>Commandes recues</span>
+                </article>
             </section>
 
-            <section class="content-card" id="mes-produits">
+            <section class="content-card vendeur-publish-card">
                 <div class="section-head">
-                    <h2>Mes produits postes</h2>
-                    <p><?= count($myProduits) ?> produit(s)</p>
+                    <div>
+                        <h2>Publier un produit</h2>
+                        <p class="vendeur-section-subtitle">Creez une fiche produit plus claire et plus attractive pour donner envie d'acheter des le premier regard.</p>
+                    </div>
+                </div>
+                <div class="vendeur-publish-shell">
+                    <div class="vendeur-publish-copy">
+                        <span class="vendeur-mini-badge">Annonce premium</span>
+                        <h3>Une belle fiche produit rassure le client</h3>
+                        <p>Un bon nom, un prix lisible, une categorie precise et une photo propre rendent votre catalogue plus serieux et plus facile a explorer.</p>
+                        <div class="vendeur-publish-points">
+                            <span><i class="fa-solid fa-circle-check"></i> Stock et prix visibles</span>
+                            <span><i class="fa-solid fa-circle-check"></i> Categorie bien rangee</span>
+                            <span><i class="fa-solid fa-circle-check"></i> Image plus vendeuse</span>
+                        </div>
+                    </div>
+
+                    <form class="vendeur-form-grid vendeur-product-form" action="/php/add_product.php" method="post" enctype="multipart/form-data">
+                        <label>
+                            <span>Nom du produit</span>
+                            <input type="text" name="nom_produit" placeholder="Ex: Parfum YSL Libre" required>
+                        </label>
+                        <label>
+                            <span>Prix</span>
+                            <input type="number" step="0.01" min="1" name="prix" placeholder="Prix en DT" required>
+                        </label>
+                        <label>
+                            <span>Quantite disponible</span>
+                            <input type="number" name="quantite" min="0" placeholder="Quantite" value="1" required>
+                        </label>
+                        <label>
+                            <span>Categorie</span>
+                            <select name="categorie" required>
+                                <option value="tous">Tous</option>
+                                <option value="femme">Femme</option>
+                                <option value="homme">Homme</option>
+                                <option value="maison">Maison</option>
+                                <option value="beaute">Beaute</option>
+                            </select>
+                        </label>
+                        <label class="vendeur-form-full">
+                            <span>Description</span>
+                            <textarea name="description" rows="4" placeholder="Expliquez les points forts du produit, son style, son etat ou sa disponibilite."></textarea>
+                        </label>
+                        <label class="vendeur-form-full vendeur-upload-field">
+                            <span>Image produit</span>
+                            <input type="file" name="image" accept="image/*">
+                        </label>
+                        <button type="submit">Publier ce produit</button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="content-card vendeur-products-preview">
+                <div class="section-head">
+                    <div>
+                        <h2>Mes produits</h2>
+                        <p class="vendeur-section-subtitle">Accedez a une page dediee pour gerer vos produits avec un affichage plus elegant et plus compact.</p>
+                    </div>
+                    <a href="/html/mes_produits_vendeur.php" class="small-btn vendeur-page-link">Ouvrir mes produits</a>
                 </div>
                 <?php if (!empty($successMessage)): ?>
                     <div class="account-message success-message"><?= htmlspecialchars($successMessage) ?></div>
@@ -259,21 +329,15 @@ function resolveDemandeImagePath(?string $path): string
                 <?php if (!empty($errorMessage)): ?>
                     <div class="account-message error-message"><?= htmlspecialchars($errorMessage) ?></div>
                 <?php endif; ?>
-                <div class="cards">
-                    <?php foreach ($myProduits as $p): ?>
-                        <article class="inner-card">
-                            <?php $prodImage = resolveImagePath($p['image_path'] ?? ''); ?>
-                            <?php if ($prodImage !== ''): ?><img class="prod-img" src="<?= htmlspecialchars($prodImage) ?>" alt="Produit"><?php endif; ?>
-                            <h3><?= htmlspecialchars($p['nom_produit']) ?></h3>
-                            <p class="meta"><?= htmlspecialchars($p['categorie']) ?> | <?= htmlspecialchars($p['prix']) ?> TND | <?= htmlspecialchars($p['created_at']) ?></p>
-                            <p><strong>Stock :</strong> <?= ((int)$p['quantite'] > 0) ? ((int)$p['quantite'] . ' disponible(s)') : 'Rupture de stock' ?></p>
-                            <p><?= htmlspecialchars($p['description'] ?? '') ?></p>
-                            <div class="product-actions">
-                                <a href="/edit_product.php?id=<?= (int)$p['id_produit'] ?>" class="secondary-btn">Modifier</a>
-                                <form action="/php/delete_product.php" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer ce produit ?');">
-                                    <input type="hidden" name="id_produit" value="<?= (int)$p['id_produit'] ?>">
-                                    <button type="submit" class="small-btn" style="background:#ffe4e6;color:#b91c1c;">Supprimer</button>
-                                </form>
+                <div class="vendeur-preview-grid">
+                    <?php foreach (array_slice($myProduits, 0, 3) as $p): ?>
+                        <?php $prodImage = resolveImagePath($p['image_path'] ?? ''); ?>
+                        <article class="vendeur-preview-card">
+                            <img class="vendeur-preview-image" src="<?= htmlspecialchars($prodImage) ?>" alt="<?= htmlspecialchars($p['nom_produit']) ?>">
+                            <div class="vendeur-preview-body">
+                                <span class="vendeur-preview-chip"><?= htmlspecialchars($p['categorie']) ?></span>
+                                <h3><?= htmlspecialchars($p['nom_produit']) ?></h3>
+                                <p><?= htmlspecialchars((string)$p['prix']) ?> DT</p>
                             </div>
                         </article>
                     <?php endforeach; ?>
@@ -283,24 +347,49 @@ function resolveDemandeImagePath(?string $path): string
 
             <section class="content-card">
                 <div class="section-head">
-                    <h2>Demandes clients</h2>
-                    <p>Vous pouvez proposer un deal</p>
+                    <div>
+                        <h2>Demandes clients</h2>
+                        <p class="vendeur-section-subtitle">Reperez les meilleures opportunites et envoyez une offre avec une presentation plus soignee.</p>
+                    </div>
+                    <span class="vendeur-demandes-count"><?= count($demandes) ?> demande(s)</span>
                 </div>
-                <div class="cards">
+                <div class="vendeur-demandes-grid">
                     <?php foreach ($demandes as $d): ?>
-                        <article class="inner-card">
+                        <article class="vendeur-demande-card">
                             <?php if (!empty($d['id_photo'])): ?>
-                                <img class="dem-img" src="<?= htmlspecialchars(resolveDemandeImagePath($d['id_photo'])) ?>" alt="Demande">
+                                <div class="vendeur-demande-image-wrap">
+                                    <img class="vendeur-demande-image" src="<?= htmlspecialchars(resolveDemandeImagePath($d['id_photo'])) ?>" alt="Demande">
+                                </div>
                             <?php endif; ?>
-                            <h3><?= htmlspecialchars($d['nom_produit']) ?></h3>
-                            <p class="meta">Client: <?= htmlspecialchars($d['username']) ?> | Budget: <?= htmlspecialchars($d['prix']) ?> TND | Date: <?= htmlspecialchars($d['created_at'] ?? '') ?></p>
-                            <p><?= htmlspecialchars($d['description']) ?></p>
-                            <form action="/php/send_offer.php" method="post">
+
+                            <div class="vendeur-demande-body">
+                                <div class="vendeur-demande-head">
+                                    <span class="vendeur-preview-chip"><?= htmlspecialchars($d['categorie'] ?? 'tous') ?></span>
+                                    <span class="vendeur-budget-badge"><?= htmlspecialchars((string)$d['prix']) ?> TND</span>
+                                </div>
+
+                                <h3><?= htmlspecialchars($d['nom_produit']) ?></h3>
+
+                                <div class="vendeur-demande-meta-row">
+                                    <span><i class="fa-regular fa-user"></i> <?= htmlspecialchars($d['username']) ?></span>
+                                    <span><i class="fa-regular fa-calendar"></i> <?= htmlspecialchars($d['created_at'] ?? '') ?></span>
+                                </div>
+
+                                <p class="vendeur-demande-text"><?= htmlspecialchars($d['description']) ?></p>
+
+                                <form class="vendeur-demande-form" action="/php/send_offer.php" method="post">
                                 <input type="hidden" name="id_demande" value="<?= (int)$d['id_demande'] ?>">
-                                <input type="number" name="prix_propose" min="1" step="0.01" placeholder="Votre prix propose" required>
-                                <textarea name="message" rows="2" placeholder="Votre message..." required></textarea>
-                                <button type="submit">Envoyer une offre</button>
-                            </form>
+                                    <label>
+                                        <span>Votre prix propose</span>
+                                        <input type="number" name="prix_propose" min="1" step="0.01" placeholder="Entrez votre prix" required>
+                                    </label>
+                                    <label class="vendeur-form-full">
+                                        <span>Message au client</span>
+                                        <textarea name="message" rows="3" placeholder="Expliquez votre offre, delai ou conditions..." required></textarea>
+                                    </label>
+                                    <button type="submit">Envoyer cette offre</button>
+                                </form>
+                            </div>
                         </article>
                     <?php endforeach; ?>
                 </div>

@@ -152,12 +152,11 @@ if ($deal > 0) {
       <?php endif; ?>
     </section>
   </main>
-  <script>
+ <script>
     document.addEventListener('DOMContentLoaded', function() {
       const msgForm = document.getElementById('msgForm');
       const msgInput = document.getElementById('msgInput');
       const chatBox = document.querySelector('.chat-box');
-      const convItems = document.querySelectorAll('.conv-item');
 
       function scrollChatToBottom() {
         if (chatBox) {
@@ -170,30 +169,50 @@ if ($deal > 0) {
       }
 
       if (msgForm) {
-        msgForm.addEventListener('submit', function(e) {
+        msgForm.addEventListener('submit', async function(e) {
           e.preventDefault();
-          const formData = new FormData(msgForm);
 
-          fetch(msgForm.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'X-Requested-With': 'XMLHttpRequest'
-            }
-          }).then(r => r.json()).then(data => {
-            if (!data.success) {
-              alert('Erreur lors de lâ€™envoi du message.');
+          try {
+            const formData = new FormData(msgForm);
+
+            const response = await fetch(msgForm.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+              }
+            });
+
+            const rawText = await response.text();
+            const cleanText = rawText.replace(/^\uFEFF/, '').trim();
+            console.log('REPONSE send_message.php =', cleanText, 'status=', response.status);
+
+            if (!response.ok) {
+              alert('Erreur de connexion au serveur.');
               return;
             }
-            const msg = data.message;
+
+            const data = JSON.parse(cleanText);
+
+            if (!data.success) {
+              alert(data.message || 'Erreur lors de l’envoi du message.');
+              return;
+            }
+
+            const msg = data.message_data;
+
             const msgLine = document.createElement('div');
             msgLine.className = 'msg-line msg-me';
-            msgLine.innerHTML = '<strong>' + msg.sender_username + '</strong> (' + msg.created_at + '): ' + msg.contenu.replace(/\n/g, '<br>');
+            msgLine.innerHTML =
+              '<strong>' + msg.sender_username + '</strong> (' +
+              msg.created_at + '): ' +
+              msg.contenu.replace(/\n/g, '<br>');
+
             chatBox.appendChild(msgLine);
             msgInput.value = '';
             scrollChatToBottom();
 
-            // Mise Ã  jour du rÃ©sumÃ© de conversation et du compteur
             const activeItem = document.querySelector('.conv-item.active');
             if (activeItem) {
               const countElem = activeItem.querySelector('.meta-count');
@@ -201,22 +220,21 @@ if ($deal > 0) {
                 let count = parseInt(countElem.textContent || '0', 10) + 1;
                 countElem.textContent = count;
               }
+
               const preview = activeItem.querySelector('.last-preview');
               if (preview) {
-                preview.textContent = 'Dernier message : ' + (msg.contenu.length > 48 ? msg.contenu.substr(0, 48) + '...' : msg.contenu);
+                preview.textContent =
+                  'Dernier message : ' +
+                  (msg.contenu.length > 48 ? msg.contenu.substr(0, 48) + '...' : msg.contenu);
               }
             }
-          }).catch(() => {
+
+          } catch (error) {
+            console.error('Erreur JS message =', error);
             alert('Erreur de connexion au serveur.');
-          });
+          }
         });
       }
-
-      convItems.forEach(function(item) {
-        item.addEventListener('click', function(e) {
-          // Leave native link behavior for full page load
-        });
-      });
     });
   </script>
   <div class="about-site">

@@ -11,7 +11,7 @@ $username = $_SESSION['user']['username'];
 require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
 
-$req = $bdd->prepare("SELECT * FROM demande WHERE username = :username ORDER BY COALESCE(created_at, NOW()) DESC, id_demande DESC");
+$req = $bdd->prepare("SELECT * FROM demande WHERE username = :username AND COALESCE(source, 'demande') = 'demande' ORDER BY COALESCE(created_at, NOW()) DESC, id_demande DESC");
 $req->execute(["username" => $username]);
 
 $demandes = $req->fetchAll();

@@ -20,6 +20,7 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>Mes offres envoyees</title>
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/commande_vendeur.css">
 </head>
 <body>
 <header class="top-header simple-client-header">
@@ -76,17 +77,46 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </aside>
 
-      <main style="max-width:900px;margin:24px auto;padding:0 16px;">
-    <h2>Mes offres envoyees</h2>
-    <?php foreach ($rows as $r): ?>
-      <article style="background:#fff;border:1px solid #ececec;border-radius:12px;padding:12px;margin-bottom:10px;">
-        <h3><?= htmlspecialchars($r['nom_produit']) ?></h3>
-        <p>Client: <?= htmlspecialchars($r['client_username']) ?> | Prix: <?= htmlspecialchars($r['prix_propose']) ?> TND | Date: <?= htmlspecialchars($r['created_at']) ?></p>
-        <p><?= nl2br(htmlspecialchars($r['message'])) ?></p>
-        <a href="../html/messages.php?deal=<?= (int)$r['id_deal'] ?>">Ouvrir chat</a>
-      </article>
-    <?php endforeach; ?>
-    <?php if (empty($rows)): ?><p>Aucune offre envoyee.</p><?php endif; ?>
+      <main class="vendor-shell">
+    <section class="vendor-hero-card">
+      <div>
+        <p class="vendor-kicker">Suivi commercial</p>
+        <h2>Mes offres envoyees</h2>
+        <p class="vendor-hero-text">Retrouvez toutes vos propositions, leurs montants et accedez rapidement au chat associe.</p>
+      </div>
+      <div class="vendor-pill"><?= count($rows) ?> offre(s)</div>
+    </section>
+
+    <?php if (!empty($rows)): ?>
+      <section class="vendor-list">
+        <?php foreach ($rows as $r): ?>
+          <article class="vendor-record-card">
+            <div class="vendor-record-head">
+              <div>
+                <h3><?= htmlspecialchars($r['nom_produit']) ?></h3>
+                <div class="vendor-meta-row">
+                  <span class="vendor-chip"><i class="fa-regular fa-user"></i> <?= htmlspecialchars($r['client_username']) ?></span>
+                  <span class="vendor-chip"><i class="fa-regular fa-calendar"></i> <?= htmlspecialchars($r['created_at']) ?></span>
+                  <span class="vendor-chip strong"><i class="fa-solid fa-coins"></i> <?= htmlspecialchars($r['prix_propose']) ?> TND</span>
+                </div>
+              </div>
+              <span class="vendor-status-chip <?= strtolower(trim((string)$r['status'])) === 'accepte' ? 'termine' : 'en-cours' ?>">
+                <?= htmlspecialchars(ucfirst($r['status'])) ?>
+              </span>
+            </div>
+
+            <p class="vendor-message-preview"><?= nl2br(htmlspecialchars($r['message'])) ?></p>
+
+            <a class="btn-link vendor-action-link" href="../html/messages.php?deal=<?= (int)$r['id_deal'] ?>">Ouvrir chat</a>
+          </article>
+        <?php endforeach; ?>
+      </section>
+    <?php else: ?>
+      <section class="vendor-empty-box">
+        <h3>Aucune offre envoyee</h3>
+        <p>Des que vous repondez a une demande client, vos offres apparaitront ici.</p>
+      </section>
+    <?php endif; ?>
   </main>
    <script>
         const menuBtn = document.getElementById('menuBtn');

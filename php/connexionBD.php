@@ -66,6 +66,12 @@ public static function ensureWorkflowTables()
         // colonne déjà existante
     }
 
+    try {
+        $bdd->exec("ALTER TABLE demande ADD COLUMN source VARCHAR(20) NOT NULL DEFAULT 'demande'");
+    } catch (PDOException $e) {
+        // colonne déjà existante
+    }
+
     // tables workflow
     $bdd->exec("
         CREATE TABLE IF NOT EXISTS deal_request (
@@ -90,6 +96,33 @@ public static function ensureWorkflowTables()
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
+
+    $bdd->exec("
+        CREATE TABLE IF NOT EXISTS commande_item (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            id_commande INT NOT NULL,
+            id_produit INT NOT NULL,
+            nom_produit VARCHAR(80) NOT NULL,
+            prix_unitaire DECIMAL(10,2) NOT NULL,
+            quantite INT NOT NULL DEFAULT 1,
+            sous_total DECIMAL(10,2) NOT NULL,
+            image_path VARCHAR(255) NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            INDEX idx_commande_item_commande (id_commande)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    ");
+
+    try {
+        $bdd->exec("ALTER TABLE commandes ADD COLUMN source VARCHAR(20) NOT NULL DEFAULT 'demande'");
+    } catch (PDOException $e) {
+        // colonne déjà existante
+    }
+
+    try {
+        $bdd->exec("ALTER TABLE commandes ADD COLUMN total DECIMAL(10,2) NOT NULL DEFAULT 0");
+    } catch (PDOException $e) {
+        // colonne déjà existante
+    }
 
     $bdd->exec("
         CREATE TABLE IF NOT EXISTS message (

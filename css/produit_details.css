@@ -1,0 +1,178 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f3f4f8;
+  margin: 0;
+  padding: 40px 20px;
+}
+
+/* Layout principal */
+.product-page {
+  max-width: 900px;
+  margin: auto;
+  display: flex;
+  gap: 40px;
+  background: #daeaf0;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Image */
+.product-left img {
+  width: 100%;
+  max-width: 350px;
+  height: 320px;
+  object-fit: contain;
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(177,151,252,0.15), rgba(116,192,252,0.15));
+}
+
+/* Partie droite */
+.product-right {
+  flex: 1;
+}
+
+/* Catégorie */
+.category {
+  display: inline-block;
+  background: #e647acd6;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Titre */
+.product-right h1 {
+  font-size: 32px;
+  margin: 10px 0;
+}
+
+/* Prix */
+.price {
+  font-size: 20px;
+  color: #475569;
+  margin-bottom: 20px;
+}
+
+/* Bouton panier */
+.btn-cart {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #b2cee5, #b197fc);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.btn-cart:disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+
+/* Toggle description */
+.toggle-desc {
+  color: #4a54a8;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+}
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  z-index: 999;
+}
+
+/* Description */
+.description {
+  display: none;
+  margin-top: 10px;
+  background: #f8f9ff;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+/* Actions */
+.detail-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Bouton retour */
+.back-link {
+  padding: 10px 16px;
+  background: #eef4ff;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #4a54a8;
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .product-page {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .product-left img {
+    max-width: 100%;
+  }
+}
+.related-products {
+  margin-top: 50px;
+  padding: 20px;
+}
+
+.related-products h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* GRID */
+.products-grid {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+}
+
+/* CARD */
+.product-card {
+  min-width: 180px;
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+/* IMAGE */
+.product-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+}
+
+/* TEXTE */
+.product-card h4 {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.product-card p {
+  color: #555;
+}

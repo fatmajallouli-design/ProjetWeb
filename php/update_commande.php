@@ -17,7 +17,7 @@ if ($id && $statut) {
     $req2->execute(["id" => $id]);
     $cmd = $req2->fetch(PDO::FETCH_ASSOC);
 
-    if ($cmd) {
+    if ($cmd && !empty($cmd['id_demande'])) {
         $etatDemande = "en attente";
 
         if ($statut === "livre" || $statut === "termine") {

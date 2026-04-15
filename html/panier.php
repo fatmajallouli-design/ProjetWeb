@@ -8,6 +8,7 @@ if (empty($_SESSION['user']['username'])) {
 
 require_once(__DIR__ . '/../php/connexionBD.php');
 $bdd = ConnexionBD::getInstance();
+ConnexionBD::ensureWorkflowTables();
 $username = $_SESSION['user']['username'];
 $success = $_SESSION['panier_success'] ?? '';
 $error = $_SESSION['panier_error'] ?? '';
@@ -28,6 +29,14 @@ $total = 0;
 foreach ($items as $item) {
     $total += ((float) $item['prix']) * ((int) $item['quantite']);
 }
+
+$ordersCountStmt = $bdd->prepare("
+    SELECT COUNT(*)
+    FROM commandes
+    WHERE client = :client AND source = 'panier'
+");
+$ordersCountStmt->execute(['client' => $username]);
+$ordersCount = (int)($ordersCountStmt->fetchColumn() ?? 0);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -160,13 +169,23 @@ foreach ($items as $item) {
           <span><?= number_format($total, 2) ?> DT</span>
         </div>
 
-        <form action="/php/valider_panier.php" method="post">
+<form action="/php/valider_panier.php" method="post">
   <button type="submit" class="btn-checkout">
     Valider mon panier
   </button>
 </form>
 
       </div>
+
+      <a href="../html/mes_commandes_client.php" class="orders-shortcut-card">
+        <div class="orders-shortcut-top">
+          <span class="orders-shortcut-icon"><i class="fa-solid fa-box-open"></i></span>
+          <span class="orders-shortcut-badge"><?= $ordersCount ?></span>
+        </div>
+        <h3>Mes commandes</h3>
+        <p>Retrouver toutes les commandes validées depuis votre panier et suivre leur statut.</p>
+        <span class="orders-shortcut-link">Voir mes commandes <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
 
     </div>
 

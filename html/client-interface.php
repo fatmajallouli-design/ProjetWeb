@@ -61,7 +61,7 @@ if ($photoPath !== '') {
 
 $produits = [];
 try {
-    $produitStmt = $bdd->query('SELECT * FROM produit ORDER BY id_produit DESC LIMIT 12');
+    $produitStmt = $bdd->query('SELECT * FROM produit WHERE quantite > 0 ORDER BY id_produit DESC LIMIT 12');
     $produits = $produitStmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $produits = [];
