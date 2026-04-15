@@ -1,86 +1,74 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f3f4f8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+
 
 /* CARD */
 .card {
-  width: 700px; 
-  height: 500px;
-  padding: 30px; 
+  max-width: 920px;
+  width: 80%;
+  margin: 30px auto;
+  padding: 40px;
   border-radius: 25px;
   background: linear-gradient(135deg, #cfd9ff, #e2d1ff);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.15);
 }
 
-.top-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 18px;
-}
-
-.home-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 20px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #5b46e5, #7f6fff);
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-}
-
-.home-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 20px rgba(91, 70, 229, 0.25);
-  opacity: 0.95;
-}
 
 .title {
   text-align: center;
-  font-size: 28px;
+  font-size: 32px;
   margin-bottom: 30px;
   font-weight: bold;
   color: #0422aa;;
 }
 
-/* LAYOUT */
+/* Layout principal : photo à gauche, champs à droite */
 .container {
-  display: flex;
-  gap: 50px;
+  display: grid;
+  grid-template-columns: 260px minmax(420px, 1fr);
+  gap: 40px;
+  align-items: start;
 }
-
 
 .form {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
-input, textarea, select {
-  padding: 12px;
-  margin-bottom: 15px;
-  border-radius: 12px;
+/* Bloc de champs de droite */
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+/* Champs de formulaire larges et simples */
+.form-fields input,
+.form-fields textarea,
+.form-fields select,
+textarea {
+  padding: 18px;
+  margin-bottom: 0;
+  border-radius: 14px;
   border: none;
   outline: none;
   background: #f8f8f8;
   transition: 0.2s;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-input:focus, textarea:focus, select:focus {
+/* Focus : indication claire sur le champ actif */
+input:focus,
+textarea:focus,
+select:focus {
   background: white;
   box-shadow: 0 0 0 2px #a78bfa;
 }
 
 button {
-  padding: 14px;
+  padding: 14px 24px;
   border: none;
   border-radius: 15px;
   background: linear-gradient(135deg, #7f9cf5, #a78bfa);
@@ -94,6 +82,16 @@ button:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+textarea {
+  min-height: 140px;
+}
+
 .image-box {
   width: 260px;
   height: 260px;
