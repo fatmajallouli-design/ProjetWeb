@@ -83,7 +83,7 @@ $rows = $req->fetchAll(PDO::FETCH_ASSOC);
         <h3><?= htmlspecialchars($r['nom_produit']) ?></h3>
         <p>Client: <?= htmlspecialchars($r['client_username']) ?> | Prix: <?= htmlspecialchars($r['prix_propose']) ?> TND | Date: <?= htmlspecialchars($r['created_at']) ?></p>
         <p><?= nl2br(htmlspecialchars($r['message'])) ?></p>
-        <a href="/messages.php?deal=<?= (int)$r['id_deal'] ?>">Ouvrir chat</a>
+        <a href="../html/messages.php?deal=<?= (int)$r['id_deal'] ?>">Ouvrir chat</a>
       </article>
     <?php endforeach; ?>
     <?php if (empty($rows)): ?><p>Aucune offre envoyee.</p><?php endif; ?>

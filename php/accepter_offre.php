@@ -32,5 +32,5 @@ $insert->execute([
 $update = $bdd->prepare("UPDATE deal_request SET status = 'accepte' WHERE id_deal = :id");
 $update->execute(["id" => $id_deal]);
 
-header("Location: /mes_demandes.php");
+header("Location: ../html/mes_demandes.php");
 exit;

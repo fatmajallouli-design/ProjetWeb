@@ -48,22 +48,8 @@ try {
         $description = trim(($item['description'] ?? '') . "\nQuantité: " . (int)$item['quantite']);
         $prix = ((float)$item['prix']) * ((int)$item['quantite']);
 
-        $demandeStmt = $bdd->prepare(
-            'INSERT INTO demande (nom_produit, prix, lien_produit, description, categorie, id_photo, username, etat)
-             VALUES (:nom_produit, :prix, :lien_produit, :description, :categorie, :id_photo, :username, :etat)'
-        );
-        $demandeStmt->execute([
-            'nom_produit' => $item['nom_produit'],
-            'prix' => $prix,
-            'lien_produit' => '',
-            'description' => $description,
-            'categorie' => $item['categorie'] ?? '',
-            'id_photo' => $item['image_path'] ?? '',
-            'username' => $username,
-            'etat' => 'en attente'
-        ]);
+       
 
-        $idDemande = $bdd->lastInsertId();
 
         $commandeStmt = $bdd->prepare(
             'INSERT INTO commandes (id_demande, vendeur, client, statut)

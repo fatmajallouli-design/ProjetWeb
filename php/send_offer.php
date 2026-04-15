@@ -36,7 +36,7 @@ $ins->execute([
     'm' => $message
 ]);
 
-header('Location: /vendor_offers.php');
+header('Location: ../html/vendor_offers.php');
 exit();
 ?>
 

@@ -64,6 +64,7 @@ $commande = $cmdReq->fetch();
         <p><strong>Prix :</strong> <?= htmlspecialchars($demande['prix']) ?> TND</p>
         <p><strong>Catégorie :</strong> <?= htmlspecialchars($demande['categorie']) ?></p>
         <p><strong>Date :</strong> <?= htmlspecialchars($demande['created_at'] ?? 'Non disponible') ?></p>
+        <p><strong>Utilisateur :</strong> <?= htmlspecialchars($demande['username']) ?></p>
         <?php if ($commande): ?>
         <p>
         <strong>Vendeur :</strong>
@@ -77,7 +78,11 @@ $commande = $cmdReq->fetch();
 <?php endif; ?>
       </div>
 
-      
+      <div class="description-box">
+        <h3>Description</h3>
+        <p><?= nl2br(htmlspecialchars($demande['description'])) ?></p>
+      </div>
+
       <div class="detail-actions">
   <?php if (!empty($demande['lien_produit'])): ?>
     <a href="<?= htmlspecialchars($demande['lien_produit']) ?>" target="_blank" class="action-btn">
