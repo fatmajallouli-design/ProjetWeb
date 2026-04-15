@@ -200,7 +200,12 @@ if ($deal > 0) {
               return;
             }
 
-            const msg = data.message_data;
+            const msg = data.message_data || data.message;
+
+            if (!msg || !msg.sender_username || !msg.created_at) {
+              alert('Le message a ete envoye, mais la reponse du serveur est incomplete.');
+              return;
+            }
 
             const msgLine = document.createElement('div');
             msgLine.className = 'msg-line msg-me';

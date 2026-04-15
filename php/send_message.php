@@ -43,7 +43,11 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
         'created_at' => date('Y-m-d H:i:s')
     ];
     header('Content-Type: application/json');
-    echo json_encode(['success' => true, 'message' => $msgData]);
+    echo json_encode([
+        'success' => true,
+        'message_data' => $msgData,
+        'message' => 'Message envoye avec succes.'
+    ]);
     exit();
 }
 

@@ -11,7 +11,7 @@ private function __construct()
 {
     try {
         // connexion à MySQL local sur le port 3307
-        $dsn = "mysql:host=" . self::$_host . ";port=3306;dbname=" . self::$_dbname . ";charset=utf8";
+        $dsn = "mysql:host=" . self::$_host . ";port=3307;dbname=" . self::$_dbname . ";charset=utf8";
         $options = [
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8',
             PDO::MYSQL_ATTR_MULTI_STATEMENTS => true,
