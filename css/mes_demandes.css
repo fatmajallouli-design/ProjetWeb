@@ -23,40 +23,72 @@ body {
   color: var(--text);
 }
 
-/* ===== BARRE DU HAUT ===== */
 .top-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 26px;
+  padding: 30px 10px;
   border-bottom: 1px solid var(--brand-bg-border);
   background-color: #fff;
   gap: 18px;
   min-height: 160px;
+  
 }
-
-.header-left,
-.header-center,
-.header-right {
-  flex: 1;
+.icons {
   display: flex;
+  gap: 25px;
+}
+
+.icons .icon-item span {
+  font-weight: 600;
+}
+
+.icon-item {
+  position: relative;
+}
+
+.icon-item .badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 999px;
+  background: #dc3545;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  padding: 0 5px;
+  box-shadow: 0 0 0 2px white;
+}
+
+.icons a {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
 }
 
-.header-left {
-  justify-content: flex-start;
+.icons i {
+  font-size: 20px;
+  margin-bottom: 4px;
 }
 
-.header-center {
-  justify-content: center;
+.icons a span {
+  margin-top: 6px;
+  white-space: nowrap;
+  text-align: center;
 }
 
-.header-right {
-  justify-content: flex-end;
-  gap: 10px;
-  flex-wrap: wrap;
+.icons a:hover {
+  text-decoration: none;
+  color: rebeccapurple;
 }
-
 .logo {
   display: inline-flex;
   align-items: center;
@@ -75,6 +107,7 @@ body {
   transform: scale(1.04);
   transform-origin: center;
 }
+
 
 .title {
   margin: 0;

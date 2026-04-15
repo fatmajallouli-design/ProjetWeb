@@ -53,6 +53,7 @@ if ($photoPath !== '') {
     <title>IMPORTY : Mon Compte</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
+  
 </head>
 <body>
     <main class="account-page">
@@ -90,7 +91,8 @@ if ($photoPath !== '') {
 
 <form class="account-form" 
       action="<?php echo ($role === 'vendeur') ? '../php/update_vendeur.php' : '../php/update_client_account.php'; ?>" 
-      method="post" enctype="multipart/form-data">                <h3>Modifier mes donnees</h3>
+      method="post" enctype="multipart/form-data">               
+       <h3>Modifier mes donnees</h3>
                 <input
                     type="email"
                     name="email"
@@ -112,9 +114,10 @@ if ($photoPath !== '') {
                     value="<?php echo htmlspecialchars($userInfo['num_tel'] ?? ''); ?>"
                     required
                 >
-                <label class="account-upload">
-                    <span>Modifier la photo</span>
-                    <input type="file" name="image" accept="image/*">
+                <label for="fileInput" class="account-upload">
+                    <span class="account-upload-btn">Modifier la photo</span>
+                    <input id="fileInput" class="account-file-input" type="file" name="image" accept="image/*">
+                    <span class="account-file-name" id="fileName">Aucun fichier choisi</span>
                 </label>
                 <button type="submit" class="primary-btn">Enregistrer les modifications</button>
             </form>
@@ -130,6 +133,16 @@ if ($photoPath !== '') {
     </main>
     <script>
         const logoutAccountLink = document.getElementById('logoutAccountLink');
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+
+        if (fileInput && fileName) {
+            fileInput.addEventListener('change', function () {
+                fileName.textContent = fileInput.files && fileInput.files[0]
+                    ? fileInput.files[0].name
+                    : 'Aucun fichier choisi';
+            });
+        }
 
         if (logoutAccountLink) {
             logoutAccountLink.addEventListener('click', function (event) {
