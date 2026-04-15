@@ -22,12 +22,13 @@ $stmt->execute(['id' => $idProduit, 'vendeur' => $vendeur]);
 $produit = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$produit) {
-    header('Location: /php/page_vendeur.php');
+    header('Location:../php/page_vendeur.php');
     exit();
 }
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +36,7 @@ if (!$produit) {
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/vendeur_style.css">
 </head>
+
 <body>
     <main class="account-page">
         <section class="content-card">
@@ -84,6 +86,5 @@ if (!$produit) {
         </section>
     </main>
 </body>
+
 </html>
-
-

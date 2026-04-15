@@ -52,6 +52,7 @@ function resolveSellerProductImage(?string $path): string
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,6 +61,7 @@ function resolveSellerProductImage(?string $path): string
     <link rel="stylesheet" href="../css/page_vendeur.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
     <header class="top-header simple-client-header">
         <a class="logo" href="/php/page_vendeur.php" aria-label="Importy - Espace vendeur">
@@ -114,7 +116,7 @@ function resolveSellerProductImage(?string $path): string
                             <p class="vendeur-gallery-date">Publie le <?= htmlspecialchars($produit['created_at'] ?? '') ?></p>
 
                             <div class="product-actions">
-                                <a href="/edit_product.php?id=<?= (int)$produit['id_produit'] ?>" class="secondary-btn">Modifier</a>
+                                <a href="/html/edit_product.php?id=<?= (int)$produit['id_produit'] ?>" class="secondary-btn">Modifier</a>
                                 <form action="/php/delete_product.php" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer ce produit ?');">
                                     <input type="hidden" name="id_produit" value="<?= (int)$produit['id_produit'] ?>">
                                     <button type="submit" class="small-btn vendeur-danger-btn">Supprimer</button>
@@ -133,4 +135,5 @@ function resolveSellerProductImage(?string $path): string
         <?php endif; ?>
     </main>
 </body>
+
 </html>
