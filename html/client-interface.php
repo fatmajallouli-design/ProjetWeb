@@ -16,7 +16,7 @@ $notifCount = 0;
 $messageCount = 0;
 
 try {
-    $stmt = $bdd->prepare("SELECT COUNT(*) AS c FROM deal_request WHERE client_username = :u AND (client_seen_at IS NULL OR created_at > client_seen_at)");
+    $stmt = $bdd->prepare("SELECT COUNT(*) FROM notification WHERE recipient_username = :u AND is_read = 0");
     $stmt->execute(['u' => $username]);
     $notifCount = (int)($stmt->fetchColumn() ?? 0);
 
@@ -127,6 +127,7 @@ function resolveProductImagePath(?string $path): string
     <title>IMPORTY : Interface Client</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="/javascript/notif_badges.js" defer></script>
 </head>
 
 <body>

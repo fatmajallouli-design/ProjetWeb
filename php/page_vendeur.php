@@ -47,7 +47,7 @@ $demandes = $demandesStmt->fetchAll(PDO::FETCH_ASSOC);
 $notifCount = 0;
 $messageCount = 0;
 try {
-    $stmt = $bdd->prepare("SELECT COUNT(*) FROM deal_request WHERE vendeur_username = :u AND (vendeur_seen_at IS NULL OR created_at > vendeur_seen_at)");
+    $stmt = $bdd->prepare("SELECT COUNT(*) FROM notification WHERE recipient_username = :u AND is_read = 0");
     $stmt->execute(['u' => $vendeur]);
     $notifCount = (int) ($stmt->fetchColumn() ?? 0);
 
@@ -146,6 +146,7 @@ function resolveDemandeImagePath(?string $path): string
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/vendeur_style.css">
     <link rel="stylesheet" href="../css/page_vendeur.css">
+    <script src="/javascript/notif_badges.js" defer></script>
 </head>
 
 <body>

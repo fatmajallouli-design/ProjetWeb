@@ -150,7 +150,14 @@ $produits_similaires = $req2->fetchAll(PDO::FETCH_ASSOC);
         </button>
       </form>
 
-      
+      <?php if (!empty($_SESSION['user']['username']) && ($_SESSION['user']['role'] ?? '') === 'client'): ?>
+        <div style="margin-top:12px;">
+          <a class="btn-cart" style="display:inline-block;background:#7C3AED;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;"
+             href="/php/start_chat.php?vendeur=<?= urlencode($produit['vendeur_username']) ?>">
+            Contacter le vendeur (<?= htmlspecialchars($produit['vendeur_username']) ?>)
+          </a>
+        </div>
+      <?php endif; ?>
 
       <div class="detail-actions">
         <a class="back-link" href="../html<?= htmlspecialchars($returnTo) ?>">Retour</a>

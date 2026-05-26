@@ -62,6 +62,28 @@ $insert->execute([
     'etat' => $etat,
 ]);
 
+$newDemandeId = (int)$bdd->lastInsertId();
+
+// Notify every seller that a new client demande was posted.
+try {
+    $vendeursStmt = $bdd->query('SELECT username FROM vendeur');
+    $vendeurUsernames = $vendeursStmt->fetchAll(PDO::FETCH_COLUMN);
+    foreach ($vendeurUsernames as $vUser) {
+        ConnexionBD::pushNotification([
+            'recipient_username' => $vUser,
+            'recipient_role'     => 'vendeur',
+            'type'               => 'new_demande',
+            'title'              => 'Nouvelle demande de ' . $username,
+            'body'               => $username . ' demande "' . $nom_produit . '" (budget ' . number_format((float)$prix, 2) . ' DT).',
+            'link'               => '/php/page_vendeur.php',
+            'actor_username'     => $username,
+            'related_id'         => $newDemandeId,
+        ]);
+    }
+} catch (PDOException $e) {
+    // notifications best-effort
+}
+
 if ($errorMessage !== '') {
     $_SESSION['demande_error'] = 'Demande créée mais : ' . $errorMessage;
 } else {

@@ -165,7 +165,60 @@ class ConnexionBD
         try {
             $bdd->exec("ALTER TABLE deal_request ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
         } catch (PDOException $e) {
-            // colonne déjà existante
+            // colonne deja existante
+        }
+
+        $bdd->exec("
+        CREATE TABLE IF NOT EXISTS notification (
+            id_notif INT AUTO_INCREMENT PRIMARY KEY,
+            recipient_username VARCHAR(30) NOT NULL,
+            recipient_role VARCHAR(10) NOT NULL,
+            type VARCHAR(30) NOT NULL,
+            title VARCHAR(120) NOT NULL,
+            body TEXT NULL,
+            link VARCHAR(255) NULL,
+            actor_username VARCHAR(30) NULL,
+            related_id INT NULL,
+            is_read TINYINT NOT NULL DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            INDEX idx_notif_recipient (recipient_username, is_read),
+            INDEX idx_notif_created (created_at)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ");
+
+        try {
+            $bdd->exec("ALTER TABLE message ADD COLUMN thread_key VARCHAR(80) NULL");
+        } catch (PDOException $e) { /* exists */ }
+
+        try {
+            $bdd->exec("ALTER TABLE message DROP FOREIGN KEY fk_message_deal");
+        } catch (PDOException $e) { /* not present */ }
+
+        try {
+            $bdd->exec("ALTER TABLE message MODIFY id_deal INT NULL DEFAULT NULL");
+        } catch (PDOException $e) { /* ok */ }
+    }
+
+    public static function pushNotification(array $opts): int
+    {
+        $bdd = self::getInstance();
+        try {
+            $stmt = $bdd->prepare("INSERT INTO notification
+                (recipient_username, recipient_role, type, title, body, link, actor_username, related_id)
+                VALUES (:r, :ro, :t, :ti, :b, :l, :a, :rid)");
+            $stmt->execute([
+                'r'   => $opts['recipient_username'],
+                'ro'  => $opts['recipient_role'] ?? 'client',
+                't'   => $opts['type'] ?? 'generic',
+                'ti'  => mb_substr((string)($opts['title'] ?? ''), 0, 120),
+                'b'   => $opts['body'] ?? null,
+                'l'   => $opts['link'] ?? null,
+                'a'   => $opts['actor_username'] ?? null,
+                'rid' => $opts['related_id'] ?? null,
+            ]);
+            return (int)$bdd->lastInsertId();
+        } catch (PDOException $e) {
+            return 0;
         }
     }
 }

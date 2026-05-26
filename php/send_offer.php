@@ -35,6 +35,18 @@ $ins->execute([
     'p' => $prix,
     'm' => $message
 ]);
+$newDealId = (int)$bdd->lastInsertId();
+
+ConnexionBD::pushNotification([
+    'recipient_username' => $row['username'],
+    'recipient_role'     => 'client',
+    'type'               => 'new_offer',
+    'title'              => 'Nouvelle offre de ' . $vendeur,
+    'body'               => $vendeur . ' propose ' . number_format($prix, 2) . ' DT. ' . mb_substr($message, 0, 100),
+    'link'               => '/html/notifications.php',
+    'actor_username'     => $vendeur,
+    'related_id'         => $newDealId,
+]);
 
 header('Location: ../html/vendor_offers.php');
 exit();

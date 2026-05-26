@@ -251,6 +251,15 @@ $membreDepuis = !empty($vendor['created_at']) ? date('d/m/Y', strtotime($vendor[
                 <span class="info-value"><?= htmlspecialchars($vendor['num_tel'] ?? '') ?></span>
               </div>
             </div>
+
+            <?php if ($viewerRole === 'client'): ?>
+              <div style="margin-top:14px;">
+                <a class="primary-btn" style="display:inline-block;background:#7C3AED;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;"
+                   href="/php/start_chat.php?vendeur=<?= urlencode($vendeur) ?>">
+                  Contacter le vendeur
+                </a>
+              </div>
+            <?php endif; ?>
           </div>
 
           <div class="vendor-rating-col">

@@ -61,6 +61,43 @@ $ins->execute([
     'i' => $imagePath
 ]);
 
+$newProductId = (int)$bdd->lastInsertId();
+
+// Notify every client who has previously messaged this vendor (via any deal).
+try {
+    $clientsStmt = $bdd->prepare("
+        SELECT DISTINCT client_username
+        FROM (
+            SELECT m.sender_username AS client_username
+            FROM message m
+            JOIN deal_request d ON d.id_deal = m.id_deal
+            WHERE d.vendeur_username = :v AND m.sender_username <> :v
+            UNION
+            SELECT m.receiver_username AS client_username
+            FROM message m
+            JOIN deal_request d ON d.id_deal = m.id_deal
+            WHERE d.vendeur_username = :v AND m.receiver_username <> :v
+        ) AS c
+    ");
+    $clientsStmt->execute(['v' => $vendeur]);
+    $clientUsernames = $clientsStmt->fetchAll(PDO::FETCH_COLUMN);
+
+    foreach ($clientUsernames as $clientUsername) {
+        ConnexionBD::pushNotification([
+            'recipient_username' => $clientUsername,
+            'recipient_role'     => 'client',
+            'type'               => 'new_product',
+            'title'              => 'Nouveau produit de ' . $vendeur,
+            'body'               => $vendeur . ' vient d\'ajouter "' . $nom . '" (' . number_format((float)$prix, 2) . ' DT).',
+            'link'               => '/php/produit_details.php?id=' . $newProductId,
+            'actor_username'     => $vendeur,
+            'related_id'         => $newProductId,
+        ]);
+    }
+} catch (PDOException $e) {
+    // notifications best-effort
+}
+
 if ($imageError !== '') {
     $_SESSION['product_error'] = "Produit ajout�, mais : $imageError";
 } else {
