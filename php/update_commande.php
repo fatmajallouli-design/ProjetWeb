@@ -34,5 +34,5 @@ if ($id && $statut) {
     }
 }
 
-header("Location: /commande_vendeur.php");
+header("Location: ../html/commande_vendeur.php");
 exit;

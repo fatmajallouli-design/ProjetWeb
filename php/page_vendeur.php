@@ -211,9 +211,10 @@ function resolveDemandeImagePath(?string $path): string
         <div class="section">
             <h4>Navigation</h4>
             <a href="/php/page_vendeur.php"><i class="fa-solid fa-store"></i> Espace vendeur</a>
-            <a href="/vendor_offers.php"><i class="fa-solid fa-paper-plane"></i> Mes offres</a>
-            <a href="/messages.php"><i class="fa-solid fa-envelope"></i> Messages</a>
-            <a href="/html/mon%20compte.php"><i class="fa-regular fa-user"></i> Mon compte</a> <a href="/php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
+            <a href="../html/vendor_offers.php"><i class="fa-solid fa-paper-plane"></i> Mes offres</a>
+            <a href="../html/commande_vendeur.php"><i class="fa-solid fa-handshake"></i> Mes commandes </a>
+            <a href="../html/messages.php"><i class="fa-solid fa-envelope"></i> Messages</a>
+            <a href="../html/mon compte.php"><i class="fa-regular fa-user"></i> Mon compte</a> <a href="/php/logout.php" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Se deconnecter</a>
         </div>
     </aside>
 
