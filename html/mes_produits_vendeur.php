@@ -73,7 +73,7 @@ function resolveSellerProductImage(?string $path): string
         </div>
 
         <div class="header-right">
-            <a href="/php/page_vendeur.php" class="header-btn retour-btn">Retour espace vendeur</a>
+            <a href="/php/page_vendeur.php" class="btn-retour-pro">Retour espace vendeur</a>
         </div>
     </header>
 

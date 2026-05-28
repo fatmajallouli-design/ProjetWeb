@@ -74,8 +74,8 @@ if ($deal > 0) {
     </div>
 
     <div class="header-right">
-      <a href="client-interface.php" class="btn-retour-pro">
-        <span class="arrow"></span>Retour a l'interface
+      <a href="<?php echo ($role === 'vendeur') ? '../php/page_vendeur.php' : '../html/client-interface.php'; ?>" class="btn-retour-pro">
+        <span class="arrow"></span>Retour
       </a>
     </div>
 
@@ -152,7 +152,7 @@ if ($deal > 0) {
       <?php endif; ?>
     </section>
   </main>
- <script>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
       const msgForm = document.getElementById('msgForm');
       const msgInput = document.getElementById('msgInput');
